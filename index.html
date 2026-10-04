@@ -390,14 +390,14 @@ input[type=range]:disabled { filter: grayscale(.7); opacity: .6; cursor: default
 .qmedia { display: grid; place-items: center; min-height: 230px; padding: 10px; border-radius: 18px; background: rgba(0, 0, 0, .22); overflow: hidden; }
 .qmedia.small { min-height: 0; padding: 0; background: none; }
 .qimg { line-height: 1; user-select: none; }
-.qimg.flag img { display: block; height: 200px; max-width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
+.qimg.qflag img { display: block; height: 200px; max-width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
 .qimg.logo { width: 210px; height: 210px; padding: 26px; border-radius: 28px; background: #fff; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
 .qimg.logo.dark { background: #1b1e36; }
 .qimg.logo svg { width: 100%; height: 100%; display: block; }
 .qimg.emo { font-size: 160px; filter: drop-shadow(0 12px 24px rgba(0, 0, 0, .4)); }
 .qimg.emo.riddle { font-size: clamp(56px, 10vw, 104px); letter-spacing: .08em; }
 .qimg.emo.small { font-size: 96px; }
-.qmedia.small .qimg.flag img { height: 92px; }
+.qmedia.small .qimg.qflag img { height: 92px; }
 .qmedia.small .qimg.logo { width: 104px; height: 104px; padding: 14px; border-radius: 20px; }
 .qmedia.small .qimg.emo { font-size: 84px; }
 .qmedia.small .qimg.emo.riddle { font-size: 48px; }
@@ -420,7 +420,7 @@ input[type=range]:disabled { filter: grayscale(.7); opacity: .6; cursor: default
 .rg.no { color: var(--bad); }
 @media (max-width: 640px) {
   .qmedia { min-height: 170px; }
-  .qimg.flag img { height: 140px; }
+  .qimg.qflag img { height: 140px; }
   .qimg.logo { width: 150px; height: 150px; padding: 18px; }
   .qimg.emo { font-size: 112px; }
   .qopt { padding: 12px; font-size: 15px; gap: 8px; }
@@ -439,6 +439,25 @@ input[type=range]:disabled { filter: grayscale(.7); opacity: .6; cursor: default
 .qmedia.small { overflow: visible; border-radius: 0; }
 .qmedia.text { min-height: 0; padding: 18px; }
 .qmedia.text .qimg.emo.small { font-size: 72px; }
+/* Erraten: Eingabe und Chat der Versuche (wie PopSauce) */
+.qhint { min-height: 22px; text-align: center; color: var(--acc2); font-weight: 600; letter-spacing: .02em; }
+.qhint b { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 20px; letter-spacing: .12em; color: var(--text); }
+.qinput { display: flex; gap: 10px; }
+.qinput input { flex: 1; min-width: 0; padding: 15px 18px; border-radius: 14px; border: 2px solid var(--card-b); background: rgba(0, 0, 0, .28); font-size: 20px; font-weight: 600; outline: none; transition: border-color .2s; }
+.qinput input:focus { border-color: var(--acc3); }
+.qinput input:disabled { opacity: .5; }
+.qfeed { display: flex; flex-direction: column; gap: 4px; max-height: 168px; overflow-y: auto; padding: 4px 2px; font-size: 15px; }
+.qfeed:empty { display: none; }
+.qfeed .fe { padding: 5px 12px; border-radius: 10px; background: rgba(255, 255, 255, .05); animation: fadein .25s; overflow-wrap: anywhere; }
+.qfeed .fe.ok { background: rgba(94, 240, 160, .12); color: var(--good); }
+.qfeed .fe small { color: var(--muted); margin-left: 6px; }
+.qfeed.rev { flex-direction: row; flex-wrap: wrap; max-height: none; gap: 6px; justify-content: center; color: var(--muted); }
+.qfeed.rev span { padding: 4px 10px; border-radius: 99px; background: rgba(255, 107, 107, .1); text-decoration: line-through; text-decoration-color: rgba(255, 107, 107, .6); }
+.quizrev .acmp { color: var(--muted); }
+@media (max-width: 560px) {
+  .qinput input { font-size: 17px; padding: 12px 14px; }
+  .qfeed { max-height: 120px; font-size: 14px; }
+}
 </style>
 </head>
 <body>
@@ -605,7 +624,7 @@ window.I18N = (() => {
         'Punkte nach Genauigkeit: <b>bis 1000</b>. Faktor 2 daneben ≈ 700, Faktor 10 daneben = 0.',
         '🎯 <b>Volltreffer</b> (max. 5 % daneben): +150. 👑 <b>Bester der Runde</b>: +100.',
         '🃏 <b>Alles-oder-nichts-Joker</b> (1× pro Spiel): mindestens 700 Punkte = doppelt, sonst 0.',
-        '🧩 <b>Erraten</b>: 4 Antworten, ein Versuch. Richtig = 500 bis 1000 Punkte, je schneller desto mehr. ⚡ Schnellster: +100. Joker: richtig = doppelt.',
+        '🧩 <b>Erraten</b>: Antwort eintippen (Deutsch oder Türkisch, kleine Tippfehler sind ok), beliebig viele Versuche. Richtig = 500 bis 1000 Punkte, je schneller desto mehr. ⚡ Schnellster: +100. Joker: gefunden = doppelt.',
         '🌐 Jeder kann oben rechts seine eigene Sprache wählen.',
       ],
       start: 'Spiel starten ▶', alone: 'Du kannst auch alleine testen, aber zu zweit macht es mehr Spaß.', allThere: 'Alle da? Los geht’s!',
@@ -614,18 +633,20 @@ window.I18N = (() => {
         mix: ['Mix', 'Abwechselnd Schätzen und Vergleichen'],
         guess: ['Schätzen', 'Größe in Metern schätzen'],
         cmp: ['Vergleich', 'Silhouetten ins richtige Verhältnis bringen'],
-        quiz: ['Erraten', 'Flaggen, Logos & mehr erkennen: wer schneller ist, kriegt mehr'],
+        quiz: ['Erraten', 'Flaggen, Logos & mehr: Antwort als Erster eintippen'],
       },
       qcats: {
         all: 'Alles gemischt', flaggen: 'Flaggen', logos: 'Logos & Marken', essen: 'Obst, Gemüse & Essen',
         tiere: 'Tiere erkennen', erdkunde: 'Erdkunde', emoji: 'Emoji-Rätsel',
       },
       qprompt: { flaggen: 'Welches Land hat diese Flagge?', logos: 'Welche Marke ist das?', essen: 'Was ist das?', tiere: 'Welches Tier ist das?', emoji: 'Was ist gemeint?' },
-      quizHint: 'Das Bild wird mit der Zeit schärfer. Je schneller du richtig liegst, desto mehr Punkte!',
+      quizHint: 'Tippe die Antwort ein, auf Deutsch oder Türkisch. Kleine Tippfehler sind ok, Versuche unbegrenzt.',
+      quizInput: 'Antwort eintippen …', quizSend: 'Raten', quizHintLbl: 'Tipp', thTime: 'Zeit',
+      quizFoundOther: '{who} hat es!', quizFound: 'Richtig! Gefunden nach {s}{j}. Warte auf die anderen …',
       quizHintText: 'Je schneller du richtig liegst, desto mehr Punkte!',
       quizLocked: 'Deine Antwort: <b>{a}</b>{j}. Warte auf die anderen …',
-      jokerTitleQuiz: 'Richtig: doppelte Punkte. Falsch: 0.',
-      tagFast: '⚡ Schnellster', tagRight: '✓ richtig', tagWrong: '✗ falsch', secs: '{s} s', thAnswer: 'Antwort', noAnswer: 'keine Antwort',
+      jokerTitleQuiz: 'Gefunden: doppelte Punkte. Nicht gefunden: 0.',
+      tagFast: '⚡ Schnellster', tagRight: '✓ richtig', tagWrong: '✗ falsch', secs: '{s} s', thAnswer: 'Antwort', noAnswer: 'nicht gefunden',
       fast: 'Blitzmerker', fastText: 'erkannte {q} nach nur {s} s',
       cats: {
         all: 'Alles gemischt', bau: 'Bauwerke', technik: 'Technik & Verkehr', natur: 'Natur & Landschaft', tiere: 'Tiere & Dinos',
@@ -702,7 +723,7 @@ window.I18N = (() => {
         'Puan doğruluğa göre: <b>en fazla 1000</b>. 2 kat yanılırsan ≈ 700, 10 kat yanılırsan 0.',
         '🎯 <b>Tam isabet</b> (en fazla %5 sapma): +150. 👑 <b>Turun en iyisi</b>: +100.',
         '🃏 <b>Ya hep ya hiç jokeri</b> (oyun başına 1 kez): en az 700 puan = iki katı, değilse 0.',
-        '🧩 <b>Bil bakalım</b>: 4 seçenek, tek hak. Doğru = 500 ile 1000 puan, ne kadar hızlıysan o kadar çok. ⚡ En hızlı: +100. Joker: doğruysa iki kat.',
+        '🧩 <b>Bil bakalım</b>: Cevabı yaz (Türkçe ya da Almanca, küçük yazım hataları sorun değil), sınırsız deneme. Doğru = 500 ile 1000 puan, ne kadar hızlıysan o kadar çok. ⚡ En hızlı: +100. Joker: bulursan iki kat.',
         '🌐 Herkes sağ üstten kendi dilini seçebilir.',
       ],
       start: 'Oyunu başlat ▶', alone: 'Tek başına da deneyebilirsin ama iki kişiyle daha eğlenceli.', allThere: 'Herkes burada mı? Haydi başlayalım!',
@@ -711,18 +732,20 @@ window.I18N = (() => {
         mix: ['Karışık', 'Sırayla tahmin ve karşılaştırma'],
         guess: ['Tahmin', 'Boyutu metre cinsinden tahmin et'],
         cmp: ['Karşılaştırma', 'Siluetleri doğru orana getir'],
-        quiz: ['Bil bakalım', 'Bayrak, logo ve daha fazlasını tanı: hızlı olan daha çok kazanır'],
+        quiz: ['Bil bakalım', 'Bayrak, logo ve daha fazlası: cevabı ilk sen yaz'],
       },
       qcats: {
         all: 'Hepsi karışık', flaggen: 'Bayraklar', logos: 'Logolar ve Markalar', essen: 'Meyve, Sebze ve Yemek',
         tiere: 'Hayvanları Tanı', erdkunde: 'Coğrafya', emoji: 'Emoji Bulmacası',
       },
       qprompt: { flaggen: 'Bu bayrak hangi ülkenin?', logos: 'Bu hangi marka?', essen: 'Bu ne?', tiere: 'Bu hangi hayvan?', emoji: 'Ne anlatılıyor?' },
-      quizHint: 'Resim zamanla netleşir. Ne kadar hızlı doğru cevap verirsen o kadar çok puan!',
+      quizHint: 'Cevabı Türkçe ya da Almanca yaz. Küçük yazım hataları sorun değil, deneme hakkı sınırsız.',
+      quizInput: 'Cevabını yaz …', quizSend: 'Tahmin et', quizHintLbl: 'İpucu', thTime: 'Süre',
+      quizFoundOther: '{who} buldu!', quizFound: 'Doğru! {s} içinde buldun{j}. Diğerleri bekleniyor …',
       quizHintText: 'Ne kadar hızlı doğru cevap verirsen o kadar çok puan!',
       quizLocked: 'Cevabın: <b>{a}</b>{j}. Diğerleri bekleniyor …',
-      jokerTitleQuiz: 'Doğru: iki kat puan. Yanlış: 0.',
-      tagFast: '⚡ En hızlı', tagRight: '✓ doğru', tagWrong: '✗ yanlış', secs: '{s} sn', thAnswer: 'Cevap', noAnswer: 'cevap yok',
+      jokerTitleQuiz: 'Bulursan: iki kat puan. Bulamazsan: 0.',
+      tagFast: '⚡ En hızlı', tagRight: '✓ doğru', tagWrong: '✗ yanlış', secs: '{s} sn', thAnswer: 'Cevap', noAnswer: 'bulamadı',
       fast: 'Şimşek', fastText: '{q} sorusunu sadece {s} saniyede bildi',
       cats: {
         all: 'Hepsi karışık', bau: 'Yapılar', technik: 'Teknoloji ve Ulaşım', natur: 'Doğa ve Manzara', tiere: 'Hayvanlar ve Dinozorlar',
@@ -1924,6 +1947,68 @@ window.QUIZ = [];
 
 </script>
 <script>
+// Zusätzlich akzeptierte Antworten im Modus „Erraten“ (neben dem deutschen und türkischen Namen).
+// Schlüssel: Flaggen per ISO-Code, Logos per Kürzel, sonst per deutscher Antwort. Groß-/Kleinschreibung,
+// Akzente, Artikel am Anfang und kleine Tippfehler werden beim Vergleich ohnehin ignoriert.
+window.QUIZ_ALIAS = {
+  flaggen: {
+    us: ['usa', 'us', 'amerika', 'vereinigte staaten', 'abd', 'amerika birleşik devletleri'],
+    gb: ['england', 'uk', 'vereinigtes königreich', 'britannien', 'ingiltere', 'büyük britanya'],
+    nl: ['holland', 'hollanda'], cz: ['tschechische republik', 'çek cumhuriyeti'], kr: ['korea', 'kore'],
+    ae: ['vae', 'emirate', 'arabische emirate', 'bae'], ba: ['bosnien', 'bosna'], mk: ['mazedonien', 'makedonya'],
+    tr: ['türkiye'], ru: ['rusya'], ch: ['isviçre'], de: ['almanya'], sa: ['saudi arabien', 'suudi arabistan'],
+    za: ['südafrika', 'güney afrika'], nz: ['neuseeland'], cy: ['kıbrıs', 'zypern'],
+  },
+  logos: {
+    mcdonalds: ['mc donalds', 'mcdonald'], x: ['x', 'twitter'], googlechrome: ['chrome'], deutschebahn: ['db', 'bahn'],
+    deutschetelekom: ['deutsche telekom', 't mobile'], volkswagen: ['vw'], rollsroyce: ['rolls royce'],
+    turkishairlines: ['thy', 'türk hava yolları', 'turkish airlines'], playstation: ['ps', 'sony'], jordan: ['air jordan'],
+    newbalance: ['nb'], mastercard: ['master card'], redbull: ['red bull'], whatsapp: ['whats app'],
+    youtube: ['you tube'], tiktok: ['tik tok'], paypal: ['pay pal'], airbnb: ['air bnb'],
+  },
+  essen: {
+    Karotte: ['möhre', 'möhren', 'karotten', 'mohrrübe'], Trauben: ['weintrauben', 'weintraube', 'traube'], Kirschen: ['kirsche'],
+    Pommes: ['pommes frites', 'fritten', 'patates'], Hamburger: ['burger'], Hotdog: ['hot dog', 'sosis'], Brezel: ['breze', 'brezn'],
+    Erdnüsse: ['erdnuss', 'fıstık'], Hähnchenkeule: ['hähnchen', 'chicken', 'hühnerkeule', 'tavuk'], Nudelsuppe: ['ramen', 'nudeln'],
+    Spaghetti: ['nudeln', 'pasta', 'makarna'], Teigtaschen: ['dumpling', 'dumplings', 'maultaschen', 'gyoza'], Spiegelei: ['ei', 'yumurta'],
+    Tortenstück: ['kuchen', 'torte', 'pasta', 'kek'], Geburtstagstorte: ['torte', 'geburtstagskuchen', 'pasta', 'kuchen'],
+    Bonbon: ['süßigkeit', 'şeker'], Lutscher: ['lolli', 'lolly', 'lollipop'], Keks: ['cookie', 'plätzchen'],
+    Softdrink: ['cola', 'limo', 'limonade', 'soda', 'kola'], Babyfläschchen: ['babyflasche', 'fläschchen', 'flasche', 'biberon'],
+    Eis: ['eiscreme', 'speiseeis'], Eiswürfel: ['eis', 'buz'], Eintopf: ['suppe', 'çorba', 'tencere yemeği'], Kokosnuss: ['kokos'],
+    Chili: ['peperoni', 'chilischote', 'biber'], Gurke: ['salatgurke', 'hıyar'], Kartoffel: ['kartoffeln'], Pilz: ['champignon', 'pilze'],
+    Reis: ['pirinç'], Waffel: ['waffeln'], Pfannkuchen: ['pancake', 'pancakes', 'eierkuchen'], Glückskeks: ['fortune cookie'],
+    Pudding: ['flan'], Cupcake: ['muffin'], Croissant: ['hörnchen'], Steak: ['fleisch', 'et'], Mais: ['maiskolben'],
+    Orange: ['apfelsine', 'mandarine'], Aubergine: ['melanzani'], Kastanie: ['maroni', 'maronen'],
+  },
+  tiere: {
+    Hase: ['kaninchen'], Wasserbüffel: ['büffel'], Hirsch: ['reh'], 'Orang-Utan': ['orangutan'], Wal: ['blauwal', 'pottwal'],
+    Delfin: ['delphin'], Tropenfisch: ['fisch', 'balık', 'clownfisch', 'nemo'], Kugelfisch: ['fisch', 'balık'], Hai: ['haifisch'],
+    Oktopus: ['krake', 'tintenfisch'], Kalmar: ['tintenfisch'], Krabbe: ['krebs'], Garnele: ['shrimp', 'shrimps', 'krabbe'],
+    Muschel: ['schneckenhaus'], Grille: ['heuschrecke', 'grashüpfer', 'çekirge'], Mücke: ['moskito', 'stechmücke'],
+    'T-Rex': ['dinosaurier', 'tyrannosaurus', 'dino', 'dinozor'], Nilpferd: ['flusspferd'], Hahn: ['huhn', 'gockel', 'tavuk'],
+    Küken: ['huhn', 'kücken'], Truthahn: ['pute'], Eule: ['uhu'], Eidechse: ['echse', 'gecko'], Frosch: ['kröte'],
+    Leopard: ['gepard', 'jaguar'], Lama: ['alpaka'], Kamel: ['dromedar'], Nashorn: ['rhinozeros'], Pferd: ['pony'],
+    Kuh: ['rind'], Panda: ['pandabär'], Koala: ['koalabär'], Stinktier: ['skunk'], Hund: ['hündchen'], Katze: ['kater'],
+  },
+  emoji: {
+    'Der König der Löwen': ['lion king'], 'Findet Nemo': ['nemo'], 'Die Eiskönigin': ['frozen'], 'Der Herr der Ringe': ['lord of the rings'],
+    'Spider-Man': ['spiderman', 'spinnenmann'], 'Das Dschungelbuch': ['jungle book', 'mogli'], 'Arielle, die Meerjungfrau': ['arielle', 'kleine meerjungfrau', 'meerjungfrau'],
+    'E.T. der Außerirdische': ['et'], 'Die Unglaublichen': ['incredibles'], 'Fluch der Karibik': ['pirates of the caribbean'],
+    'Charlie und die Schokoladenfabrik': ['charlie', 'schokoladenfabrik'], 'Kevin allein zu Haus': ['kevin allein zuhaus', 'home alone', 'kevin'],
+    'Drachenzähmen leicht gemacht': ['drachenzähmen', 'how to train your dragon'], Avengers: ['marvel', 'avengers endgame'],
+    '101 Dalmatiner': ['dalmatiner'], Zoomania: ['zootopia'], 'Alles steht Kopf': ['inside out'], Vaiana: ['moana'],
+    'Die drei kleinen Schweinchen': ['drei kleine schweinchen'], 'Die Bremer Stadtmusikanten': ['bremer stadtmusikanten'],
+    'Der gestiefelte Kater': ['puss in boots'], 'SpongeBob Schwammkopf': ['spongebob'], 'Tom und Jerry': ['tom and jerry', 'tom jerry'],
+    'Peppa Wutz': ['peppa', 'peppa pig'], 'Die Schlümpfe': ['smurfs'], 'Mascha und der Bär': ['mascha', 'masha', 'maşa'],
+    Feuerwehrmann: ['feuerwehr', 'feuerwehrfrau'], Zahnarzt: ['zahnärztin', 'dişçi'], Polizist: ['polizei', 'polizistin'],
+    Bauer: ['landwirt', 'bäuerin'], Astronaut: ['raumfahrer'], Fischer: ['angler'], Tierarzt: ['tierärztin'],
+    Friseur: ['frisör', 'friseurin', 'berber'], Bäcker: ['bäckerin'], Pilot: ['pilotin'],
+    Weihnachtsbaum: ['tannenbaum', 'christbaum', 'yılbaşı ağacı'], 'Biene Maja': ['maja'], 'Harry Potter': ['hogwarts'],
+  },
+};
+
+</script>
+<script>
 // Emoji-Rätsel für den Modus „Erraten“: Filme, Märchen, Serien, Berufe und Wörter.
 QZ("emoji", "emoji", [
   // [Gruppe, Emoji, Antwort DE, Antwort TR, Fun Fact DE, Fun Fact TR, Frage DE, Frage TR]
@@ -2603,20 +2688,42 @@ QZ("tiere", "emoji", [
   const QZBYID = Object.fromEntries(QUIZ.map(q => [q.id, q]));
   const qcatName = k => T('qcats')[k] || k;
   const LI = () => (window.I18N.lang === 'tr' ? 1 : 0);
-  const BLUR_CATS = ['flaggen', 'logos', 'essen', 'tiere'];   // Bild wird mit der Zeit schärfer
-  // Beschriftung einer Antwortoption (key = Item-ID oder Index bei Textfragen)
-  function optLabel(q, key) {
-    const it = QZBYID[q.id];
-    if (it && it.kind === 'text') return (it.opts[+key] || [])[LI()] || '';
-    const o = QZBYID[key];
-    return o ? o.a[LI()] : '';
+  // Freitext-Antworten (wie bei JKLM PopSauce): Deutsch, Türkisch und Alias-Schreibweisen werden akzeptiert
+  const qnorm = s => String(s || '').toLocaleLowerCase('tr').replace(/ı/g, 'i').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/ß/g, 'ss').replace(/&/g, ' und ').replace(/['’`´.]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
+    .replace(/^(der|die|das|the|ein|eine|el|la|le) /, '').replace(/ /g, '');
+  function quizAccepted(it) {
+    const raw = it.kind === 'text' ? it.opts[0].slice() : it.a.slice();
+    const al = (window.QUIZ_ALIAS || {})[it.cat] || {};
+    const key = it.kind === 'flag' ? it.id.slice(5) : it.kind === 'logo' ? it.id.slice(5) : raw[0];
+    raw.push(...(al[key] || []));
+    if (it.kind === 'flag') { try { raw.push(new Intl.DisplayNames(['en'], { type: 'region' }).of(it.id.slice(5).toUpperCase())); } catch { /* alter Browser */ } }
+    // Teile vor Klammern, Kommas oder Doppelpunkten zählen auch („X (Twitter)“ → „X“, „Arielle, die Meerjungfrau“ → „Arielle“)
+    for (const r of raw.slice()) for (const part of String(r).split(/[(),:/]/)) if (part.trim().length >= 1) raw.push(part);
+    return [...new Set(raw.map(qnorm).filter(Boolean))];
+  }
+  function lev(a, b) {
+    if (Math.abs(a.length - b.length) > 3) return 9;
+    let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+    for (let i = 1; i <= a.length; i++) {
+      const cur = [i];
+      for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = cur;
+    }
+    return prev[b.length];
+  }
+  const tol = n => (n <= 3 ? 0 : n <= 6 ? 1 : n <= 11 ? 2 : 3);
+  function quizMatch(guess, acc) {
+    const g = qnorm(guess);
+    if (!g) return false;
+    return acc.some(a => a === g || (/^\d+$/.test(a) ? false : lev(g, a) <= tol(a.length)));
   }
   function quizPrompt(it) {
     if (it.p) return it.p[LI()];
     return (T('qprompt') || {})[it.cat] || '';
   }
   function quizMedia(it, cls = '') {
-    if (it.kind === 'flag') return `<div class="qimg flag ${cls}"><img src="${it.img}" alt="" draggable="false"></div>`;
+    if (it.kind === 'flag') return `<div class="qimg qflag ${cls}"><img src="${it.img}" alt="" draggable="false"></div>`;
     if (it.kind === 'logo') {
       const n = parseInt(it.hex, 16), lum = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
       return `<div class="qimg logo ${lum > 0.72 ? 'dark' : ''} ${cls}"><svg viewBox="0 0 24 24"><path fill="#${it.hex}" d="${it.d}"/></svg></div>`;
@@ -2848,10 +2955,16 @@ QZ("tiere", "emoji", [
     const p = findP(pid); if (!p) return;
     const g = H.guesses[pid]; if (g && g.locked) return;
     if (H.q.type === 'quiz') {
-      // Ein Versuch: die Wahl ist sofort endgültig, der Zeitpunkt zählt beim Host
-      const o = String(d.o ?? '');
-      if (!H.q.opts.includes(o)) return;
-      H.guesses[pid] = { o, t: Date.now(), locked: true, joker: !!d.joker && p.joker };
+      // Beliebig viele Versuche; der erste richtige zählt mit dem Zeitpunkt beim Host
+      const txt = String(d.text ?? '').replace(/\s+/g, ' ').trim().slice(0, 40);
+      const now = Date.now();
+      if (!txt || now - (H.tries[pid]?.last || 0) < 350) return;
+      H.tries[pid] = { n: (H.tries[pid]?.n || 0) + 1, last: now };
+      if (quizMatch(txt, H.q.acc)) {
+        H.guesses[pid] = { t: now, locked: true, joker: !!d.joker && p.joker };
+        H.feed.push({ pid, ok: true, ms: clamp(now - H.qStart, 0, H.settings.time * 1000) });
+      } else H.feed.push({ pid, txt });
+      if (H.feed.length > 40) H.feed.splice(0, H.feed.length - 40);
       publish(); checkAllLocked();
       return;
     }
@@ -2913,20 +3026,6 @@ QZ("tiere", "emoji", [
     return rounds;
   }
 
-  // 3 falsche Antworten: möglichst aus derselben Gruppe (z. B. gleiche Region bei Flaggen)
-  function quizOptions(it) {
-    if (it.kind === 'text') return { opts: shuffle(['0', '1', '2', '3']), ok: '0' };
-    const same = QUIZ.filter(x => x.cat === it.cat && x.id !== it.id && x.a[0] !== it.a[0]);
-    const near = shuffle(same.filter(x => x.g === it.g));
-    const far = shuffle(same.filter(x => x.g !== it.g));
-    const picked = [];
-    for (const x of [...near, ...far]) {
-      if (picked.length >= 3) break;
-      if (!picked.some(y => y.a[0] === x.a[0])) picked.push(x);
-    }
-    return { opts: shuffle([it.id, ...picked.map(x => x.id)]), ok: it.id };
-  }
-
   function buildRounds() {
     const st = H.settings;
     if (st.mode === 'quiz') return buildQuizRounds();
@@ -2979,7 +3078,8 @@ QZ("tiere", "emoji", [
     const spec = H.order[H.round - 1];
     if (spec.type === 'quiz') {
       const it = QZBYID[spec.id];
-      H.q = Object.assign({ type: 'quiz', id: it.id, cat: it.cat, kind: it.kind }, quizOptions(it));
+      H.q = { type: 'quiz', id: it.id, cat: it.cat, kind: it.kind, acc: quizAccepted(it) };
+      H.feed = []; H.tries = {};
       H.used.add(it.id);
       H.range = null;
     } else if (spec.type === 'cmp') {
@@ -3011,13 +3111,13 @@ QZ("tiere", "emoji", [
     const res = [];
     for (const p of H.players) {
       const g = H.guesses[p.pid];
-      if (!g) { if (p.online) res.push({ pid: p.pid, o: null, right: false, ms: null, base: 0, pts: 0 }); continue; }
-      const right = g.o === H.q.ok;
+      if (!g) { if (p.online) res.push({ pid: p.pid, o: null, tried: !!H.tries[p.pid], right: false, ms: null, base: 0, pts: 0 }); continue; }
+      const right = true;
       const ms = clamp(g.t - H.qStart, 0, total);
       const base = right ? Math.round(1000 - 500 * ms / total) : 0;
       let pts = base, joker = null;
       if (g.joker && p.joker) { p.joker = false; joker = right ? 'win' : 'lose'; pts = right ? pts * 2 : 0; }
-      res.push({ pid: p.pid, o: g.o, right, ms, base, pts, joker });
+      res.push({ pid: p.pid, o: 1, right, ms, base, pts, joker });
     }
     const rights = res.filter(r => r.right);
     if (rights.length) {
@@ -3033,9 +3133,9 @@ QZ("tiere", "emoji", [
     const after = rankOf(H.players);
     for (const r of res) { r.total = findP(r.pid).score; r.move = before[r.pid] - after[r.pid]; }
     for (const r of rights) if (!H.fast || r.ms < H.fast.ms) H.fast = { pid: r.pid, ms: r.ms, qid: H.q.id, type: 'quiz' };
-    const rank = r => (r.right ? 0 : r.o != null ? 1e7 : 2e7) + (r.ms ?? 0);
+    const rank = r => (r.right ? 0 : r.tried ? 1e7 : 2e7) + (r.ms ?? 0);
     res.sort((x, y) => rank(x) - rank(y));
-    H.reveal = { ok: H.q.ok, res };
+    H.reveal = { res };
     H.phase = 'reveal';
     H.deadlineAt = Date.now() + REVEAL_MS;
     H.timer = setTimeout(advance, REVEAL_MS);
@@ -3117,12 +3217,13 @@ QZ("tiere", "emoji", [
       code: H.code, phase: H.phase, settings: H.settings, round: H.round, total: H.total,
       players: H.players.map(({ pid, name, avatar, color, score, online, host, joker, wins, hits }) => ({ pid, name, avatar, color, score, online, host, joker, wins, hits })),
       q: H.q && H.phase !== 'lobby' ? (H.q.type === 'quiz'
-        ? { type: 'quiz', id: H.q.id, cat: H.q.cat, kind: H.q.kind, opts: H.q.opts }
+        ? { type: 'quiz', id: H.q.id, cat: H.q.cat, kind: H.q.kind }
         : H.q.type === 'cmp'
         ? { type: 'cmp', id: H.q.id, d: H.q.d, cat: H.q.cat, e: H.q.e, n: H.q.n, lo: H.range.lo, hi: H.range.hi,
           ref: { id: H.q.ref.id, e: H.q.ref.e, n: H.q.ref.n }, tgt: { id: H.q.tgt.id, e: H.q.tgt.e, n: H.q.tgt.n } }
         : { type: 'guess', id: H.q.id, e: H.q.e, n: H.q.n, p: H.q.p, cat: H.q.cat, lo: H.range.lo, hi: H.range.hi }) : null,
       locked: H.phase === 'question' ? Object.keys(H.guesses).filter(k => H.guesses[k].locked) : [],
+      feed: H.q && H.q.type === 'quiz' && (H.phase === 'question' || H.phase === 'reveal') ? H.feed : null,
       reveal: H.phase === 'reveal' || H.phase === 'final' ? H.reveal : null,
       final: H.phase === 'final' ? H.final : null,
       remaining: H.deadlineAt ? Math.max(0, H.deadlineAt - Date.now()) : null,
@@ -3497,37 +3598,68 @@ QZ("tiere", "emoji", [
   function mountQuiz(q, keep) {
     const it = QZBYID[q.id];
     if (!it) return;
-    const blur = BLUR_CATS.includes(it.cat);
+    const draft = keep ? ($('#quizIn')?.value || '') : '';
     app().innerHTML = questionShell(q, `
-            <div class="qmedia ${it.kind === 'text' ? 'text' : ''}">${quizMedia(it, blur ? 'blurry' : '')}</div>
-            <div class="qopts">${q.opts.map((k, i) => `<button class="qopt" data-o="${esc(k)}"><kbd>${i + 1}</kbd><span>${esc(optLabel(q, k))}</span></button>`).join('')}</div>
+            <div class="qmedia ${it.kind === 'text' ? 'text' : ''}">${quizMedia(it)}</div>
+            <div class="qhint" id="qHint"></div>
+            <form class="qinput" id="quizForm" autocomplete="off">
+              <input id="quizIn" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${T('quizInput')}" value="${esc(draft)}">
+              <button class="btn primary" id="quizSend">${T('quizSend')}</button>
+            </form>
+            <div class="qfeed" id="qFeed"></div>
             <div class="controls quiz">
-              <span class="hint">${blur ? T('quizHint') : T('quizHintText')}</span>
+              <span class="hint">${T('quizHint')}</span>
               ${lockControls().replace(/<button id="lockBtn"[\s\S]*$/, '')}
             </div>`, `
           <div class="qcard slim">
             <div class="qtext"><div class="qname">${QCATS[it.cat].e} ${esc(qcatName(it.cat))}</div><h2>${esc(quizPrompt(it))}</h2></div>
           </div>`, keep);
-    const img = $('.qimg.blurry');
-    if (img) {
-      // Unschärfe läuft synchron zur Uhr (auch nach Neuaufbau, z. B. beim Sprachwechsel)
-      const total = S.settings.time * 1000;
-      const start = deadline - total;
-      const dur = total * 0.75;
-      img.style.setProperty('--bd', dur + 'ms');
-      img.style.animationDelay = (start - Date.now()) + 'ms';
-    }
-    $$('.qopt').forEach(b => b.onclick = () => pickQuiz(b.dataset.o));
+    $('#quizForm').onsubmit = e => { e.preventDefault(); sendQuiz(); };
     bindCommon();
+    G.feedN = -1;
+    updateFeed();
+    setTimeout(() => { const i = $('#quizIn'); if (i && !G.locked && matchMedia('(pointer: fine)').matches) i.focus(); }, keep ? 0 : INTRO_MS);
   }
 
-  function pickQuiz(key) {
-    if (G.locked || !S || S.phase !== 'question' || S.q.type !== 'quiz' || !S.q.opts.includes(key)) return;
-    G.locked = true; G.known = true; G.pick = key;
-    send({ t: 'guess', o: key, lock: true, joker: G.joker });
-    Sound.lock();
-    updateGuessUi();
+  function sendQuiz() {
+    const inp = $('#quizIn');
+    if (!inp || G.locked || !S || S.phase !== 'question') return;
+    const txt = inp.value.replace(/\s+/g, ' ').trim();
+    if (!txt) return;
+    send({ t: 'guess', text: txt, joker: G.joker });
+    inp.value = '';
+    inp.focus();
   }
+
+  // Chat der Versuche: falsche Antworten sieht jeder, richtige nur als „hat es!“
+  function updateFeed() {
+    const box = $('#qFeed'); if (!box || !S.feed) return;
+    if (S.feed.length === G.feedN) return;
+    const first = G.feedN < 0;
+    const fresh = S.feed.slice(Math.max(0, G.feedN));
+    G.feedN = S.feed.length;
+    box.innerHTML = S.feed.slice(-14).map(f => {
+      const p = pById(f.pid);
+      const who = `<b style="color:${p?.color || '#aaa'}">${p?.avatar || ''} ${esc(p?.name || '')}</b>`;
+      return f.ok ? `<div class="fe ok">✅ ${T('quizFoundOther', { who })} <small>${secs(f.ms)}</small></div>` : `<div class="fe">${who}: ${esc(f.txt)}</div>`;
+    }).join('');
+    box.scrollTop = box.scrollHeight;
+    if (!first && fresh.some(f => f.pid === me.pid && !f.ok)) { shake($('#quizIn')); Sound.beep(220, 0.12, 'sawtooth', 0.05); }
+    if (fresh.some(f => f.pid === me.pid && f.ok)) G.foundMs = fresh.find(f => f.pid === me.pid && f.ok).ms;
+  }
+
+  // Ab der Hälfte der Zeit: Anfangsbuchstabe und Länge der Antwort in der eigenen Sprache
+  function quizHintTick() {
+    const el = $('#qHint'); if (!el || !S || S.phase !== 'question' || S.q?.type !== 'quiz') return;
+    const total = S.settings.time * 1000;
+    const left = deadline - Date.now();
+    if (left > total * 0.5 || G.locked) { el.textContent = ''; return; }
+    const it = QZBYID[S.q.id]; if (!it) return;
+    const ans = quizAnswer(it);
+    const mask = [...ans].map((c, i) => (i === 0 ? c : /[\p{L}\p{N}]/u.test(c) ? '_' : c)).join(' ');
+    el.innerHTML = `💡 ${T('quizHintLbl')}: <b>${esc(mask)}</b>`;
+  }
+  setInterval(quizHintTick, 500);
 
   // ---------- Größenvergleich: Bühne mit Silhouetten ----------
   const SIL = 200; // Basis-Schriftgröße der Silhouetten in px
@@ -3678,10 +3810,10 @@ QZ("tiere", "emoji", [
     jb.disabled = G.locked || !jokerAvail;
     jb.classList.toggle('on', G.joker);
     jb.textContent = jokerAvail || G.joker ? (G.joker ? T('jokerOn') : T('joker')) : T('jokerUsed');
-    $$('.qopt').forEach(b => { b.disabled = G.locked; b.classList.toggle('sel', G.pick === b.dataset.o); });
+    if (S.q.type === 'quiz') { const i = $('#quizIn'); if (i) i.disabled = G.locked; const b = $('#quizSend'); if (b) b.disabled = G.locked; updateFeed(); }
     const lm = $('#lockedMsg');
     lm.hidden = !G.locked;
-    if (G.locked && S.q.type === 'quiz') lm.innerHTML = '🔒 ' + (G.known && G.pick != null ? T('quizLocked', { a: esc(optLabel(S.q, G.pick)), j: G.joker ? T('jokerSet') : '' }) : T('lockedShort'));
+    if (G.locked && S.q.type === 'quiz') lm.innerHTML = '✅ ' + T('quizFound', { s: G.foundMs != null ? secs(G.foundMs) : '…', j: G.joker ? T('jokerSet') : '' });
     else if (G.locked) lm.innerHTML = G.known
       ? '🔒 ' + T('locked', { v: fmtVal(S.q, G.cur, 3), j: G.joker ? T('jokerSet') : '' })
       : '🔒 ' + T('lockedShort');
@@ -3716,7 +3848,7 @@ QZ("tiere", "emoji", [
     const q = S.q; const R = S.reveal; const it = QZBYID[q.id];
     const rows = R.res.map((r, i) => {
       const p = pById(r.pid); if (!p) return '';
-      const tags = [r.right ? `<span class="tag hit">${T('tagRight')}</span>` : r.o != null ? `<span class="tag jl">${T('tagWrong')}</span>` : '',
+      const tags = [r.right ? `<span class="tag hit">${T('tagRight')}</span>` : '',
         r.crown ? `<span class="tag crown">${T('tagFast')}</span>` : '',
         r.joker === 'win' ? `<span class="tag jw">${T('tagJw')}</span>` : '', r.joker === 'lose' ? `<span class="tag jl">${T('tagJl')}</span>` : ''].join('');
       const mv = r.move > 0 ? `<i class="up">▲${r.move}</i>` : r.move < 0 ? `<i class="down">▼${-r.move}</i>` : '';
@@ -3724,13 +3856,13 @@ QZ("tiere", "emoji", [
         <div class="rk">${r.right ? i + 1 : '–'}</div>
         <div class="ra">${p.avatar}</div>
         <div class="rn"><b>${esc(p.name)}</b><div class="tags">${tags}</div></div>
-        <div class="rg ${r.right ? 'ok' : r.o != null ? 'no' : ''}">${r.o != null ? `${esc(optLabel(q, r.o))}<small>${secs(r.ms)}</small>` : `<small>${T('noAnswer')}</small>`}</div>
+        <div class="rg ${r.right ? 'ok' : 'no'}">${r.right ? secs(r.ms) : `<small>${T('noAnswer')}</small>`}</div>
         <div class="rp">+${r.pts}</div>
         <div class="rt">${r.total}${mv}</div>
       </div>`;
     }).join('');
-    const counts = Object.fromEntries(q.opts.map(k => [k, R.res.filter(r => r.o === k).length]));
     const f = it && it.f ? it.f[LI()] : '';
+    const wrong = (S.feed || []).filter(x => !x.ok).slice(-8);
     app().innerHTML = `
       <section class="screen reveal quizrev">
         <div class="gamebar">
@@ -3742,14 +3874,15 @@ QZ("tiere", "emoji", [
           <div class="qmedia small">${quizMedia(it)}</div>
           <div>
             <div class="kicker">${T('correct')}</div>
-            <div class="abig done">${esc(optLabel(q, R.ok))}</div>
+            <div class="abig done">${esc(quizAnswer(it))}</div>
+            <div class="acmp">${esc(it.kind === 'text' ? it.opts[0][1 - LI()] : it.a[1 - LI()])}</div>
           </div>
         </div>
-        <div class="qopts rev">${q.opts.map(k => `<div class="qopt ${k === R.ok ? 'right' : counts[k] ? 'wrong' : ''}"><span>${esc(optLabel(q, k))}</span>${counts[k] ? `<b>${R.res.filter(r => r.o === k).map(r => pById(r.pid)?.avatar || '').join('')}</b>` : ''}</div>`).join('')}</div>
         <div class="card results">
-          <div class="rrow head"><div class="rk">#</div><div class="ra"></div><div class="rn">${T('thPlayer')}</div><div class="rg">${T('thAnswer')}</div><div class="rp">${T('thPoints')}</div><div class="rt">${T('thTotal')}</div></div>
+          <div class="rrow head"><div class="rk">#</div><div class="ra"></div><div class="rn">${T('thPlayer')}</div><div class="rg">${T('thTime')}</div><div class="rp">${T('thPoints')}</div><div class="rt">${T('thTotal')}</div></div>
           ${rows || `<p class="hint">${T('nobody')}</p>`}
         </div>
+        ${wrong.length ? `<div class="qfeed rev">${wrong.map(x => { const p = pById(x.pid); return `<span><b style="color:${p?.color || '#aaa'}">${p?.avatar || ''}</b> ${esc(x.txt)}</span>`; }).join('')}</div>` : ''}
         ${f ? `<div class="fact">💡 ${esc(f)}</div>` : ''}
         <div class="reveal-foot" id="revealFoot"></div>
       </section>`;
@@ -3992,8 +4125,7 @@ QZ("tiere", "emoji", [
         if (e.key === '+' || e.key === '=') nudge(15);
         if (e.key === '-') nudge(-15);
       }
-      if (e.key === 'Enter' && S && S.phase === 'question' && document.activeElement?.id !== 'numIn') lockIn();
-      if (S && S.phase === 'question' && S.q?.type === 'quiz' && /^[1-4]$/.test(e.key)) pickQuiz(S.q.opts[+e.key - 1]);
+      if (e.key === 'Enter' && S && S.phase === 'question' && !['numIn', 'quizIn'].includes(document.activeElement?.id)) lockIn();
     });
     window.addEventListener('beforeunload', e => {
       if (role === 'host' && S && S.players.length > 1) { e.preventDefault(); e.returnValue = ''; }
