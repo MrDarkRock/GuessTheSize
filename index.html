@@ -389,6 +389,14 @@ input[type=range]:disabled { filter: grayscale(.7); opacity: .6; cursor: default
 .card.guess.quiz { display: flex; flex-direction: column; gap: 16px; }
 .qmedia { display: grid; place-items: center; min-height: 230px; padding: 10px; border-radius: 18px; background: rgba(0, 0, 0, .22); overflow: hidden; }
 .qmedia.small { min-height: 0; padding: 0; background: none; }
+.qmedia.clues { place-items: stretch; align-content: center; padding: 16px; }
+.qclues { display: grid; gap: 10px; width: 100%; max-width: 640px; margin: 0 auto; }
+.clue { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: var(--card);
+  border: 1px solid var(--card-b); font-size: clamp(15px, 2.2vw, 19px); font-weight: 600; line-height: 1.35; animation: clueIn .45s ease both; }
+.clue span { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--grad); color: #14152b; font-size: 14px; font-weight: 800; }
+.clue.locked { opacity: .45; animation: none; justify-content: flex-start; font-size: 16px; }
+.clue.locked span { background: rgba(255, 255, 255, .2); color: inherit; }
+@keyframes clueIn { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
 .qimg { line-height: 1; user-select: none; }
 .qimg.qflag img { display: block; height: 200px; max-width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
 .qimg.logo { width: 210px; height: 210px; padding: 26px; border-radius: 28px; background: #fff; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
@@ -647,15 +655,15 @@ window.I18N = (() => {
         guess: ['Schätzen', 'Größe in Metern schätzen'],
         cmp: ['Vergleich', 'Silhouetten ins richtige Verhältnis bringen'],
         num: ['Zahlen', 'Wie viele? Einwohner, Preise, Rekorde, Follower schätzen'],
-        quiz: ['Erraten', 'Logo, Wappen oder Flagge sehen, Namen als Erster eintippen'],
+        quiz: ['Erraten', 'Logo, Wappen, Flagge oder Serien-Hinweise: Namen als Erster eintippen'],
       },
-      ncats: { all: 'Alles gemischt', detr: 'Deutschland & Türkei', essen: 'Türkisches Essen', welt: 'Welt & Länder', geld: 'Geld & Preise', sport: 'Sport in Zahlen', internet: 'Internet & Medien', wissen: 'Körper & Wissen' },
+      ncats: { all: 'Alles gemischt', detr: 'Deutschland & Türkei', diziler: 'Türkische Serien', essen: 'Türkisches Essen', welt: 'Welt & Länder', geld: 'Geld & Preise', sport: 'Sport in Zahlen', internet: 'Internet & Medien', wissen: 'Körper & Wissen' },
       n_tsd: 'Tsd.', n_mio: 'Mio.', n_mrd: 'Mrd.', n_bio: 'Bio.',
       nunits: { Jahre: 'Jahre', Tage: 'Tage', 'Std.': 'Std.', 'Min.': 'Min.', 'Sek.': 'Sek.', Liter: 'Liter', Kalorien: 'Kalorien' },
       qcats: {
-        all: 'Alles gemischt', logos: 'Logos & Marken', autos: 'Automarken', fussball: 'Fußballvereine', flaggen: 'Flaggen',
+        all: 'Alles gemischt', logos: 'Logos & Marken', autos: 'Automarken', fussball: 'Fußballvereine', diziler: 'Türkische Serien', flaggen: 'Flaggen',
       },
-      qprompt: { flaggen: 'Welches Land hat diese Flagge?', logos: 'Welche Marke ist das?', autos: 'Welche Automarke ist das?', fussball: 'Welcher Verein ist das?' },
+      qprompt: { flaggen: 'Welches Land hat diese Flagge?', logos: 'Welche Marke ist das?', autos: 'Welche Automarke ist das?', fussball: 'Welcher Verein ist das?', diziler: 'Welche Serie ist das?' },
       quizHint: 'Tippe die Antwort ein, auf Deutsch oder Türkisch. Kleine Tippfehler sind ok, Versuche unbegrenzt.',
       quizInput: 'Antwort eintippen …', quizSend: 'Raten', quizHintLbl: 'Tipp', thTime: 'Zeit',
       quizFoundOther: '{who} hat es!', quizClose: '🔥 nah dran', quizCloseBig: '🔥 Ganz nah dran! Prüf die Schreibweise.', multiHint: '(mehrere wählbar)', quizFound: 'Richtig! Gefunden nach {s}{j}. Warte auf die anderen …',
@@ -750,15 +758,15 @@ window.I18N = (() => {
         guess: ['Tahmin', 'Boyutu metre cinsinden tahmin et'],
         cmp: ['Karşılaştırma', 'Siluetleri doğru orana getir'],
         num: ['Sayılar', 'Kaç tane? Nüfus, fiyat, rekor, takipçi tahmin et'],
-        quiz: ['Bil bakalım', 'Logoyu, armayı ya da bayrağı gör, adını ilk sen yaz'],
+        quiz: ['Bil bakalım', 'Logo, arma, bayrak ya da dizi ipuçları: adını ilk sen yaz'],
       },
-      ncats: { all: 'Hepsi karışık', detr: 'Almanya ve Türkiye', essen: 'Türk Mutfağı', welt: 'Dünya ve Ülkeler', geld: 'Para ve Fiyatlar', sport: 'Rakamlarla Spor', internet: 'İnternet ve Medya', wissen: 'Vücut ve Bilim' },
+      ncats: { all: 'Hepsi karışık', detr: 'Almanya ve Türkiye', diziler: 'Türk Dizileri', essen: 'Türk Mutfağı', welt: 'Dünya ve Ülkeler', geld: 'Para ve Fiyatlar', sport: 'Rakamlarla Spor', internet: 'İnternet ve Medya', wissen: 'Vücut ve Bilim' },
       n_tsd: 'bin', n_mio: 'milyon', n_mrd: 'milyar', n_bio: 'trilyon',
       nunits: { Jahre: 'yıl', Tage: 'gün', 'Std.': 'saat', 'Min.': 'dk', 'Sek.': 'sn', Liter: 'litre', Kalorien: 'kalori' },
       qcats: {
-        all: 'Hepsi karışık', logos: 'Logolar ve Markalar', autos: 'Otomobil Markaları', fussball: 'Futbol Kulüpleri', flaggen: 'Bayraklar',
+        all: 'Hepsi karışık', logos: 'Logolar ve Markalar', autos: 'Otomobil Markaları', fussball: 'Futbol Kulüpleri', diziler: 'Türk Dizileri', flaggen: 'Bayraklar',
       },
-      qprompt: { flaggen: 'Bu bayrak hangi ülkenin?', logos: 'Bu hangi marka?', autos: 'Bu hangi otomobil markası?', fussball: 'Bu hangi kulüp?' },
+      qprompt: { flaggen: 'Bu bayrak hangi ülkenin?', logos: 'Bu hangi marka?', autos: 'Bu hangi otomobil markası?', fussball: 'Bu hangi kulüp?', diziler: 'Hangi dizi?' },
       quizHint: 'Cevabı Türkçe ya da Almanca yaz. Küçük yazım hataları sorun değil, deneme hakkı sınırsız.',
       quizInput: 'Cevabını yaz …', quizSend: 'Tahmin et', quizHintLbl: 'İpucu', thTime: 'Süre',
       quizFoundOther: '{who} buldu!', quizClose: '🔥 çok yakın', quizCloseBig: '🔥 Çok yakın! Yazımı kontrol et.', multiHint: '(birden fazla seçilebilir)', quizFound: 'Doğru! {s} içinde buldun{j}. Diğerleri bekleniyor …',
@@ -2473,6 +2481,56 @@ NQ("detr", [
 
 </script>
 <script>
+NQ("diziler", [
+  // [Emoji, Wert (Zahl), Einheit, Name DE, Frage DE, Fakt DE, Kontext DE, Name TR, Frage TR, Fakt TR, Kontext TR]
+  ["👑", 139, "", "Folgen von Muhteşem Yüzyıl", "Wie viele Folgen hat „Muhteşem Yüzyıl“ insgesamt?", "Halit Ergenç spielte Sultan Süleyman, Meryem Uzerli die Hürrem.", "Das prächtige Jahrhundert, vier Staffeln", "Muhteşem Yüzyıl'ın bölüm sayısı", "„Muhteşem Yüzyıl“ toplam kaç bölüm sürdü?", "Kanuni'yi Halit Ergenç, Hürrem'i Meryem Uzerli canlandırdı.", "Dört sezonluk saray dizisi"],
+  ["📮", 74911, "", "RTÜK-Beschwerden gegen Muhteşem Yüzyıl", "Wie viele Beschwerden gingen bei der Medienaufsicht RTÜK in den ersten Wochen gegen „Muhteşem Yüzyıl“ ein?", "Mehr als die Hälfte kam allein am Tag nach der ersten Folge.", "Zeitraum Dezember 2010 bis 6. Januar 2011", "Muhteşem Yüzyıl'a RTÜK şikayetleri", "„Muhteşem Yüzyıl“ hakkında ilk haftalarda RTÜK'e kaç şikayet geldi?", "Yarısından fazlası ilk bölümün ertesi günü geldi.", "Aralık 2010 ile 6 Ocak 2011 arası"],
+  ["💔", 79, "", "Folgen von Aşk-ı Memnu", "Wie viele Folgen hat „Aşk-ı Memnu“?", "Die letzte Folge hieß schlicht „Veda“ (Abschied).", "Bihter, Behlül und Adnan Bey", "Aşk-ı Memnu'nun bölüm sayısı", "„Aşk-ı Memnu“ kaç bölüm sürdü?", "Final bölümünün adı „Veda“ idi.", "Bihter, Behlül ve Adnan Bey"],
+  ["📈", 67.3, "", "Marktanteil Aşk-ı Memnu-Finale", "Wie viel Prozent Marktanteil holte das Finale von „Aşk-ı Memnu“ 2010 in der Zielgruppe AB?", "Es gilt bis heute als eines der meistgesehenen Serienfinale der Türkei.", "Angabe in Prozent", "Aşk-ı Memnu finalinin izlenme payı", "„Aşk-ı Memnu“ finali 2010'da AB grubunda yüzde kaç izlenme payı aldı?", "Hâlâ Türkiye'nin en çok izlenen finallerinden biri sayılıyor.", "Yüzde olarak"],
+  ["🌙", 85000000, "", "Zuschauer Gümüş-Finale in Arabien", "Wie viele Menschen in der arabischen Welt sahen 2008 das Finale von „Gümüş“ (dort „Noor“)?", "In der Türkei lief die Serie eher mäßig, im arabischen Raum wurde sie ein Phänomen.", "Ausstrahlung bei MBC, synchronisiert auf Syrisch-Arabisch", "Gümüş finalinin Arap dünyasındaki izleyicisi", "„Gümüş“ (Arapçada „Noor“) finalini 2008'de Arap dünyasında kaç kişi izledi?", "Türkiye'de orta karar izlenen dizi, Arap dünyasında fenomen oldu.", "MBC'de, Suriye lehçesiyle dublajlı"],
+  ["🥈", 100, "", "Folgen von Gümüş", "Wie viele Folgen hat „Gümüş“ mit Kıvanç Tatlıtuğ und Songül Öden?", "Kıvanç Tatlıtuğ wurde durch die Serie im Nahen Osten zum Superstar.", "Mehmet und Gümüş, Kanal D", "Gümüş'ün bölüm sayısı", "Kıvanç Tatlıtuğ ve Songül Öden'li „Gümüş“ kaç bölüm sürdü?", "Kıvanç Tatlıtuğ bu diziyle Orta Doğu'da süperstar oldu.", "Mehmet ile Gümüş, Kanal D"],
+  ["🏆", 110, "", "Länder mit Kara Sevda", "In wie vielen Ländern lief „Kara Sevda“ laut Produktionsfirma (mindestens)?", "Als erste türkische Serie gewann sie 2017 einen International Emmy.", "Kemal und Nihan", "Kara Sevda'nın yayınlandığı ülkeler", "„Kara Sevda“ yapımcısına göre en az kaç ülkede yayınlandı?", "2017'de Uluslararası Emmy kazanan ilk Türk dizisi oldu.", "Kemal ile Nihan"],
+  ["🌊", 74, "", "Folgen von Kara Sevda", "Wie viele Folgen hat „Kara Sevda“?", "Burak Özçivit und Neslihan Atagül spielten das Paar Kemal und Nihan.", "Zwei Staffeln bei Star TV", "Kara Sevda'nın bölüm sayısı", "„Kara Sevda“ kaç bölüm sürdü?", "Kemal ile Nihan'ı Burak Özçivit ve Neslihan Atagül oynadı.", "Star TV'de iki sezon"],
+  ["🚓", 751, "", "Folgen von Arka Sokaklar", "Wie viele Folgen lief „Arka Sokaklar“ von 2006 bis 2026?", "Damit ist sie die langlebigste wöchentliche Serie der türkischen TV-Geschichte.", "Rıza Baba und sein Team, Kanal D", "Arka Sokaklar'ın bölüm sayısı", "„Arka Sokaklar“ 2006'dan 2026'ya kadar kaç bölüm yayınlandı?", "Türk televizyon tarihinin en uzun soluklu haftalık dizisi.", "Rıza Baba ve ekibi, Kanal D"],
+  ["🐎", 150, "", "Folgen von Diriliş: Ertuğrul", "Wie viele Folgen hat „Diriliş: Ertuğrul“?", "In Pakistan wurde die Serie 2020 auf PTV zum Straßenfeger.", "Engin Altan Düzyatan als Ertuğrul Gazi", "Diriliş: Ertuğrul'un bölüm sayısı", "„Diriliş: Ertuğrul“ kaç bölüm sürdü?", "Dizi 2020'de Pakistan'da PTV'de sokakları boşalttı.", "Ertuğrul Gazi rolünde Engin Altan Düzyatan"],
+  ["⚔️", 194, "", "Folgen von Kuruluş: Osman", "Wie viele Folgen hat „Kuruluş: Osman“ in sechs Staffeln?", "Die Geschichte geht im Ableger „Kuruluş: Orhan“ weiter.", "Burak Özçivit als Osman Bey, atv", "Kuruluş: Osman'ın bölüm sayısı", "„Kuruluş: Osman“ altı sezonda kaç bölüm sürdü?", "Hikâye „Kuruluş: Orhan“ ile devam ediyor.", "Osman Bey rolünde Burak Özçivit, atv"],
+  ["🏠", 460, "", "Folgen von Bizimkiler", "Wie viele Folgen hat die Kult-Serie „Bizimkiler“ (1989–2002)?", "Sie lief 13 Jahre ohne Pause über 15 Staffeln.", "Hausgemeinschaft in Istanbul", "Bizimkiler'in bölüm sayısı", "Kült dizi „Bizimkiler“ (1989–2002) kaç bölüm sürdü?", "13 yıl boyunca 15 sezon aralıksız yayınlandı.", "İstanbul'da bir apartman"],
+  ["🏙️", 190, "", "Folgen von Avrupa Yakası", "Wie viele Folgen hat die Sitcom „Avrupa Yakası“?", "Engin Günaydın wurde als Burhan Altıntop zur Kultfigur.", "Nişantaşı-Comedy von Gülse Birsel", "Avrupa Yakası'nın bölüm sayısı", "„Avrupa Yakası“ kaç bölüm sürdü?", "Engin Günaydın, Burhan Altıntop rolüyle kült oldu.", "Gülse Birsel imzalı Nişantaşı komedisi"],
+  ["🍂", 174, "", "Folgen von Yaprak Dökümü", "Wie viele Folgen hat „Yaprak Dökümü“ (2006–2010)?", "Die Vorlage ist ein Roman von Reşat Nuri Güntekin.", "Ali Rıza Bey und seine Töchter", "Yaprak Dökümü'nün bölüm sayısı", "„Yaprak Dökümü“ (2006–2010) kaç bölüm sürdü?", "Reşat Nuri Güntekin'in romanından uyarlandı.", "Ali Rıza Bey ve kızları"],
+  ["🐺", 97, "", "Folgen der ersten Kurtlar Vadisi", "Wie viele Folgen hat die ursprüngliche „Kurtlar Vadisi“ (2003–2005)?", "Fans sprechen bis heute ehrfürchtig von „den ersten 97 Folgen“.", "Polat Alemdar, Show TV und Kanal D", "İlk Kurtlar Vadisi'nin bölüm sayısı", "İlk „Kurtlar Vadisi“ (2003–2005) kaç bölüm sürdü?", "Hayranlar hâlâ „ilk 97 bölüm“den efsane diye söz eder.", "Polat Alemdar, Show TV ve Kanal D"],
+  ["🎯", 300, "", "Folgen von Kurtlar Vadisi Pusu", "Wie viele Folgen hat „Kurtlar Vadisi Pusu“ (2007–2016)?", "Die Serie wechselte in ihrer Laufzeit mehrmals den Sender.", "Zehn Staffeln", "Kurtlar Vadisi Pusu'nun bölüm sayısı", "„Kurtlar Vadisi Pusu“ (2007–2016) kaç bölüm sürdü?", "Dizi yayın hayatı boyunca birkaç kez kanal değiştirdi.", "On sezon"],
+  ["🃏", 71, "", "Folgen von Ezel", "Wie viele Folgen hat „Ezel“ mit Kenan İmirzalıoğlu?", "Die Rachegeschichte ist lose an „Der Graf von Monte Christo“ angelehnt.", "Ömer wird zu Ezel", "Ezel'in bölüm sayısı", "Kenan İmirzalıoğlu'lu „Ezel“ kaç bölüm sürdü?", "İntikam hikâyesi „Monte Kristo Kontu“ndan esinlendi.", "Ömer, Ezel olur"],
+  ["🌸", 80, "", "Folgen von Fatmagül'ün Suçu Ne?", "Wie viele Folgen hat „Fatmagül'ün Suçu Ne?“", "Die Vorlage stammt von Vedat Türkali, verfilmt bereits 1986.", "Beren Saat und Engin Akyürek", "Fatmagül'ün Suçu Ne?'nin bölüm sayısı", "„Fatmagül'ün Suçu Ne?“ kaç bölüm sürdü?", "Vedat Türkali'nin eseri 1986'da sinemaya da uyarlanmıştı.", "Beren Saat ve Engin Akyürek"],
+  ["🕳️", 131, "", "Folgen von Çukur", "Wie viele Folgen hat „Çukur“ (2017–2021)?", "Gedreht wurde im Istanbuler Viertel Balat.", "Familie Koçovalı, Show TV", "Çukur'un bölüm sayısı", "„Çukur“ (2017–2021) kaç bölüm sürdü?", "Çekimler İstanbul'un Balat semtinde yapıldı.", "Koçovalı ailesi, Show TV"],
+  ["🌾", 141, "", "Folgen von Bir Zamanlar Çukurova", "Wie viele Folgen hat „Bir Zamanlar Çukurova“?", "Hünkar Yaman wurde von Vahide Perçin gespielt.", "Baumwollfelder in Adana", "Bir Zamanlar Çukurova'nın bölüm sayısı", "„Bir Zamanlar Çukurova“ kaç bölüm sürdü?", "Hünkar Yaman'ı Vahide Perçin oynadı.", "Adana'nın pamuk tarlaları"],
+  ["📊", 81.3, "", "Marktanteil Asmalı Konak-Finale", "Wie viel Prozent Marktanteil erreichte das Finale von „Asmalı Konak“ in der Zielgruppe AB?", "Es schlug sogar Spiele der Nationalmannschaft und gilt als Allzeitrekord.", "Angabe in Prozent, atv, Kappadokien", "Asmalı Konak finalinin izlenme payı", "„Asmalı Konak“ finali AB grubunda yüzde kaç izlenme payı aldı?", "Milli maçları bile geride bıraktı, tüm zamanların rekoru sayılıyor.", "Yüzde olarak, atv, Kapadokya"],
+  ["💵", 500000000, "$", "Serienexporte der Türkei 2024", "Wie viel Exportumsatz machte die türkische Serienbranche laut Handelsministerium 2024 (mindestens)?", "Mehr als 300 Produktionen wurden ins Ausland verkauft.", "In US-Dollar", "Türkiye'nin 2024 dizi ihracatı", "Ticaret Bakanlığına göre Türk dizi sektörü 2024'te en az ne kadar ihracat geliri elde etti?", "300'den fazla yapım yurt dışına satıldı.", "ABD doları olarak"],
+  ["🌍", 150, "", "Exportländer türkischer Serien", "In wie viele Länder exportiert die Türkei ihre Serien (mindestens, Stand 2024)?", "Über Streamingdienste kommen fast 200 Länder zusammen.", "Laut Handelsministerium", "Türk dizilerinin ihraç edildiği ülkeler", "Türkiye dizilerini en az kaç ülkeye ihraç ediyor (2024 itibarıyla)?", "Dijital platformlarla bu sayı 200'e yaklaşıyor.", "Ticaret Bakanlığına göre"],
+  ["🥇", 2, "", "Exportrang der Türkei bei Serien", "Auf welchem Platz der weltgrößten Serienexporteure sieht sich die Türkei laut eigener Regierung?", "Nur die USA verkaufen nach dieser Rechnung mehr Serien ins Ausland.", "Platzierung weltweit", "Türkiye'nin dizi ihracatındaki sırası", "Türk hükümetine göre Türkiye dünyanın kaçıncı büyük dizi ihracatçısı?", "Bu hesaba göre yalnızca ABD daha fazla dizi satıyor.", "Dünya sıralaması"],
+  ["⏱️", 130, "Min.", "Länge einer Dizi-Folge", "Wie lang war eine typische Primetime-Folge einer türkischen Serie um 2016 ohne Werbung?", "Westliche Serienfolgen dauern meist nur 45 bis 60 Minuten.", "Um 2010 waren es noch rund 90 Minuten", "Bir dizi bölümünün süresi", "2016 civarında tipik bir Türk dizisinin prime time bölümü reklamsız ne kadar sürüyordu?", "Batı dizilerinde bir bölüm genelde 45 ila 60 dakika.", "2010 civarında yaklaşık 90 dakikaydı"],
+  ["▶️", 2000000, "", "PTV-Abonnenten für Ertuğrul", "Wie viele Abonnenten hatte der YouTube-Kanal „TRT Ertugrul by PTV“ nach den ersten 16 Tagen?", "Die Folgen liefen in Pakistan auf Urdu synchronisiert.", "Pakistan, Ramadan 2020", "Ertuğrul'un PTV abonesi", "„TRT Ertugrul by PTV“ YouTube kanalının ilk 16 günde kaç abonesi oldu?", "Bölümler Pakistan'da Urduca dublajla yayınlandı.", "Pakistan, Ramazan 2020"],
+  ["🛡️", 190, "", "Startländer von Hakan: Muhafız", "In wie vielen Ländern startete Netflix' erste türkische Eigenproduktion „Hakan: Muhafız“ gleichzeitig (mehr als)?", "Çağatay Ulusoy spielt einen Basarhändler, der zum Beschützer Istanbuls wird.", "„The Protector“, 2018", "Hakan: Muhafız'ın yayınlandığı ülkeler", "Netflix'in ilk Türk orijinal dizisi „Hakan: Muhafız“ aynı anda kaç ülkeden fazlasında başladı?", "Çağatay Ulusoy, İstanbul'un koruyucusu olan bir esnafı oynadı.", "„The Protector“, 2018"],
+  ["⚖️", 95, "", "Folgen von Yargı", "Wie viele Folgen hat „Yargı“?", "2023 gewann die Serie den International Emmy als beste Telenovela.", "Ilgaz und Ceylin, Kanal D", "Yargı'nın bölüm sayısı", "„Yargı“ kaç bölüm sürdü?", "2023'te en iyi telenovela dalında Uluslararası Emmy kazandı.", "Ilgaz ile Ceylin, Kanal D"],
+  ["🌬️", 170, "", "Folgen von Kavak Yelleri", "Wie viele Folgen hat „Kavak Yelleri“ (2007–2011)?", "Die Serie ist eine Adaption der US-Serie „Dawson's Creek“.", "Jugendserie bei Kanal D", "Kavak Yelleri'nin bölüm sayısı", "„Kavak Yelleri“ (2007–2011) kaç bölüm sürdü?", "Dizi, Amerikan yapımı „Dawson's Creek“in uyarlaması.", "Kanal D'de gençlik dizisi"],
+  ["🌳", 80, "", "Folgen von Ihlamurlar Altında", "Wie viele Folgen hat „Ihlamurlar Altında“ (2005–2007)?", "Auch diese Kanal-D-Serie wurde später im arabischen Raum populär.", "Liebesdrama bei Kanal D", "Ihlamurlar Altında'nın bölüm sayısı", "„Ihlamurlar Altında“ (2005–2007) kaç bölüm sürdü?", "Bu Kanal D dizisi de sonradan Arap dünyasında sevildi.", "Kanal D'de aşk dizisi"],
+  ["🏪", 144, "", "Folgen von Leyla ile Mecnun", "Wie viele Folgen hat die Kult-Comedy „Leyla ile Mecnun“?", "Ali Atay spielte Mecnun, Ahmet Mümtaz Taylan den Krämer Erdal Bakkal.", "Sieben Staffeln, TRT 1 und später Exxen", "Leyla ile Mecnun'un bölüm sayısı", "Kült komedi „Leyla ile Mecnun“ kaç bölüm sürdü?", "Mecnun'u Ali Atay, Erdal Bakkal'ı Ahmet Mümtaz Taylan oynadı.", "Yedi sezon, TRT 1 ve sonra Exxen"],
+  ["🛥️", 101, "", "Folgen von Yalı Çapkını", "Wie viele Folgen hat „Yalı Çapkını“ (2022–2025)?", "Afra Saraçoğlu und Mert Ramazan Demir spielten Seyran und Ferit.", "Gaziantep trifft Bosporus, Star TV", "Yalı Çapkını'nın bölüm sayısı", "„Yalı Çapkını“ (2022–2025) kaç bölüm sürdü?", "Seyran ile Ferit'i Afra Saraçoğlu ve Mert Ramazan Demir oynadı.", "Gaziantep ile Boğaz buluşuyor, Star TV"],
+  ["🏰", 154, "", "Folgen von Payitaht Abdülhamid", "Wie viele Folgen hat „Payitaht Abdülhamid“?", "Bülent İnal spielte Sultan Abdülhamid II.", "Fünf Staffeln, TRT 1", "Payitaht Abdülhamid'in bölüm sayısı", "„Payitaht Abdülhamid“ kaç bölüm sürdü?", "II. Abdülhamid'i Bülent İnal canlandırdı.", "Beş sezon, TRT 1"],
+  ["👸", 60, "", "Folgen von Muhteşem Yüzyıl: Kösem", "Wie viele Folgen hat „Muhteşem Yüzyıl: Kösem“?", "Die erwachsene Kösem spielte erst Beren Saat, dann Nurgül Yeşilçay.", "Ableger von Muhteşem Yüzyıl", "Muhteşem Yüzyıl: Kösem'in bölüm sayısı", "„Muhteşem Yüzyıl: Kösem“ kaç bölüm sürdü?", "Kösem'i önce Beren Saat, sonra Nurgül Yeşilçay oynadı.", "Muhteşem Yüzyıl'ın devamı"],
+  ["🏄", 77, "", "Folgen von Medcezir", "Wie viele Folgen hat „Medcezir“?", "Die Serie ist ein Remake der US-Serie „O.C., California“.", "Çağatay Ulusoy und Serenay Sarıkaya", "Medcezir'in bölüm sayısı", "„Medcezir“ kaç bölüm sürdü?", "Dizi, Amerikan yapımı „The O.C.“nin uyarlaması.", "Çağatay Ulusoy ve Serenay Sarıkaya"],
+  ["💍", 69, "", "Folgen von Kiralık Aşk", "Wie viele Folgen hat die Romcom „Kiralık Aşk“?", "Barış Arduç und Elçin Sangu spielten Ömer und Defne.", "Zwei Staffeln, Star TV", "Kiralık Aşk'ın bölüm sayısı", "„Kiralık Aşk“ kaç bölüm sürdü?", "Ömer ile Defne'yi Barış Arduç ve Elçin Sangu oynadı.", "İki sezon, Star TV"],
+  ["🏜️", 69, "", "Folgen von Hercai", "Wie viele Folgen hat „Hercai“ (2019–2021)?", "Akın Akınözü und Ebru Şahin spielten Miran und Reyyan.", "Rachedrama in Midyat, atv", "Hercai'nin bölüm sayısı", "„Hercai“ (2019–2021) kaç bölüm sürdü?", "Miran ile Reyyan'ı Akın Akınözü ve Ebru Şahin oynadı.", "Midyat'ta intikam dramı, atv"],
+  ["🦸", 137, "", "Folgen von Süper Baba", "Wie viele Folgen hat „Süper Baba“ mit Şener Şen (1993–1997)?", "Die Familienserie lief vier Jahre bei atv.", "Kultserie der 90er", "Süper Baba'nın bölüm sayısı", "Şener Şen'li „Süper Baba“ (1993–1997) kaç bölüm sürdü?", "Aile dizisi dört yıl boyunca atv'de yayınlandı.", "90'ların kült dizisi"],
+  ["👩", 74, "", "Folgen von Perihan Abla", "Wie viele Folgen hat „Perihan Abla“ (1986–1988)?", "Perran Kutman spielte die Titelrolle, die Serie lief bei TRT.", "Nachbarschafts-Comedy aus der Ein-Sender-Zeit", "Perihan Abla'nın bölüm sayısı", "„Perihan Abla“ (1986–1988) kaç bölüm sürdü?", "Başrolde Perran Kutman vardı, dizi TRT'de yayınlandı.", "Tek kanal döneminin mahalle komedisi"],
+  ["📼", 655, "", "Folgen von Seksenler", "Wie viele Folgen hat die TRT-Nostalgieserie „Seksenler“ (2012–2022)?", "Sie spielt in den 80ern und lief zehn Staffeln lang.", "Achtziger-Jahre-Comedy, TRT 1", "Seksenler'in bölüm sayısı", "TRT'nin nostalji dizisi „Seksenler“ (2012–2022) kaç bölüm sürdü?", "80'lerde geçen dizi on sezon sürdü.", "80'ler komedisi, TRT 1"],
+  ["🧭", 80, "", "Folgen von Kuzey Güney", "Wie viele Folgen hat „Kuzey Güney“ (2011–2013)?", "Kıvanç Tatlıtuğ und Buğra Gülsoy spielten die ungleichen Brüder.", "Zwei Brüder, eine Frau, Kanal D", "Kuzey Güney'in bölüm sayısı", "„Kuzey Güney“ (2011–2013) kaç bölüm sürdü?", "Zıt kardeşleri Kıvanç Tatlıtuğ ve Buğra Gülsoy oynadı.", "İki kardeş, bir kadın, Kanal D"],
+  ["🏜️", 79, "", "Folgen von Sıla", "Wie viele Folgen hat „Sıla“ (2006–2008)?", "Cansu Dere spielte die Titelrolle, Mehmet Akif Alakurt den Boran.", "Istanbul trifft Mardin", "Sıla'nın bölüm sayısı", "„Sıla“ (2006–2008) kaç bölüm sürdü?", "Sıla'yı Cansu Dere, Boran'ı Mehmet Akif Alakurt oynadı.", "İstanbul ile Mardin"],
+  ["🌃", 90, "", "Folgen von Binbir Gece", "Wie viele Folgen hat „Binbir Gece“?", "Halit Ergenç und Bergüzar Korel spielten Onur und Şehrazat.", "Drei Staffeln, Kanal D", "Binbir Gece'nin bölüm sayısı", "„Binbir Gece“ kaç bölüm sürdü?", "Onur ile Şehrazat'ı Halit Ergenç ve Bergüzar Korel oynadı.", "Üç sezon, Kanal D"],
+  ["🧕", 8, "", "Folgen von Bir Başkadır", "Wie viele Folgen hat die Netflix-Serie „Bir Başkadır“ (Ethos)?", "Schöpfer ist Berkun Oya.", "Netflix, 2020", "Bir Başkadır'ın bölüm sayısı", "Netflix dizisi „Bir Başkadır“ kaç bölüm?", "Dizinin yaratıcısı Berkun Oya.", "Netflix, 2020"],
+]);
+
+</script>
+<script>
 NQ("essen", [
   // [Emoji, Wert (Zahl), Einheit, Name DE, Frage DE, Fakt DE, Kontext DE, Name TR, Frage TR, Fakt TR, Kontext TR]
   ["💶", 4.9, "€", "Dönerpreisbremse", "Welchen Höchstpreis für einen Döner forderte die Linke 2024 mit ihrer „Dönerpreisbremse“?", "Für junge Leute sollten es sogar nur 2,90 € sein.", "Staatlich gestützter Dönerpreis", "Döner fiyat freni", "Sol Parti (Die Linke) 2024’te „döner fiyat freni“ ile bir döner için en fazla kaç euro istedi?", "Gençler için sadece 2,90 € olması önerildi.", "Devlet destekli döner fiyatı"],
@@ -2897,6 +2955,10 @@ window.QUIZ = [];
       } else if (kind === 'logo') {
         const [s, g, n, hex, d] = r;
         it = { id: uid('logo-' + s), g, a: [n, n], hex, d };
+      } else if (kind === 'clue') {
+        // Hinweis-Quiz: [Jahre · Sender, Titel, [Aliase], [Hinweise DE], [Hinweise TR], Fakt DE, Fakt TR]
+        const [y, n, al, cde, ctr, fde, ftr] = r;
+        it = { id: uid('dizi-' + slug(n)), y, a: [n, n], al, cl: [cde, ctr], f: [fde, ftr] };
       } else if (kind === 'emoji') {
         const [g, e, de, tr, fde, ftr, pde, ptr] = r;
         it = { id: uid(cat + '-' + slug(de)), g, e, a: [de, tr], f: [fde, ftr], p: pde ? [pde, ptr] : null };
@@ -2980,6 +3042,1265 @@ QZ("autos", "logo", [
   ["smart","auto","smart","D7E600","M10.85.846A11.138 11.138 0 0 0 0 11.979v.04a11.136 11.136 0 0 0 10.844 11.135h.283a10.983 10.983 0 0 0 4.041-.758.395.395 0 0 0 .256-.369v-5.564a.21.21 0 0 0-.274-.195c-1.202.489-2.215.957-3.96.957a5.222 5.222 0 0 1-5.22-5.22 5.22 5.22 0 0 1 5.22-5.22c1.745 0 2.758.467 3.96.955a.21.21 0 0 0 .274-.193V1.979a.395.395 0 0 0-.256-.37 10.983 10.983 0 0 0-4.037-.763Zm5.863 1.82v18.67a.238.238 0 0 0 .377.19c3.413-2.122 6.91-8.16 6.91-9.52 0-1.36-3.497-7.396-6.91-9.522a.238.238 0 0 0-.377.182Z"],
   ["scania","auto","Scania","041E42","M12 .6c-2.167 0-4.264.667-6.019 1.888a32.768 32.768 0 0 1-2.167-.48A12.262 12.262 0 0 0 0 8.615a32.75 32.75 0 0 1 1.5 1.636c-.3705 4.3908 2.0301 8.5486 6.018 10.423.247.699.47 1.404.668 2.117a12.266 12.266 0 0 0 7.629 0c.197-.713.42-1.419.667-2.118 3.9876-1.8737 6.3882-6.0307 6.018-10.421.482-.563.982-1.11 1.5-1.636a12.261 12.261 0 0 0-3.814-6.609c-.716.185-1.439.345-2.167.481A10.535 10.535 0 0 0 12 .6zm0 .642c1.806 0 3.562.494 5.086 1.407a32.724 32.724 0 0 1-10.172 0A9.896 9.896 0 0 1 12 1.242zM3.994 2.715c.431.107.865.204 1.301.293a10.537 10.537 0 0 0-3.687 6.387c-.295-.332-.597-.659-.904-.98a11.619 11.619 0 0 1 3.29-5.7zm16.012 0a11.62 11.62 0 0 1 3.29 5.7c-.307.321-.609.648-.904.98a10.537 10.537 0 0 0-3.687-6.387c.436-.089.87-.186 1.301-.293zm-13.873.454a33.353 33.353 0 0 0 11.734 0 9.885 9.885 0 0 1 3.966 6.873 33.352 33.352 0 0 0-5.866 10.16 9.89 9.89 0 0 1-7.935 0 33.367 33.367 0 0 0-5.866-10.16 9.895 9.895 0 0 1 3.967-6.873zm6.018.867a.662.662 0 0 0-.448 1.132.652.652 0 0 0-.971.573.652.652 0 0 0 1.03.535c-.241.404-.606.944-1.13.944-.547 0-.811-.228-1.052-.633a.548.548 0 0 0 .318-.021c.316-.105.493-.423.404-.823-.079-.354-.456-.55-.799-.45a.637.637 0 0 0-.291.18.698.698 0 0 0 .064-.519c-.098-.349-.512-.628-.873-.574l1.415 3.475c-.073.078-.18.196-.256.329-.302-.153-.909-.379-1.514-.135a1.553 1.553 0 0 0-.522.349c-.45.45-.676 1.2-.793 1.731a8.3307 8.3307 0 0 0-.08.415c.188-.141.31-.23.424-.306.102-.068.2-.124.336-.194.247-.127.583-.264.886-.264.163 0 .347.043.472.148.045.037.405.543 1.114.729.666.175.68.287.69.377 0 0-.116.19-.367.365a2.685 2.685 0 0 0-.346-.445c-.331-.346-.862-.532-1.296-.529-.413.004-.718.192-1.526.192-.82 0-1.39-.207-1.81-.454-.302-.164-.52-.37-.723-.535.108.263.213.472.307.684.07.151.327.667.648.947.413.35.822.465 1.224.465.408 0 .81-.119 1.206-.236.39-.116.766-.228 1.142-.228.487 0 .752.163.964.294a6.196 6.196 0 0 1-.225.15c-.3.191-.539.262-.771.262-.286 0-.801-.15-1.25-.33a1.2368 1.2368 0 0 0-.006.102v.116c0 .253.041.557.326.85.123.125.275.222.454.29.187.07.407.105.646.117-.109.1-.211.194-.31.316-.24.296-.435.692-.435 1.202 0 .262.046.481.111.691.047.149.093.284.157.445l.212-.255c.004-.004.236-.278.555-.51a2.98 2.98 0 0 0-.326 1.325c0 1.012.563 1.834 1.332 2.48 0 0 .183.163.312.263-.003-.162 0-.267 0-.408 0-.493.08-1.448.405-2.025.035.135.075.334.11.558.045.298.081.641.081.94 0 .496-.072.863-.156 1.127-.098.304-.18.42-.255.547a3.34 3.34 0 0 0 .882-.09 2.3 2.3 0 0 0 1.72-1.555c.09-.283.136-.596.136-.94 0-.198-.018-.403-.046-.603l-.024-.16c.055.044.093.085.14.138.18.207.343.524.343 1.036 0 .175-.01.445-.084.749.174-.058.351-.163.52-.27.204-.13.397-.284.572-.46.48-.48.811-1.117.818-1.845.005-.475-.096-.855-.32-1.299-.024-.048-.052-.097-.077-.146.052.022.101.05.147.08.255.164.42.424.53.718.066.177.114.35.147.554.074-.09.162-.212.262-.385.201-.348.414-.883.414-1.647 0-.375-.049-.806-.22-1.255a2.883 2.883 0 0 0-.85-1.202c.2643.0287.511.146.7.333.125.126.223.28.313.452l.095.19c.009-.093.008-.123.01-.204-.02-1.351-.397-2.34-1.626-2.978l-.007-.004c.43-.488.638-1.038.783-1.63-.296-.075-.843-.138-1.673.25l1.32-3.254c-.362-.054-.775.225-.873.574a.695.695 0 0 0 .065.519.642.642 0 0 0-.292-.181c-.343-.1-.72.097-.8.451-.088.4.089.718.405.822.134.04.177.045.318.021-.241.405-.494.629-1.041.629-.524 0-.892-.535-1.133-.94 0 0 .246.122.385.122a.651.651 0 0 0 .645-.657.652.652 0 0 0-.645-.658.634.634 0 0 0-.33.093.694.694 0 0 0 .202-.481.651.651 0 0 0-.645-.658zm3.608 3.585h.147l-.047.14c-.151.447-.629 1.516-1.802 1.779l.005.022.05.247c.497-.092.817-.303 1.107-.555.742.361 1.242.961 1.42 1.76l.034.157a.668.668 0 0 0-.114-.1 1.345 1.345 0 0 0-.719-.194c-.262 0-.489.063-.602.102.186.159.337.297.471.431.41.411.677.803.837 1.235.12.326.18.67.18 1.048 0 .403-.072.772-.213 1.098-.011.026-.04.092-.052.127a.706.706 0 0 0-.044-.126c-.341-.72-.91-.872-1.328-.872-.07 0-.13.004-.184.008l.006.01c.278.428.698 1.075.698 1.87 0 .26-.048.516-.142.759a2.4 2.4 0 0 1-.55.83c-.118.117-.222.214-.397.333l-.1.071a.465.465 0 0 0 .02-.12c.024-.897-.475-1.61-1.272-1.827l.018.076c.087.353.186.752.186 1.292 0 .583-.145 1.066-.43 1.436a1.954 1.954 0 0 1-.688.556 2.23 2.23 0 0 1-.652.219l-.109.018c.011-.014.034-.063.045-.087a1.0898 1.0898 0 0 0 .054-.161c.124-.455.127-1.001.127-1.069 0-.845-.21-1.618-.336-2.08l-.026-.098c-.1.074-.166.14-.211.186l-.02.021c-.263.263-.455.723-.57 1.367-.035.197-.052.362-.07.537l-.013.195-.003.121s-.072-.08-.09-.098a4.643 4.643 0 0 1-.188-.204 3.207 3.207 0 0 1-.483-.71 2.495 2.495 0 0 1-.177-.482 2.302 2.302 0 0 1-.07-.561c0-1.062.641-1.774.918-2.058l-.09.016a3.31 3.31 0 0 0-.326.08 2.172 2.172 0 0 0-.546.252 3.171 3.171 0 0 0-.603.513s-.018-.083-.021-.107a2.518 2.518 0 0 1-.04-.391c0-.441.168-.833.5-1.163.312-.313.551-.413 1.265-.712l.218-.091-.314.043c-.438.062-.638.09-1.009.09-.525 0-.887-.107-1.106-.327a.75.75 0 0 1-.123-.158 1.549 1.549 0 0 1-.117-.243l.272.099c.054.017.117.036.17.05a1.9 1.9 0 0 0 .49.07c.444 0 .804-.194 1.24-.508.182-.13.336-.258.456-.378.182-.182.221-.28.222-.297-.008-.269-.016-.523-.951-.768a1.782 1.782 0 0 1-.913-.59.8119.8119 0 0 0-.063-.068 1.046 1.046 0 0 0-.682-.229c-.196 0-.409.043-.651.132a4.7942 4.7942 0 0 0-.395.166l-.108.05.036-.113c.04-.132.085-.252.144-.391.05-.118.1-.22.156-.314.184-.31.412-.522.676-.629.138-.056.288-.084.447-.084.385 0 .732.167.875.247.01.71.438 1.12.93 1.12a.856.856 0 0 0 .643-.275c.121-.122.196-.258.244-.366.039-.087.067-.15.07-.2l.005.001a.496.496 0 0 1 .211.132l.236-.21a1.118 1.118 0 0 0-.401-.264 1.424 1.424 0 0 0-.464-.098 1.68 1.68 0 0 0-.36.026c-.123.02-.222.048-.396.048a.693.693 0 0 1-.358-.09 1.73 1.73 0 0 1 .525-.535l.006-.004h3.817l.074.003a3.287 3.287 0 0 0-.747.655l.215.17c.498-.622 1.272-1.01 2.02-1.01v.001zm-.457.494c-.621.08-1.182.635-1.182.635l.127.27c.293-.062.521-.22.69-.389.248-.248.347-.437.365-.516zm-5.542.543l.138.038c.055.016.132.032.207.042l.036.006.007.035a.27.27 0 0 0 .072.144.302.302 0 0 0 .43 0 .297.297 0 0 0 .088-.196l.002-.048.047-.002a2.6025 2.6025 0 0 1 .22 0l.117.008-.018.07a.852.852 0 0 1-.228.425.609.609 0 0 1-.469.192.578.578 0 0 1-.41-.175.81.81 0 0 1-.219-.43l-.02-.109zm4.513 1.49l-.133.416c.085.098.148.19.2.267.146.214.238.41.29.614.05.2.056.392.056.57 0 .142-.015.285-.046.425-.022.101-.053.21-.079.293-.024.08-.079.226-.079.226s-.008-.165-.023-.255-.029-.186-.053-.264a1.437 1.437 0 0 0-.353-.604 1.41 1.41 0 0 0-.35-.253 1.821 1.821 0 0 0-.284-.118c.022.083.045.173.07.28.064.276.093.504.093.716 0 .337-.075.622-.232.871a1.323 1.323 0 0 1-.187.234 2.039 2.039 0 0 1-.386.316c.036-.06.065-.122.1-.193.042-.087.068-.18.087-.248.186-.657-.121-1.063-.37-1.312a2.3783 2.3783 0 0 0-.103-.098c-.004.092-.008.184-.014.277-.022.318-.08.68-.35.948a1.942 1.942 0 0 1-.139.13c-.052.042-.111.092-.19.14.033-.064.06-.096.11-.218a.97.97 0 0 0-.029-.78l-.34.183c.01.025.017.052.024.076a.71.71 0 0 1-.086.577c-.05.08-.115.16-.204.25-.079.077-.162.152-.235.218l-.156.141.139-.001c.15-.002.35-.01.563-.047.34-.062.605-.192.813-.4a1.34 1.34 0 0 0 .218-.287c-.01.11-.037.222-.084.34a2.265 2.265 0 0 1-.239.436c-.065.095-.138.2-.232.315l-.086.105.134-.02c.162-.023.323-.056.48-.098a1.742 1.742 0 0 0 1.078-.777c.1-.158.172-.323.218-.504a2.35 2.35 0 0 0 .066-.696c.03.052.057.109.083.172.054.136.09.29.11.47.01.112.016.235.016.385v.03c0 .144 0 .281-.011.436l-.011.152.103-.112c.134-.147.279-.315.427-.55a2.543 2.543 0 0 0 .332-1.978 2.31 2.31 0 0 0-.359-.76 3.15 3.15 0 0 0-.349-.417l-.018-.019zm-3.275.165a.5.5 0 0 0-.215.049c.273.029.341.113.467.238.066.067.129.138.194.204.12.12.231.219.436.219a.613.613 0 0 0 .157-.022.981.981 0 0 0 .305-.141.528.528 0 0 1-.203.041c-.511 0-.663-.588-1.14-.588h-.001zm-5.83.1c.06.038.186.127.365.2.167.07.343.135.55.184.278.065.586.097.94.097.326 0 .717-.052 1.162-.153.143-.032.292-.062.413-.062.215 0 .424.035.578.116.153.082.261.17.395.279a2.71 2.71 0 0 0-.48-.071c-.143-.01-.34.003-.465.022-.28.041-.525.114-.783.19l-.03.01c-.39.115-.759.224-1.123.224-.422 0-.803-.157-1.101-.455-.065-.065-.171-.17-.242-.27a1.994 1.994 0 0 1-.179-.31v-.001zm-3.061.567a32.694 32.694 0 0 1 5.084 8.805 9.895 9.895 0 0 1-5.086-8.647c0-.054 0-.106.002-.158zm19.786 0l.002.157a9.895 9.895 0 0 1-5.086 8.648 32.665 32.665 0 0 1 5.085-8.805h-.001zM8.313 21.007a10.535 10.535 0 0 0 7.375 0c-.14.423-.273.847-.396 1.274a11.616 11.616 0 0 1-6.583 0 33.2233 33.2233 0 0 0-.397-1.273l.001-.001z"],
   ["yamahamotorcorporation","auto","Yamaha","E60012","M12 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0zm0 .57C18.315.57 23.43 5.685 23.43 12c0 6.31-5.115 11.43-11.43 11.43C5.69 23.43.57 18.314.57 12 .57 5.69 5.69.57 12 .57zm0 .234c-.1 0-.183.06-.218.147l-.492 1.551A9.523 9.523 0 002.475 12c0 1.48.337 2.885.94 4.136l-1.1 1.206a.241.241 0 00-.015.262.246.246 0 00.238.115l1.592-.353a9.52 9.52 0 007.87 4.16c3.27 0 6.16-1.652 7.874-4.16l1.592.353a.236.236 0 00.23-.123.234.234 0 00-.016-.262l-1.1-1.198A9.431 9.431 0 0021.526 12a9.523 9.523 0 00-8.815-9.498L12.218.947A.237.237 0 0012 .804zm-.003.25c.024 0 .048.02.056.043l1.02 3.354a1.2 1.2 0 00-.48.957c0 .389.19.734.48.952h-.004c.436.326.718.846.718 1.429v1.12l4.326-2.497.476.825-4.802 2.77v.965l.834.48 4.802-2.774.476.825-4.326 2.5.972.56c.508.294.818.798.882 1.338v-.004a1.193 1.193 0 001.655.953l2.393 2.56c.02.02.02.047.008.07-.016.025-.04.033-.068.029l-3.413-.794a1.193 1.193 0 00-1.65-.957l.003-.004c-.5.215-1.091.199-1.6-.095l-.968-.56v4.994h-.952v-5.545l-.834-.48-.833.48v5.545h-.953V15.1l-.972.555c-.508.294-1.1.31-1.6.096l.004.004a1.193 1.193 0 00-1.651.957l-3.413.793a.054.054 0 01-.063-.028c-.016-.02-.012-.047.008-.067l2.397-2.56c.333.143.73.135 1.067-.064.338-.194.544-.528.588-.889v.004c.063-.54.373-1.044.88-1.337l.97-.56-4.327-2.496.477-.826 4.802 2.774.833-.484v-.964l-4.802-2.77.476-.826 4.326 2.496V7.79c0-.583.282-1.103.719-1.429h-.004c.29-.214.476-.56.476-.952 0-.393-.19-.738-.48-.957l1.02-3.353c.008-.028.031-.044.051-.044zm.004 5.902a.833.833 0 00-.833.833v1.67L12 9.94l.833-.48V7.789a.833.833 0 00-.833-.833zm0 4.084l-.833.48v.964l.833.476.833-.48v-.96zm-2.62 1.516l-1.444.833a.833.833 0 00-.306 1.14.822.822 0 00.723.412.83.83 0 00.416-.111l1.445-.834v-.96zm5.243 0l-.833.48V14l1.445.834a.834.834 0 00.833-1.445z"],
+]);
+
+</script>
+<script>
+// Kategorie „diziler“ – Klassiker (Erstausstrahlung vor 2010)
+// Zeile: [Jahre · Sender, Titel, [weitere akzeptierte Antworten], [Hinweise DE schwer→leicht], [Hinweise TR gleiche Reihenfolge], Fakt DE, Fakt TR]
+QZ('diziler', 'clue', [
+  ['1974–2004 · TRT 1, Kanal D', 'Kaynanalar', [], [
+    'Nebenfiguren: Nuriye, Döndü, Katip Kerim, Timur Hakmen',
+    'Hauptfigur: Nuri Kantar (Tekin Akmansoy)',
+    'Der Titel bedeutet „Die Schwiegermütter“.',
+  ], [
+    'Yan karakterler: Nuriye, Döndü, Katip Kerim, Timur Hakmen',
+    'Baş karakter: Nuri Kantar (Tekin Akmansoy)',
+    'Adı Almanca „Die Schwiegermütter“ demek.',
+  ], 'Gilt als erste einheimische Fernsehserie der Türkei: Start im Mai 1974 bei TRT.', 'Türkiye’nin ilk yerli dizisi sayılır: Mayıs 1974’te TRT’de başladı.'],
+
+  ['1986–1988 · TRT 2', 'Perihan Abla', [], [
+    'Nebenfiguren: Meraklı Melahat, Şoför İsmet, Berber Raşit, Bakkal Osman',
+    'Şakir Uysal (Şevket Altuğ) und seine Eltern Şevkiye und Şükrü',
+    'Perran Kutman als gute Seele des Istanbuler Viertels Kurtuluş',
+  ], [
+    'Yan karakterler: Meraklı Melahat, Şoför İsmet, Berber Raşit, Bakkal Osman',
+    'Şakir Uysal (Şevket Altuğ) ve annesiyle babası Şevkiye ile Şükrü',
+    'Perran Kutman, Kurtuluş’ta mahallenin can ablası',
+  ], 'Şevket Altuğ war nur in den ersten 62 Folgen als Şakir dabei.', 'Şevket Altuğ, Şakir rolünde yalnızca ilk 62 bölümde yer aldı.'],
+
+  ['1989–2002 · TRT 1, Star TV, Show TV', 'Bizimkiler', [], [
+    'Sabri Dönmez (Mehmet Akan) verwaltet pedantisch ein Haus voller Familien.',
+    'Sieben Familien, ein Istanbuler Mietshaus und viel Nachbarschaftsklatsch',
+    'Der listige Hausmeister: Kapıcı Cafer (Ercan Yazgan)',
+  ], [
+    'Sabri Dönmez (Mehmet Akan), ailelerle dolu bir apartmanı titizlikle yönetir.',
+    'Yedi aile, bir İstanbul apartmanı ve bol komşu dedikodusu',
+    'Entrikacı kapıcı: Kapıcı Cafer (Ercan Yazgan)',
+  ], '13 Jahre und 459 Folgen: eine der langlebigsten Serien des türkischen Fernsehens.', '13 yıl ve 459 bölüm: Türk televizyonunun en uzun soluklu dizilerinden biri.'],
+
+  ['1992–2002 · Kanal 6, atv, Kanal D, Star TV', 'Mahallenin Muhtarları', [], [
+    'Nebenfiguren: Behiye, Seher, İğneci Handan, der Şoför',
+    'Erkan Can spielt Temel, Esra Akkaya die Şirin.',
+    'Cihat Tamer als gewählter Vorsteher des Viertels, Buch: Kandemir Konduk',
+  ], [
+    'Yan karakterler: Behiye, Seher, İğneci Handan, Şoför',
+    'Erkan Can Temel’i, Esra Akkaya da Şirin’i oynar.',
+    'Cihat Tamer semtin seçilmiş muhtarı, senaryo: Kandemir Konduk',
+  ], 'In zehn Jahren spielten 199 verschiedene Schauspieler mit, die Serie wechselte viermal den Sender.', 'On yılda 199 farklı oyuncu rol aldı; dizi dört kez kanal değiştirdi.'],
+
+  ['1993–1997 · atv', 'Süper Baba', ['Super Baba'], [
+    'Er lebt in Çengelköy, hat keinen festen Job und hilft trotzdem jedem.',
+    'Geschiedener Vater von drei Kindern, verliebt in İpek (Jülide Kural)',
+    'Şevket Altuğ als Fikret Aksu, genannt „Fiko“',
+  ], [
+    'Çengelköy’de yaşar, düzenli bir işi yoktur ama herkese yardım eder.',
+    'Üç çocuklu boşanmış bir baba, İpek’e (Jülide Kural) âşık',
+    'Şevket Altuğ, „Fiko“ lakaplı Fikret Aksu rolünde',
+  ], 'Vier Staffeln, 137 Folgen, mit damals noch jungen Darstellerinnen wie Şevval Sam und Bennu Yıldırımlar.', 'Dört sezon, 137 bölüm; kadroda o zaman henüz genç olan Şevval Sam ve Bennu Yıldırımlar da vardı.'],
+
+  ['1995–2003 · atv', 'Çiçek Taksi', [], [
+    'Nebenfiguren: Kenan, Ömer, Ekrem und der Künstler Celal',
+    '„Şeker“ Kazım (Ümit Yesin) mit dem endlosen Nachnamen Hacıosmanşentabakoğlu',
+    'Erol Günaydın als Ramazan, Chef eines Istanbuler Taxistands',
+  ], [
+    'Yan karakterler: Kenan, Ömer, Ekrem ve sanatçı Celal',
+    'Bitmeyen soyadıyla „Şeker“ Kazım Hacıosmanşentabakoğlu (Ümit Yesin)',
+    'Erol Günaydın, İstanbul’da bir şoför durağının sahibi Ramazan',
+  ], 'Produziert von Erler Film, das später mit „Akasya Durağı“ wieder einen Taxistand ins Fernsehen brachte.', 'Erler Film yapımıydı; şirket sonra „Akasya Durağı“ ile yine bir taksi durağını ekrana taşıdı.'],
+
+  ['1995–2002, 2006–2007 · Star TV, atv', 'Bir Demet Tiyatro', [], [
+    'Sketch-Serie mit Figuren wie Zabıta İrfan (Engin Günaydın) und Laz Bakkal',
+    'Altan Erkekli, Ata Demirer und Erdal Tosun schlüpfen in Dutzende Rollen.',
+    'Das Ehepaar Lütfiye und Mükremin Çıtır, Drehbuch und Hauptrolle: Yılmaz Erdoğan',
+  ], [
+    'Zabıta İrfan (Engin Günaydın) ve Laz Bakkal gibi karakterlerle skeç dizisi',
+    'Altan Erkekli, Ata Demirer ve Erdal Tosun onlarca role girer.',
+    'Lütfiye ve Mükremin Çıtır çifti, senaryo ve başrol: Yılmaz Erdoğan',
+  ], 'Hier wurden viele spätere BKM-Stars bekannt, das Buch schrieb Yılmaz Erdoğan.', 'Sonraki birçok BKM yıldızı burada tanındı; senaryoyu Yılmaz Erdoğan yazdı.'],
+
+  ['2002–2003 · atv', 'Asmalı Konak', [], [
+    'Nebenfiguren: Sümbül, Dicle und Kâhya Bekir (Menderes Samancılar)',
+    'Eine Istanbulerin heiratet in die mächtige Familie Karadağ ein.',
+    'Seymen und Bahar (Özcan Deniz, Nurgül Yeşilçay) in einem Herrenhaus in Ürgüp',
+  ], [
+    'Yan karakterler: Sümbül, Dicle ve Kâhya Bekir (Menderes Samancılar)',
+    'İstanbullu bir kadın güçlü Karadağ ailesine gelin gider.',
+    'Ürgüp’te bir konakta Seymen ve Bahar (Özcan Deniz, Nurgül Yeşilçay)',
+  ], 'Nur eine Staffel mit 54 Folgen, trotzdem eine Legende: 2003 folgte der Kinofilm „Hayat“.', 'Yalnızca 54 bölümlük tek sezon ama efsane oldu: 2003’te „Hayat“ filmi çekildi.'],
+
+  ['2002–2005 · atv, Show TV', 'Ekmek Teknesi', [], [
+    'Nebenfiguren: Celal, Korkut, Mehpare und „Heredot“ Cevdet (Hasan Kaçan)',
+    'Ein Vater mit fünf Töchtern, seine Frau Ayhan und ein altes Istanbuler Viertel',
+    'Savaş Dinçel als Bäcker Nusret Baba',
+  ], [
+    'Yan karakterler: Celal, Korkut, Mehpare ve „Heredot“ Cevdet (Hasan Kaçan)',
+    'Beş kızlı bir baba, eşi Ayhan ve eski bir İstanbul mahallesi',
+    'Savaş Dinçel, Fırıncı Nusret Baba rolünde',
+  ], 'Nach 106 Folgen endete die Serie 2005, „Heredot“ Cevdet wurde zur Kultfigur.', '106 bölümle 2005’te bitti; „Heredot“ Cevdet kült karaktere dönüştü.'],
+
+  ['2003–2005 · Show TV, Kanal D', 'Kurtlar Vadisi', ['Kurtlar Vadisi Pusu', 'Kurtlar Vadisi Terör'], [
+    'Ein Geheimdienstler bekommt ein neues Gesicht und eine neue Identität.',
+    'Nebenfiguren: Memati, Abdülhey, Elif Eylül, Süleyman Çakır',
+    'Necati Şaşmaz als „Polat Alemdar“',
+  ], [
+    'Bir istihbaratçıya yeni bir yüz ve yeni bir kimlik verilir.',
+    'Yan karakterler: Memati, Abdülhey, Elif Eylül, Süleyman Çakır',
+    'Necati Şaşmaz, „Polat Alemdar“ rolünde',
+  ], 'Der Ableger „Pusu“ lief bis 2016, dazu kamen mehrere Kinofilme wie „Irak“ (2006).', 'Devamı „Pusu“ 2016’ya kadar sürdü; „Irak“ (2006) gibi sinema filmleri de çekildi.'],
+
+  ['2004–2007 · Kanal D', 'Yabancı Damat', [], [
+    'Nebenrollen: Zeki Alasya, Erdal Özyağcılar, Sumru Yavrucuk, Engin Akyürek',
+    'Ein junger Athener verliebt sich in eine Frau aus Gaziantep.',
+    'Niko und Nazlı: Özgür Çevik und Nehir Erdoğan',
+  ], [
+    'Yan rollerde: Zeki Alasya, Erdal Özyağcılar, Sumru Yavrucuk, Engin Akyürek',
+    'Atinalı genç bir adam Gaziantepli bir kıza âşık olur.',
+    'Niko ve Nazlı: Özgür Çevik ve Nehir Erdoğan',
+  ], 'Auch in Griechenland ein Riesenhit, der die beiden Hauptdarsteller dort zu Stars machte.', 'Yunanistan’da da büyük hit oldu ve iki başrolü orada da yıldız yaptı.'],
+
+  ['2004–2009 · atv', 'Avrupa Yakası', [], [
+    'Nebenfiguren: Cem (Levent Üzümcü), Sertaç (Yavuz Seçkin), Şahika (Binnur Kaya)',
+    'Ata Demirer als fauler Bruder Volkan, Engin Günaydın als Burhan Altıntop',
+    'Gülse Birsel als Aslı, Sitcom über die Istanbuler Schickeria',
+  ], [
+    'Yan karakterler: Cem (Levent Üzümcü), Sertaç (Yavuz Seçkin), Şahika (Binnur Kaya)',
+    'Ata Demirer tembel kardeş Volkan, Engin Günaydın ise Burhan Altıntop',
+    'Gülse Birsel Aslı rolünde, İstanbul sosyetesini anlatan sitcom',
+  ], 'Gülse Birsel schrieb die Drehbücher und spielte selbst die Hauptrolle.', 'Gülse Birsel hem senaryoyu yazdı hem başrolü oynadı.'],
+
+  ['2005–2007 · Kanal D', 'Gümüş', [], [
+    'Großvater Mehmet Fikri Şadoğlu (Ekrem Bora) lenkt die Familiengeschicke.',
+    'In der arabischen Synchronfassung heißen die Helden Muhannad und Noor.',
+    'Kıvanç Tatlıtuğ und Songül Öden als Ehepaar Şadoğlu',
+  ], [
+    'Büyükbaba Mehmet Fikri Şadoğlu (Ekrem Bora) ailenin kaderini yönetir.',
+    'Arapça dublajda kahramanların adı Mühennad ve Nur’dur.',
+    'Kıvanç Tatlıtuğ ve Songül Öden, Şadoğlu çifti',
+  ], 'Das Finale der arabischen Fassung „Noor“ sollen rund 85 Millionen Menschen gesehen haben.', 'Arapça versiyonu „Nur“un finalini yaklaşık 85 milyon kişinin izlediği söylenir.'],
+
+  ['2005–2007 · Kanal D', 'Ihlamurlar Altında', [], [
+    'Szenen aus den Armenvierteln wurden im Istanbuler Gazi Mahallesi gedreht.',
+    'Nebenfiguren: Ömer und Filiz Tekiner (Sinan Tuzcu, Tuba Büyüküstün)',
+    'Yılmaz Akın (Bülent İnal) und Elif Tekiner (Özge Borak)',
+  ], [
+    'Varoş sahneleri İstanbul’daki Gazi Mahallesi’nde çekildi.',
+    'Yan karakterler: Ömer ve Filiz Tekiner (Sinan Tuzcu, Tuba Büyüküstün)',
+    'Yılmaz Akın (Bülent İnal) ve Elif Tekiner (Özge Borak)',
+  ], 'Für Tuba Büyüküstün war es eine der ersten großen Rollen, später wurde sie ein Exportstar.', 'Tuba Büyüküstün için ilk büyük rollerden biriydi; sonra ihracat yıldızı oldu.'],
+
+  ['2006–2010 · Kanal D', 'Yaprak Dökümü', [], [
+    'Nach dem Roman von Reşat Nuri Güntekin',
+    'Töchter Leyla, Necla und Fikret, Schwiegertochter Ferhunde (Deniz Çakır)',
+    'Halil Ergün als Ali Rıza Bey, der den Zerfall seiner Familie erlebt',
+  ], [
+    'Reşat Nuri Güntekin’in romanından uyarlama',
+    'Kızları Leyla, Necla ve Fikret, gelini Ferhunde (Deniz Çakır)',
+    'Halil Ergün, ailesinin dağılışını yaşayan Ali Rıza Bey rolünde',
+  ], '174 Folgen in fünf Staffeln: Das Finale lief am 29. Dezember 2010.', 'Beş sezon 174 bölüm: Final 29 Aralık 2010’da yayınlandı.'],
+
+  ['2006–2026 · Kanal D', 'Arka Sokaklar', [], [
+    'Nebenfiguren: Hüsnü (Özgür Ozan), Mesut (Şevket Çoruh)',
+    'Ein Polizeiteam aus Istanbul, jeden Freitagabend im Einsatz',
+    'Zafer Ergin als „Rıza Baba“',
+  ], [
+    'Yan karakterler: Hüsnü (Özgür Ozan), Mesut (Şevket Çoruh)',
+    'Her cuma akşamı görevdeki İstanbullu bir polis ekibi',
+    'Zafer Ergin, „Rıza Baba“ rolünde',
+  ], 'Mit 20 Staffeln und 751 Folgen die am längsten laufende Wochenserie des türkischen Fernsehens.', '20 sezon ve 751 bölümle Türk televizyonunun en uzun soluklu haftalık dizisi.'],
+
+  ['2008–2010 · Kanal D', 'Aşk-ı Memnu', ['Ask-i Memnu', 'Aşkı Memnu'], [
+    'Nach dem Roman von Halit Ziya Uşaklıgil',
+    'Nebenfiguren: Firdevs (Nebahat Çehre), Nihal, Adnan Ziyagil (Selçuk Yöntem)',
+    'Bihter (Beren Saat) und Behlül (Kıvanç Tatlıtuğ) in einer verbotenen Affäre',
+  ], [
+    'Halit Ziya Uşaklıgil’in romanından uyarlama',
+    'Yan karakterler: Firdevs (Nebahat Çehre), Nihal, Adnan Ziyagil (Selçuk Yöntem)',
+    'Bihter (Beren Saat) ve Behlül (Kıvanç Tatlıtuğ) yasak bir ilişkide',
+  ], 'Während Bihters Selbstmordszene im Finale schauten rund 73 % der TV-Zuschauer zu.', 'Finaldeki Bihter’in intihar sahnesinde izleyicilerin yaklaşık %73’ü ekran başındaydı.'],
+
+  ['1988–2010 · TRT, Star TV, atv u. a.', 'Olacak O Kadar', ['Yeniden Olacak O Kadar'], [
+    'Wegen eines Namensstreits hieß die Sendung 1994 kurz „İsmi Lazım Değil“.',
+    'Kult-Sketch: Ein Betrunkener gerät in eine Polizeikontrolle (mit Metin Serezli).',
+    'Levent Kırca und Oya Başar nehmen 22 Jahre lang Politik und Alltag aufs Korn.',
+  ], [
+    'İsim hakkı kavgası yüzünden program 1994’te kısa süre „İsmi Lazım Değil“ adını aldı.',
+    'Kült skeç: Sarhoş bir adam trafik çevirmesine takılır (Metin Serezli ile).',
+    'Levent Kırca ve Oya Başar 22 yıl boyunca siyaseti ve gündelik hayatı tiye alır.',
+  ], 'Die Sketch-Show lief bei mindestens vier Sendern, angefangen 1988 bei TRT 2.', 'Skeç programı 1988’de TRT 2’de başladı ve en az dört kanal gezdi.'],
+
+  ['1998–2002 · Show TV, atv', 'Deli Yürek', [], [
+    'Nebenfiguren: Kuşçu (Emin Gürsoy), Feraye, Turgay Atacan (Ali Sürmeli)',
+    'Regie: Osman Sınav, 2001 folgte der Kinofilm „Bumerang Cehennemi“.',
+    'Kenan İmirzalıoğlu als unbestechlicher Held Yusuf Miroğlu',
+  ], [
+    'Yan karakterler: Kuşçu (Emin Gürsoy), Feraye, Turgay Atacan (Ali Sürmeli)',
+    'Yönetmen Osman Sınav; 2001’de „Bumerang Cehennemi“ filmi çekildi.',
+    'Kenan İmirzalıoğlu, dürüst kahraman Yusuf Miroğlu rolünde',
+  ], 'Die Rolle machte Kenan İmirzalıoğlu, ein früheres Model, über Nacht zum Star.', 'Bu rol, eski manken Kenan İmirzalıoğlu’nu bir gecede yıldız yaptı.'],
+
+  ['1998–2001 · atv', 'İkinci Bahar', ['Ikinci Bahar'], [
+    'Nebenrollen: Nedim Saban als Medet, Güven Hokna als Neriman',
+    'Ein Kebap-Lokal namens „Antep Sofrası“ im Istanbuler Viertel Samatya',
+    'Späte Liebe: Şener Şen als Ali Haydar, Türkan Şoray als Hanım',
+  ], [
+    'Yan rollerde: Nedim Saban (Medet), Güven Hokna (Neriman)',
+    'Samatya’da „Antep Sofrası“ adlı bir kebapçı',
+    'Geç gelen aşk: Şener Şen Ali Haydar, Türkan Şoray Hanım rolünde',
+  ], 'Nur 37 Folgen, verteilt auf drei Staffeln, trotzdem einer der größten Quotenhits der 90er.', 'Üç sezona yayılan sadece 37 bölüm, yine de 90’ların en büyük reyting hitlerinden.'],
+
+  ['2001–2002 · Show TV, Star TV', 'Dadı', [], [
+    'Haldun Dormen spielt den Butler Pertev.',
+    'Türkische Version der US-Sitcom „The Nanny“',
+    'Gülben Ergen als Melek, Kenan Işık als verwitweter Ömer Giritli',
+  ], [
+    'Haldun Dormen, uşak Pertev rolünde',
+    'ABD sitcomu „The Nanny“nin Türk versiyonu',
+    'Gülben Ergen Melek, Kenan Işık dul Ömer Giritli rolünde',
+  ], 'Fran Drescher hatte weltweit Lizenzen verkauft, die türkische Version lief nur rund ein Jahr.', 'Fran Drescher’in dizisi dünyaya satıldı; Türk versiyonu yaklaşık bir yıl sürdü.'],
+
+  ['2002–2019 · TGRT, atv, Kanal D', 'Çocuklar Duymasın', ['Cocuklar Duymasin'], [
+    'Nebenfiguren: Gönül (Zeyno Günenç), Tuna (Volkan Severcan)',
+    'Der Sohn heißt Emre, Spitzname „Havuç“, die Tochter Duygu.',
+    'Ehepaar Haluk und Meltem Çetinoğlu (Tamer Karadağlı, Pınar Altuğ) streitet sich ständig.',
+  ], [
+    'Yan karakterler: Gönül (Zeyno Günenç), Tuna (Volkan Severcan)',
+    'Oğlunun adı Emre, lakabı „Havuç“, kızının adı Duygu.',
+    'Haluk ve Meltem Çetinoğlu (Tamer Karadağlı, Pınar Altuğ) sürekli tartışır.',
+  ], 'Mit Pausen lief die Familien-Sitcom über 17 Jahre, das Ehepaar spielte in 464 Folgen.', 'Aralarla 17 yıl süren aile komedisinde başrol çift 464 bölümde oynadı.'],
+
+  ['2003–2012 · Kanal D, Star TV', 'Sihirli Annem', [], [
+    'Nebenfiguren: Cem, Ceren und das Adoptivkind Çilek',
+    'Großmutter Dudu (Nevra Serezli) hat noch mächtigere Kräfte.',
+    'İnci Türkay als Fee Betüş, verheiratet mit Sadık (Şahap Sayılgan)',
+  ], [
+    'Yan karakterler: Cem, Ceren ve evlatlık Çilek',
+    'Anneanne Dudu (Nevra Serezli) çok daha güçlüdür.',
+    'İnci Türkay, Sadık’la (Şahap Sayılgan) evli peri Betüş rolünde',
+  ], '240 Folgen in sieben Staffeln, 2021 kam ein Remake bei Exxen.', 'Yedi sezon 240 bölüm; 2021’de Exxen’de yeniden çekildi.'],
+
+  ['2003–2006 · Show TV, Kanal D', 'Hayat Bilgisi', [], [
+    'Nebenfiguren: Amil Sağlam (Tarık Papuççuoğlu), Hidayet Hoca, Cumhur Hoca',
+    'Schauplatz ist das Rıdvan-Kanat-Gymnasium in Kuzguncuk.',
+    'Perran Kutman als Lehrerin Afet, ihr kleiner Bruder heißt „Pikaçu“.',
+  ], [
+    'Yan karakterler: Amil Sağlam (Tarık Papuççuoğlu), Hidayet Hoca, Cumhur Hoca',
+    'Mekân Kuzguncuk’taki Rıdvan Kanat Lisesi.',
+    'Perran Kutman öğretmen Afet, küçük kardeşinin lakabı „Pikaçu“.',
+  ], 'Kerem Kupacı wurde als „Pikaçu“ zum Kinderstar der frühen 2000er.', 'Kerem Kupacı „Pikaçu“ olarak 2000’lerin başının çocuk yıldızı oldu.'],
+
+  ['2004–2007 · Show TV', 'Cennet Mahallesi', [], [
+    'Nebenfiguren: Muharrem (Ümit Yesin), Menekşe, Beter Ali, Kısmet Ana',
+    'Zeki Alasya spielt Kommissar Cemil, Alişan den Ferhat.',
+    'Melek Baykal als resolute Pembe, Çağla Şikel als Tochter Sultan',
+  ], [
+    'Yan karakterler: Muharrem (Ümit Yesin), Menekşe, Beter Ali, Kısmet Ana',
+    'Zeki Alasya Komiser Cemil, Alişan ise Ferhat rolünde.',
+    'Melek Baykal sert Pembe, Çağla Şikel kızı Sultan rolünde',
+  ], '119 Folgen in drei Staffeln, Çağla Şikel spielte zeitweise sogar eine „Roboter-Sultan“.', 'Üç sezon 119 bölüm; Çağla Şikel bir ara „Robot Sultan“ı bile oynadı.'],
+
+  ['2005–2007 · Show TV', 'Acı Hayat', ['Aci Hayat'], [
+    'Nebenfiguren: Ender und Filiz Kervancıoğlu, Hasan (Ahmet Yenilmez)',
+    'Ein Schweißer aus der Werft und eine Maniküristin wollen heiraten.',
+    'Kenan İmirzalıoğlu und Selin Demiratar als Mehmet und Nermin',
+  ], [
+    'Yan karakterler: Ender ve Filiz Kervancıoğlu, Hasan (Ahmet Yenilmez)',
+    'Tersanede kaynakçı bir genç ile manikürcü bir kız evlenmek ister.',
+    'Kenan İmirzalıoğlu ve Selin Demiratar, Mehmet ve Nermin rolünde',
+  ], '59 Folgen in zwei Staffeln, international verkauft unter dem Titel „Bitter Life“.', 'İki sezon 59 bölüm; yurt dışına „Bitter Life“ adıyla satıldı.'],
+
+  ['2006–2009 · Kanal D', 'Binbir Gece', ['1001 Gece', '1001 Nacht'], [
+    'Nebenfiguren: Kerem (Tardu Flordun), Bennu (Ceyda Düvenci)',
+    'Eine Architektin braucht Geld für ihren an Leukämie erkrankten Sohn Kaan.',
+    'Şehrazat (Bergüzar Korel) und ihr Chef Onur Aksal (Halit Ergenç)',
+  ], [
+    'Yan karakterler: Kerem (Tardu Flordun), Bennu (Ceyda Düvenci)',
+    'Bir mimar, lösemi hastası oğlu Kaan için paraya ihtiyaç duyar.',
+    'Şehrazat (Bergüzar Korel) ve patronu Onur Aksal (Halit Ergenç)',
+  ], '2014 lief sie als erste türkische Serie in Chile und holte dort rund 50 % Marktanteil.', '2014’te Şili’de yayınlanan ilk Türk dizisi oldu ve yaklaşık %50 izlenme payı aldı.'],
+
+  ['2006–2008 · atv', 'Hatırla Sevgili', ['Hatirla Sevgili'], [
+    'Nebenfiguren: Necdet (Okan Yalabık), Defne (Belçim Bilgin)',
+    'Türkische Politik von den späten 1950ern bis in die 80er, erzählt durch zwei Familien',
+    'Yasemin (Beren Saat) und Ahmet (Cansel Elçin) lieben sich trotz verfeindeter Lager.',
+  ], [
+    'Yan karakterler: Necdet (Okan Yalabık), Defne (Belçim Bilgin)',
+    '1950’lerin sonundan 80’lere Türk siyaseti, iki aile üzerinden anlatılır.',
+    'Yasemin (Beren Saat) ve Ahmet (Cansel Elçin) karşıt ailelere rağmen sevişir.',
+  ], 'Zwei Staffeln, 68 Folgen, für Beren Saat der Durchbruch vor „Aşk-ı Memnu“.', 'İki sezon 68 bölüm; Beren Saat için „Aşk-ı Memnu“ öncesi çıkış yaptığı dizi.'],
+
+  ['2006–2008 · atv', 'Sıla', ['Sila'], [
+    'Nebenrollen: Menderes Samancılar, Zeynep Eronat, Devrim Saltoğlu',
+    'Eine junge Frau aus dem Westen gerät durch einen Brauttausch (Berdel) in eine Aşiret.',
+    'Cansu Dere und Mehmet Akif Alakurt als Boran, gedreht in Mardin',
+  ], [
+    'Yan rollerde: Menderes Samancılar, Zeynep Eronat, Devrim Saltoğlu',
+    'Batıda büyümüş genç bir kadın berdel yüzünden bir aşirete gelin gider.',
+    'Cansu Dere ve Boran rolünde Mehmet Akif Alakurt, Mardin’de çekildi',
+  ], 'Gedreht wurde im Gästehaus von Midyat, das Fans heute als „Sıla Konağı“ besuchen.', 'Çekimler Midyat Konukevi’nde yapıldı; hayranlar orayı bugün „Sıla Konağı“ olarak ziyaret ediyor.'],
+
+  ['2006–2009 · atv', 'Selena', [], [
+    'Gegenspieler ist der dunkle Hades (Sinan Çalışkanoğlu).',
+    'Familie Aykar mit den Töchtern Selin, Leyla und Nazlı nimmt eine Hilfe ins Haus.',
+    'Sinem Kobal als Fee mit Zauberkräften',
+  ], [
+    'Kötü karakter karanlık Hades (Sinan Çalışkanoğlu).',
+    'Selin, Leyla ve Nazlı’nın babası Ekrem Aykar’ın evine biri gelir.',
+    'Sinem Kobal sihirli güçleri olan bir peri rolünde',
+  ], '104 Folgen Fantasy-Comedy, für Sinem Kobal der Durchbruch.', '104 bölümlük fantastik komedi, Sinem Kobal’ın çıkış dizisi oldu.'],
+
+  ['2006–2011 · Show TV', 'Doktorlar', [], [
+    'Chefarzt Haldun Göksun (Cüneyt Türel) leitet ein Elite-Krankenhaus.',
+    'Junge Assistenzärzte beginnen ihre Chirurgen-Ausbildung, adaptiert von „Grey’s Anatomy“.',
+    'Kutsi als Chirurg Levent Atahanlı',
+  ], [
+    'Başhekim Haldun Göksun (Cüneyt Türel) elit bir hastaneyi yönetir.',
+    'Genç asistanlar cerrahlık eğitimine başlar; „Grey’s Anatomy“ uyarlaması.',
+    'Kutsi, Op. Dr. Levent Atahanlı rolünde',
+  ], 'Vier Staffeln mit 97 Folgen, Startschuss war am 28. Dezember 2006.', '28 Aralık 2006’da başlayan dizi dört sezon ve 97 bölüm sürdü.'],
+
+  ['2007–2009 · atv', 'Elveda Rumeli', [], [
+    'Nebenfiguren: Tıbbiyeli Mustafa, Terzi Hasan, Kasap Cabbar',
+    'Ein osmanisches Dorf bei Manastır (Bitola) am Ende des 19. Jahrhunderts',
+    'Erdal Özyağcılar als Sütçü Ramiz mit fünf Töchtern',
+  ], [
+    'Yan karakterler: Tıbbiyeli Mustafa, Terzi Hasan, Kasap Cabbar',
+    '19. yüzyıl sonunda Manastır yakınlarında bir Osmanlı köyü',
+    'Erdal Özyağcılar, beş kızlı Sütçü Ramiz rolünde',
+  ], 'Drei Staffeln und 83 Folgen, die Handlung springt zwischen 1896 und 1907.', 'Üç sezon 83 bölüm; hikâye 1896 ile 1907 arasında geçer.'],
+
+  ['2007–2011 · Kanal D', 'Kavak Yelleri', [], [
+    'Nebenfiguren: Güven (Sarp Apak), Su (Ceren Moray)',
+    'Vier Jugendliche in der Ägäis-Kleinstadt Seferihisar, Vorlage: „Dawson’s Creek“',
+    'Deniz, Aslı, Efe und Mine: İbrahim Kendirci, Pelin Karahan, Dağhan Külegeç, Aslı Enver',
+  ], [
+    'Yan karakterler: Güven (Sarp Apak), Su (Ceren Moray)',
+    'Ege kasabası Seferihisar’da dört genç; „Dawson’s Creek“ uyarlaması',
+    'Deniz, Aslı, Efe ve Mine: İbrahim Kendirci, Pelin Karahan, Dağhan Külegeç, Aslı Enver',
+  ], 'Eigentlich als Sommerserie geplant, lief sie dann fünf Staffeln lang.', 'Aslında yaz dizisi olarak planlandı, sonra beş sezon sürdü.'],
+
+  ['2008–2012 · Kanal D', 'Akasya Durağı', ['Akasya Duragi'], [
+    'Nebenfiguren: Seyit (Onur Şan), Osman Ağa (Cezmi Baskın)',
+    'Levent Ülgen als Spieler und Frauenheld Sinan',
+    'Zeki Alasya als Nuri Baba, Chef eines Taxistands',
+  ], [
+    'Yan karakterler: Seyit (Onur Şan), Osman Ağa (Cezmi Baskın)',
+    'Levent Ülgen, şans oyunu tutkunu çapkın Sinan rolünde',
+    'Zeki Alasya, bir taksi durağının sahibi Nuri Baba',
+  ], 'Wie „Çiçek Taksi“ eine Erler-Film-Produktion: 174 Folgen in fünf Staffeln.', '„Çiçek Taksi“ gibi bir Erler Film yapımı: beş sezon 174 bölüm.'],
+
+  ['2009–2011 · Kanal D, Star TV', 'Geniş Aile', ['Genis Aile'], [
+    'Nebenfiguren: Ulvi, Mürsel, Zekai, Nazan',
+    'Koyu Bilal (Fırat Tanış) ist in Şükufe (Zuhal Topal) verliebt.',
+    'Ufuk Özkan als Cevahir, ältester Sohn der Familie Kirişçi',
+  ], [
+    'Yan karakterler: Ulvi, Mürsel, Zekai, Nazan',
+    'Koyu Bilal (Fırat Tanış), Şükufe’ye (Zuhal Topal) âşıktır.',
+    'Ufuk Özkan, Kirişçi ailesinin büyük oğlu Cevahir rolünde',
+  ], 'Halit Akçatepe, der Güdük Necmi aus „Hababam Sınıfı“, spielte hier Nadir.', '„Hababam Sınıfı“nın Güdük Necmi’si Halit Akçatepe burada Nadir’i oynadı.'],
+
+  ['2009–2011 · Kanal D', 'Hanımın Çiftliği', ['Hanimin Ciftligi'], [
+    'Nach dem Roman von Orhan Kemal, Schauplatz Adana',
+    'Nebenfiguren: Cemşir, Zaloğlu Ramazan, Berber Reşit, Halide',
+    'Baumwollarbeiterin Güllü (Özgü Namal) liebt Kemal (Caner Cindoruk), Gutsherr ist Muzaffer Bey.',
+  ], [
+    'Orhan Kemal’in romanından, Adana’da geçer',
+    'Yan karakterler: Cemşir, Zaloğlu Ramazan, Berber Reşit, Halide',
+    'Pamuk işçisi Güllü (Özgü Namal) Kemal’i (Caner Cindoruk) sever; ağa Muzaffer Bey.',
+  ], 'Mehmet Aslantuğ als Muzaffer Bey war einer der meistgehassten Fernsehbösewichte seiner Zeit.', 'Muzaffer Bey rolündeki Mehmet Aslantuğ dönemin en sevilmeyen kötülerinden oldu.'],
+
+  ['2009–2011 · atv', 'Ezel', [], [
+    'Frei nach „Der Graf von Monte Christo“ von Alexandre Dumas',
+    'Nebenfiguren: Ramiz Dayı (Tuncel Kurtiz), Kerpeten Ali, Cengiz, Eyşan',
+    'Ömer wird von Freunden verraten und kehrt mit neuem Gesicht zurück (Kenan İmirzalıoğlu).',
+  ], [
+    'Alexandre Dumas’nın „Monte Kristo Kontu“ndan esinlenildi',
+    'Yan karakterler: Ramiz Dayı (Tuncel Kurtiz), Kerpeten Ali, Cengiz, Eyşan',
+    'Ömer arkadaşlarınca ihanete uğrar, yeni yüzle geri döner (Kenan İmirzalıoğlu).',
+  ], 'Eine der meistadaptierten türkischen Serien: Remakes gab es u. a. in Russland, Mexiko und der Ukraine.', 'Yurt dışında en çok uyarlanan Türk dizilerinden: Rusya, Meksika ve Ukrayna’da yeniden çekildi.'],
+
+  ['1988 · TRT 1', 'Kuruluş Osmancık', ['Kurulus Osmancik', 'Osmancık'], [
+    'Nebenfiguren: Şeyh Edebali, Malhun Hatun, Ayna Melek, Gündüz Bey',
+    'Drehbuch vom Schriftsteller Tarık Buğra, nach seinem eigenen Roman',
+    'Cihan Ünal als Osman Gazi, Gründer des Osmanischen Reichs',
+  ], [
+    'Yan karakterler: Şeyh Edebali, Malhun Hatun, Ayna Melek, Gündüz Bey',
+    'Senaryo, kendi romanından yola çıkan Tarık Buğra’ya ait',
+    'Cihan Ünal, Osmanlı’nın kurucusu Osman Gazi rolünde',
+  ], 'Fast 30 Jahre vor „Diriliş: Ertuğrul“ erzählte TRT schon die Gründung des Osmanischen Reichs.', '„Diriliş: Ertuğrul“dan neredeyse 30 yıl önce TRT, Osmanlı’nın kuruluşunu anlatmıştı.'],
+
+  ['1996–2001 · Kanal D, Show TV', 'Çılgın Bediş', ['Cilgin Bedis'], [
+    'Vorlage ist eine Comicfigur der Zeichnerin Özden Öğrük.',
+    'Nebenfiguren: Basketballer Oktay (Cenk Torun), Mükü, Necmi Dede',
+    'Popstar Yonca Evcimik als verträumte, kunstbegeisterte Schülerin',
+  ], [
+    'Çizer Özden Öğrük’ün çizgi karakterinden uyarlandı.',
+    'Yan karakterler: basketbolcu Oktay (Cenk Torun), Mükü, Necmi Dede',
+    'Pop yıldızı Yonca Evcimik, hayalperest ve sanatsever bir liseli rolünde',
+  ], '70 Folgen in vier Staffeln, gleichzeitig war Yonca Evcimik eine der größten Popsängerinnen der 90er.', 'Dört sezon 70 bölüm; Yonca Evcimik aynı dönemde 90’ların en büyük pop yıldızlarındandı.'],
+
+  ['1997–2003 · Show TV', 'Sıdıka', ['Sidika'], [
+    'Nebenfiguren: Baturalp, Şon Li und die „Apartman Yengesi“',
+    'Vater Zekeriya (Ali Erkazan) ist ungeduldig und herrisch, Mutter Safiye hält zusammen.',
+    'Hasibe Eren als Haushaltshilfe aus einem Istanbuler Randviertel',
+  ], [
+    'Yan karakterler: Baturalp, Şon Li ve Apartman Yengesi',
+    'Baba Zekeriya (Ali Erkazan) sabırsız ve otoriter, anne Safiye aileyi bir arada tutar.',
+    'Hasibe Eren, İstanbul’un kenar mahallesinden bir gündelikçi rolünde',
+  ], 'Die Sitcom machte Hasibe Eren zum Star, gezeigt wurden 98 Folgen.', 'Sitcom Hasibe Eren’i yıldız yaptı; toplam 98 bölüm yayınlandı.'],
+
+  ['1998–2001 · Kanal D', 'Ruhsar', [], [
+    'Nebenfiguren: Menkıbe und Firdevs Mahmutoğlu, Müfit, Şelale',
+    'Fantasy-Komödie über eine Liebe, die nicht einmal der Tod beenden kann',
+    'Hande Ataizi in der Titelrolle, Cem Davran als Mazhar',
+  ], [
+    'Yan karakterler: Menkıbe ve Firdevs Mahmutoğlu, Müfit, Şelale',
+    'Ölümün bile bitiremediği bir aşkı anlatan fantastik komedi',
+    'Hande Ataizi baş rolde, Cem Davran Mazhar rolünde',
+  ], 'Fünf Staffeln mit 108 Folgen, Cem Davran wurde als Mazhar zum Publikumsliebling.', 'Beş sezon ve 108 bölüm; Cem Davran, Mazhar rolüyle sevildi.'],
+
+  ['1999–2002 · Kanal D', 'Yılan Hikayesi', ['Yilan Hikayesi', 'Yılan Hikâyesi'], [
+    'Çetin Tekindor spielt den Gangster „Kral“.',
+    'Kommissar Cem (Nail Kırmızıgül) und sein Chef Başkomiser Kemal (Süleyman Turan)',
+    'Memet Ali Alabora als Polizist „Memoli“, mit Meltem Cumbul',
+  ], [
+    'Çetin Tekindor, „Kral“ lakaplı gangster rolünde',
+    'Komiser Cem (Nail Kırmızıgül) ve amiri Başkomiser Kemal (Süleyman Turan)',
+    'Memet Ali Alabora, polis „Memoli“ rolünde, yanında Meltem Cumbul',
+  ], 'Der Titel ist eine Redewendung für eine Geschichte, die kein Ende nimmt.', 'Dizinin adı, bitmek bilmeyen bir hikâye için kullanılan bir deyimdir.'],
+
+  ['2000–2003 · TRT 1', 'Yedi Numara', ['7 Numara'], [
+    'Die Vermieter Vahit und Zeliha bekommen Besuch von den Cousins Haydar und Recep vom Dorf.',
+    'Vier Studentinnen ziehen in ein altes Holzhaus in Istanbul.',
+    'Armağan, Cansu, Rüya und Ayten, die TRT-Sitcom der frühen 2000er',
+  ], [
+    'Ev sahipleri Vahit ile Zeliha’ya köyden kuzenleri Haydar ve Recep gelir.',
+    'Dört üniversiteli kız İstanbul’da eski bir ahşap evin üst katına taşınır.',
+    'Armağan, Cansu, Rüya ve Ayten: 2000’lerin başının TRT sitcomu',
+  ], 'Die TRT-Sitcom lief von Oktober 2000 bis Juni 2003.', 'TRT sitcomu Ekim 2000’den Haziran 2003’e kadar sürdü.'],
+
+  ['2001–2004 · Show TV', 'Tatlı Hayat', ['Tatli Hayat'], [
+    'Nebenfiguren: Menekşe (Asuman Dabak) und İrfan',
+    'Nachbarn: Feraye und Yorgo Kasapoğlu (Çolpan İlhan, Neco)',
+    'Haluk Bilginer und Türkan Şoray als Ehepaar İhsan und Sevinç Yıldırım',
+  ], [
+    'Yan karakterler: Menekşe (Asuman Dabak) ve İrfan',
+    'Komşular: Feraye ve Yorgo Kasapoğlu (Çolpan İlhan, Neco)',
+    'Haluk Bilginer ve Türkan Şoray, İhsan ve Sevinç Yıldırım çifti',
+  ], 'Türkan Şoray, die „Sultan“ des Yeşilçam-Kinos, spielte hier Sitcom: 104 Folgen lang.', 'Yeşilçam’ın „Sultan“ı Türkan Şoray burada 104 bölüm boyunca sitcom oynadı.'],
+
+  ['2002–2007 · TRT 1, Star TV', 'En Son Babalar Duyar', [], [
+    'Nebenfiguren: Müjgan (Ayşegül Atik), Hülya (Hatice Aslan)',
+    'Ali Sunal, Sohn von Kemal Sunal, spielt Mustafa.',
+    'Familienvater Mehmet (Ali Erkazan) erfährt alles immer zuletzt.',
+  ], [
+    'Yan karakterler: Müjgan (Ayşegül Atik), Hülya (Hatice Aslan)',
+    'Kemal Sunal’ın oğlu Ali Sunal, Mustafa rolünde',
+    'Aile babası Mehmet (Ali Erkazan) her şeyi hep en son öğrenir.',
+  ], 'Start bei TRT 1, später Wechsel zu Star TV, mit dabei auch Levent Ülgen.', 'Önce TRT 1’de başladı, sonra Star TV’ye geçti; kadroda Levent Ülgen de vardı.'],
+
+  ['2002–2003 · Kanal D', 'Gülbeyaz', ['Gulbeyaz'], [
+    'Die Schwarzmeer-Szenen entstanden in Amasra und Kurucaşile.',
+    'Nebenfiguren: Demir Ağa (Kamran Usluer), Beyaz Ana (Meral Çetinkaya)',
+    'Romeo und Julia am Schwarzen Meer: Şevval Sam und Nejat İşler als Kadir',
+  ], [
+    'Karadeniz sahneleri Amasra ve Kurucaşile’de çekildi.',
+    'Yan karakterler: Demir Ağa (Kamran Usluer), Beyaz Ana (Meral Çetinkaya)',
+    'Karadeniz’de Romeo ile Juliet: Şevval Sam ve Kadir rolünde Nejat İşler',
+  ], 'Nur eine Staffel, trotzdem gilt sie vielen als beste Schwarzmeer-Serie aller Zeiten.', 'Tek sezon sürdü ama çoğu kişiye göre tüm zamanların en iyi Karadeniz dizisi.'],
+
+  ['2002–2004 · Kanal D', 'Kınalı Kar', ['Kinali Kar'], [
+    'Gedreht in Bursa',
+    'Nebenfiguren: Cabbar Ağa (Mustafa Avkıran), Süreyya (Nurseli İdiz), Halil Bey',
+    'Sänger Emrah als Ali Yılmaz, Özlem Conker als Nazar',
+  ], [
+    'Bursa’da çekildi',
+    'Yan karakterler: Cabbar Ağa (Mustafa Avkıran), Süreyya (Nurseli İdiz), Halil Bey',
+    'Şarkıcı Emrah Ali Yılmaz, Özlem Conker Nazar rolünde',
+  ], 'Arabesk-Star Emrah, als Kinderstar aus Yeşilçam-Filmen bekannt, spielte hier die Hauptrolle.', 'Yeşilçam filmlerinin çocuk yıldızı, arabesk şarkıcısı Emrah burada başroldeydi.'],
+
+  ['2003–2004 · Kanal D', 'Lise Defteri', [], [
+    'Gedreht am Kabataş Erkek Lisesi in Istanbul',
+    'Nebenfiguren: İnci (Sinem Kobal), Nil (Ece Erken), Güney (Selin Demiratar)',
+    'Sänger Emre Altuğ als Kerim, Arda Kural als Ediz',
+  ], [
+    'Kabataş Erkek Lisesi’nde çekildi',
+    'Yan karakterler: İnci (Sinem Kobal), Nil (Ece Erken), Güney (Selin Demiratar)',
+    'Şarkıcı Emre Altuğ Kerim, Arda Kural Ediz rolünde',
+  ], 'Nur eine Staffel, produziert vom Regisseur Mustafa Altıoklar.', 'Yalnızca tek sezon sürdü; yapımcısı yönetmen Mustafa Altıoklar’dı.'],
+
+  ['2004–2005 · Kanal D', 'Çemberimde Gül Oya', ['Cemberimde Gul Oya'], [
+    'Regie und Buch: Çağan Irmak',
+    'Die Studenten Yurdanur und Mehmet aus verschiedenen Schichten verlieben sich.',
+    'Türkei in den 70ern bis zum Militärputsch vom 12. September 1980',
+  ], [
+    'Yönetmen ve senarist: Çağan Irmak',
+    'Farklı sınıflardan üniversiteli Yurdanur ile Mehmet birbirine âşık olur.',
+    '70’lerden 12 Eylül 1980 darbesine kadar Türkiye',
+  ], 'Nur 40 Folgen, gilt aber bis heute als eine der besten Zeitgeist-Serien über die 70er.', 'Sadece 40 bölüm sürdü ama 70’leri anlatan en iyi dizilerden biri sayılır.'],
+
+  ['2004–2006 · Kanal D', 'Aliye', [], [
+    'Nebenfiguren: Feyyaz (İlhan Şeşen), Nusret (Ülkü Duru), Dr. Deniz (Nejat İşler)',
+    'Ein Familiendrama in der Türkei der 1970er-Jahre',
+    'Sanem Çelik in der Titelrolle, Halit Ergenç als ihr Mann Sinan Karahan',
+  ], [
+    'Yan karakterler: Feyyaz (İlhan Şeşen), Nusret (Ülkü Duru), Dr. Deniz (Nejat İşler)',
+    '1970’lerin Türkiye’sinde geçen bir aile dramı',
+    'Sanem Çelik baş rolde, Halit Ergenç eşi Sinan Karahan rolünde',
+  ], 'Sänger İlhan Şeşen spielte hier eine Hauptrolle als Feyyaz.', 'Şarkıcı İlhan Şeşen burada Feyyaz rolüyle başrollerden birindeydi.'],
+
+  ['2005–2007 · Kanal D', 'Kırık Kanatlar', ['Kirik Kanatlar'], [
+    'Nebenfiguren: Yüzbaşı Şahin (Sermiyan Midyat), Çavuş Yunus, Nevzat',
+    'Eine Kleinstadt an der Ägäis in den Jahren des Unabhängigkeitskriegs',
+    'Hauptmann Cemal (Cansel Elçin) verliebt sich in Nazlı (Özge Özberk).',
+  ], [
+    'Yan karakterler: Yüzbaşı Şahin (Sermiyan Midyat), Çavuş Yunus, Nevzat',
+    'Kurtuluş Savaşı yıllarında bir Ege kasabası',
+    'Yüzbaşı Cemal (Cansel Elçin), Nazlı’ya (Özge Özberk) âşık olur.',
+  ], 'Eine Avşar-Film-Produktion, die bis zur Ausrufung der Republik 1923 erzählt.', 'Cumhuriyet’in ilanına kadar uzanan bir Avşar Film yapımı.'],
+
+  ['2006–2007 · Kanal D', 'Fırtına', ['Firtina'], [
+    'Nebenfiguren: Sakine (Zerrin Sümer), Abdullah Hoca (Erkan Can), Feraye (Ayşen Gruda)',
+    'BKM-Komödie aus einem grünen Dorf bei Trabzon',
+    'Ali und Zeynep: Murat Yıldırım und Burçin Terzioğlu',
+  ], [
+    'Yan karakterler: Sakine (Zerrin Sümer), Abdullah Hoca (Erkan Can), Feraye (Ayşen Gruda)',
+    'Trabzon’un yemyeşil bir köyünde geçen BKM komedisi',
+    'Ali ve Zeynep: Murat Yıldırım ve Burçin Terzioğlu',
+  ], 'Der Titel kommt vom gleichnamigen Fluss im Schwarzmeergebiet.', 'Dizi adını Karadeniz’deki aynı adlı dereden alır.'],
+
+  ['2007–2009 · Show TV', 'Dudaktan Kalbe', [], [
+    'Nach dem Roman von Reşat Nuri Güntekin',
+    'Nebenfiguren: Saib Paşazade (Köksal Engür), Leyla Paşazade',
+    'Die arme Waise Lamia (Aslı Tandoğan) liebt den Musiker Kenan (Burak Hakkı).',
+  ], [
+    'Reşat Nuri Güntekin’in romanından uyarlama',
+    'Yan karakterler: Saib Paşazade (Köksal Engür), Leyla Paşazade',
+    'Yoksul yetim Lamia (Aslı Tandoğan), müzisyen Kenan’a (Burak Hakkı) âşık olur.',
+  ], 'Zwei Staffeln, 75 Folgen, produziert von Ay Yapım wie später „Aşk-ı Memnu“.', 'İki sezon 75 bölüm; „Aşk-ı Memnu“yu da yapan Ay Yapım’ın dizisi.'],
+
+  ['2002–2004 · atv', 'Zerda', [], [
+    'Ab Folge 42 übernimmt Halit Ergenç als Devran die männliche Hauptrolle.',
+    'Nebenfiguren: Mahmut Ağa (Burak Sergen), Sultan (Güven Hokna), Sıddık',
+    'Ece Uslu kämpft gegen Traditionen, Sänger Yavuz Bingöl spielt Şahin Ağa.',
+  ], [
+    '42. bölümden itibaren Halit Ergenç, Devran rolüyle başrole geçer.',
+    'Yan karakterler: Mahmut Ağa (Burak Sergen), Sultan (Güven Hokna), Sıddık',
+    'Ece Uslu törelere karşı savaşır, şarkıcı Yavuz Bingöl Şahin Ağa rolünde.',
+  ], 'Nach dem Ausstieg von Yavuz Bingöl wurde die Geschichte mit einem neuen Helden weitererzählt.', 'Yavuz Bingöl’ün ayrılmasından sonra hikâye yeni bir kahramanla devam etti.'],
+
+  ['2004–2006 · Kanal D', 'Haziran Gecesi', [], [
+    'Die Musik stammt von Gökhan Kırdar, Nebahat Çehre spielt Kumru Aydın.',
+    'Ein Vater von drei Kindern trifft eine Frau, die seiner toten großen Liebe gleicht.',
+    'Özcan Deniz als Baran zwischen Havin (Naz Elmas) und Duygu (Burcu Kara)',
+  ], [
+    'Müzikler Gökhan Kırdar’dan, Kumru Aydın’ı Nebahat Çehre oynar.',
+    'Üç çocuk babası bir adam, ölen büyük aşkına benzeyen bir kadınla karşılaşır.',
+    'Özcan Deniz, Havin (Naz Elmas) ile Duygu (Burcu Kara) arasında kalan Baran',
+  ], 'Nach „Asmalı Konak“ der nächste große Liebesdrama-Erfolg für Özcan Deniz, 62 Folgen lang.', '„Asmalı Konak“tan sonra Özcan Deniz’in 62 bölümlük bir sonraki büyük aşk dizisi.'],
+
+  ['2007–2008 · Kanal D', 'Menekşe ile Halil', ['Menekse ile Halil'], [
+    'Regie: Uluç Bayraktar, Buch: Ece Yörenç und Melek Gençoğlu',
+    'Nebenfiguren aus der Familie Doğantürk: Kadir, Yusuf (Fırat Tanış), Zarif, Hasan',
+    'Kıvanç Tatlıtuğ und Sedef Avcı als junges Liebespaar',
+  ], [
+    'Yönetmen Uluç Bayraktar, senaristler Ece Yörenç ve Melek Gençoğlu',
+    'Doğantürk ailesinden yan karakterler: Kadir, Yusuf (Fırat Tanış), Zarif, Hasan',
+    'Kıvanç Tatlıtuğ ve Sedef Avcı genç bir çifti oynar',
+  ], 'Kıvanç Tatlıtuğs Serie zwischen „Gümüş“ und „Aşk-ı Memnu“, nach nur einer Staffel beendet.', 'Kıvanç Tatlıtuğ’un „Gümüş“ ile „Aşk-ı Memnu“ arasındaki dizisi, tek sezonda bitti.'],
+
+  ['2007–2010 · FOX', 'Bez Bebek', [], [
+    'Nur drei Menschen dürfen ihr Geheimnis erfahren.',
+    'Hakan, ein Witwer, verliebt sich in sie, obwohl er mit Simge verlobt ist.',
+    'Evrim Akın als Puppe Nana, die sich zum 100. Geburtstag wünscht, ein Mensch zu sein',
+  ], [
+    'Sırrını yalnızca üç kişi öğrenebilir.',
+    'Dul Hakan, Simge ile nişanlı olmasına rağmen ona âşık olur.',
+    'Evrim Akın, 100. doğum gününde insan olmayı dileyen oyuncak Nana rolünde',
+  ], '101 Folgen in drei Staffeln, ab 2018 liefen Wiederholungen auf a2.', 'Üç sezon 101 bölüm; 2018’den itibaren a2’de tekrar yayınlandı.'],
+
+  ['2009 · Kanal D', 'Bir Bulut Olsam', [], [
+    'Drehbuchautorin Meral Okay spielt selbst İnci Batur.',
+    'Ein idealistischer Arzt (Engin Altan Düzyatan) wird in den Südosten versetzt.',
+    'Engin Akyürek als besessener Mustafa, Melisa Sözen als Narin',
+  ], [
+    'Senarist Meral Okay, İnci Batur rolünde kendisi oynar.',
+    'İdealist bir doktor (Engin Altan Düzyatan) Güneydoğu’ya tayin edilir.',
+    'Engin Akyürek takıntılı Mustafa, Melisa Sözen ise Narin rolünde',
+  ], 'Autorin Meral Okay schrieb danach den Welterfolg „Muhteşem Yüzyıl“.', 'Senarist Meral Okay ardından dünya çapında başarı kazanan „Muhteşem Yüzyıl“ı yazdı.'],
+
+  ['2009–2013 · TRT 1', 'Sakarya Fırat', ['Sakarya Firat'], [
+    'Nebenfiguren: Durali Tahtakılıç, Albay Hüsamettin, Fatma Kanat (Zerrin Sümer)',
+    'Nach einem Anschlag auf eine Gendarmeriestation in Şırnak beginnt der Kampf.',
+    'Tayanç Ayaydın als Osman Kanat, verliebt in die Anwältin Nihan',
+  ], [
+    'Yan karakterler: Durali Tahtakılıç, Albay Hüsamettin, Fatma Kanat (Zerrin Sümer)',
+    'Şırnak’ta bir jandarma karakoluna yapılan saldırıyla mücadele başlar.',
+    'Tayanç Ayaydın Osman Kanat rolünde, avukat Nihan’a âşık',
+  ], 'Der Titel verbindet zwei Flüsse, einen im Westen und einen im Osten der Türkei, 151 Folgen.', 'Dizinin adı batıdan ve doğudan iki nehri birleştirir; 151 bölüm sürdü.'],
+
+  ['2009–2015 · FOX, Star TV, Show TV', 'Deniz Yıldızı', ['Deniz Yildizi'], [
+    'Nebenfiguren: Bahri, Pelin, Özgür, İkbal, Yusuf',
+    'Banu (Begüm Topçu) und Melih (Cantuğ Turay), die auch privat ein Paar wurden',
+    'Tägliche Serie mit fast 1300 Folgen, der Titel bedeutet „Seestern“.',
+  ], [
+    'Yan karakterler: Bahri, Pelin, Özgür, İkbal, Yusuf',
+    'Banu (Begüm Topçu) ve Melih (Cantuğ Turay), gerçek hayatta da evlendiler',
+    'Yaklaşık 1300 bölümlük günlük dizi, adı Almanca „Seestern“ demek.',
+  ], 'Mit 1287 Folgen in sieben Staffeln eine der folgenreichsten türkischen Serien überhaupt.', 'Yedi sezonda 1287 bölümle en çok bölüme sahip Türk dizilerinden.'],
+]);
+
+</script>
+<script>
+// Kategorie „diziler“ (Erstausstrahlung ab 2010) – Zeile: [Jahre · Sender, Titel, [weitere akzeptierte Antworten], [Hinweise DE schwer→leicht], [Hinweise TR gleiche Reihenfolge], Fakt DE, Fakt TR]
+QZ('diziler', 'clue', [
+  ['2011–2014 · Show TV, Star TV', 'Muhteşem Yüzyıl', ['Magnificent Century'], [
+    'Ein Sklave aus Parga steigt zum Großwesir auf, bis sein Jugendfreund ihn hinrichten lässt.',
+    'Halit Ergenç spielt den Herrscher, die Kasselerin Meryem Uzerli seine Lieblingsfrau.',
+    '„Hürrem Sultan“ und Kanuni Sultan Süleyman im Topkapı-Palast',
+  ], [
+    'Pargalı bir köle sadrazamlığa yükselir, ta ki çocukluk dostu onu idam ettirene dek.',
+    'Padişahı Halit Ergenç, gözdesini Kasselli Meryem Uzerli oynar.',
+    '„Hürrem Sultan“ ve Kanuni Sultan Süleyman, Topkapı Sarayı’nda',
+  ], 'Erdoğan kritisierte 2012 öffentlich, die Serie zeige den Sultan zu viel im Harem statt auf Feldzügen.', 'Erdoğan 2012’de dizinin padişahı seferde değil haremde gösterdiğini söyleyerek eleştirdi.'],
+
+  ['2015–2017 · Star TV, FOX', 'Muhteşem Yüzyıl: Kösem', ['Kösem', 'Kösem Sultan', 'Magnificent Century Kösem'], [
+    'Die Griechin Anastasia wird in den Harem gebracht und gewinnt das Herz von Sultan Ahmed I.',
+    'Beren Saat spielt die junge Titelheldin, in Staffel 2 übernimmt Nurgül Yeşilçay.',
+    'Ableger der Hürrem-Saga über die Mutter von Murad IV. und Sultan İbrahim',
+  ], [
+    'Rum kızı Anastasia hareme getirilir ve Sultan I. Ahmed’in kalbini kazanır.',
+    'Genç halini Beren Saat oynar, 2. sezonda rolü Nurgül Yeşilçay devralır.',
+    'Hürrem dizisinin devamı: IV. Murad ile Sultan İbrahim’in annesinin hikâyesi',
+  ], 'Nach Staffel 1 wechselte die Serie von Star TV zu FOX, nach einem Zeitsprung mit neuer Hauptbesetzung.', '1. sezondan sonra Star TV’den FOX’a geçti; zaman atlamasıyla başrol kadrosu değişti.'],
+
+  ['2010–2013, 2019 · Star TV, BluTV', 'Behzat Ç.', ['Behzat Ç. Bir Ankara Polisiyesi'], [
+    'Ein zynischer, trinkender Kommissar jagt Mörder durch die Hauptstadt und flucht dabei ständig.',
+    'Sein Team: Harun, Akbaba, Cevdet und Hayalet',
+    'Erdal Beşikçioğlu als Ankaraner Polizist mit abgekürztem Nachnamen',
+  ], [
+    'Alaycı ve içkici bir başkomiser başkentte katil kovalar, ağzından küfür eksik olmaz.',
+    'Ekibi: Harun, Akbaba, Cevdet ve Hayalet',
+    'Erdal Beşikçioğlu, soyadı kısaltılmış Ankaralı polis',
+  ], 'Es folgten zwei Kinofilme, 2019 kehrte die Serie nach sechs Jahren Pause für eine Staffel bei BluTV zurück.', 'İki sinema filmi çekildi; dizi altı yıl aradan sonra 2019’da BluTV’de bir sezonluğuna döndü.'],
+
+  ['2011–2013, 2021 · TRT 1, Exxen', 'Leyla ile Mecnun', [], [
+    'Zwei am selben Tag geborene Babys liegen Bett an Bett, die Familien versprechen sie per „beşik kertmesi“.',
+    'Nebenfiguren: İsmail Abi, Erdal Bakkal, Yavuz',
+    'Absurde Kult-Comedy von Onur Ünlü mit Ali Atay, gedreht in Kireçburnu am Bosporus',
+  ], [
+    'Aynı gün aynı hastanede doğan iki bebek yan yana yatırılır, aileler beşik kertmesi yapar.',
+    'Yan karakterler: İsmail Abi, Erdal Bakkal, Yavuz',
+    'Onur Ünlü’nün Ali Atay’lı absürt kült komedisi, Kireçburnu’nda çekildi',
+  ], 'Nach der Absetzung durch TRT kam 2021, acht Jahre später, eine vierte Staffel bei Exxen.', 'TRT’nin bitirmesinden sekiz yıl sonra, 2021’de Exxen’de 4. sezonla geri döndü.'],
+
+  ['2010–2012 · Kanal D', 'Fatmagül’ün Suçu Ne?', ['Fatmagül'], [
+    'Nach einer Vergewaltigung in einem ägäischen Ort wird die junge Frau mit einem der Anwesenden verheiratet.',
+    'Nebenfiguren: Mukaddes, Rahmi, Selim, Erdoğan, Vural',
+    'Beren Saat und Engin Akyürek als Kerim Ilgaz',
+  ], [
+    'Ege’de bir kasabada tecavüze uğrayan genç kız, olay yerindekilerden biriyle evlendirilir.',
+    'Yan karakterler: Mukaddes, Rahmi, Selim, Erdoğan, Vural',
+    'Beren Saat ve Kerim Ilgaz rolünde Engin Akyürek',
+  ], 'Neuverfilmung des Kinofilms von 1986 mit Hülya Avşar; in Lateinamerika ein Riesenerfolg.', '1986’daki Hülya Avşar filminin yeniden çevrimi; Latin Amerika’da büyük hit oldu.'],
+
+  ['2011–2013 · Kanal D', 'Kuzey Güney', [], [
+    'Nach einem Unfall geht ein Bruder für den anderen ins Gefängnis, danach lieben beide dieselbe Frau.',
+    'Nebenfiguren: Cemre, Banu, Barış',
+    'Kıvanç Tatlıtuğ und Buğra Gülsoy als verfeindete Brüder Tekinoğlu',
+  ], [
+    'Bir kazadan sonra kardeşlerden biri öbürü için hapse girer, sonra ikisi aynı kıza âşık olur.',
+    'Yan karakterler: Cemre, Banu, Barış',
+    'Kıvanç Tatlıtuğ ve Buğra Gülsoy, birbirine düşman Tekinoğlu kardeşler',
+  ], 'Basiert auf dem US-Roman „Rich Man, Poor Man“ von Irwin Shaw.', 'Irwin Shaw’un „Rich Man, Poor Man“ romanından uyarlandı.'],
+
+  ['2014–2019 · TRT 1', 'Diriliş: Ertuğrul', ['Resurrection Ertugrul'], [
+    'Ein Stamm im 13. Jahrhundert kämpft gegen Templer, Mongolen und Byzantiner.',
+    'Nebenfiguren: Halime Sultan, Bamsı, Turgut Alp, Hayme Ana',
+    'Engin Altan Düzyatan als Kayı-Krieger und Vater des Reichsgründers Osman',
+  ], [
+    '13. yüzyılda bir obanın Tapınakçılar, Moğollar ve Bizans’a karşı mücadelesi',
+    'Yan karakterler: Halime Sultan, Bamsı, Turgut Alp, Hayme Ana',
+    'Engin Altan Düzyatan, Kayı alpi ve Osman Gazi’nin babası',
+  ], 'In Pakistan wurde sie 2020 auf Urdu ausgestrahlt und zum Straßenfeger.', 'Pakistan’da 2020’de Urduca yayınlandı ve rekorlar kırdı.'],
+
+  ['2019– · atv', 'Kuruluş: Osman', ['Kurulus Osman', 'Establishment Osman'], [
+    'Der Sohn eines Kayı-Beys legt um 1300 den Grundstein für ein Reich, das über 600 Jahre hält.',
+    'Nebenfiguren: Bala Hatun, Malhun Hatun, Boran Alp',
+    'Burak Özçivit in der Fortsetzung der Ertuğrul-Saga',
+  ], [
+    'Bir Kayı beyinin oğlu, 1300’lere doğru 600 yıl sürecek bir devletin temelini atar.',
+    'Yan karakterler: Bala Hatun, Malhun Hatun, Boran Alp',
+    'Burak Özçivit, Ertuğrul destanının devamında',
+  ], 'Produzent Mehmet Bozdağ setzte damit direkt „Diriliş: Ertuğrul“ fort.', 'Yapımcı Mehmet Bozdağ, „Diriliş: Ertuğrul“un hikâyesini doğrudan sürdürdü.'],
+
+  ['2017–2021 · Show TV', 'Çukur', ['The Pit'], [
+    'Der jüngste Sohn einer Clanfamilie kehrt zurück, um sein Viertel gegen Drogen zu verteidigen.',
+    'Nebenfiguren: Vartolu, Cumali, Celasun, Medet',
+    'Aras Bulut İynemli als Yamaç Koçovalı',
+  ], [
+    'Bir aile çetesinin en küçük oğlu, mahallesini uyuşturucuya karşı korumak için geri döner.',
+    'Yan karakterler: Vartolu, Cumali, Celasun, Medet',
+    'Yamaç Koçovalı rolünde Aras Bulut İynemli',
+  ], 'Gedreht im Istanbuler Viertel Balat, das danach zum Pilgerort für Fans wurde.', 'İstanbul Balat’ta çekildi; semt sonra hayranların uğrak yeri oldu.'],
+
+  ['2013–2015 · Star TV', 'Medcezir', [], [
+    'Ein Junge aus armen Verhältnissen wird von einem reichen Anwalt in eine Villa am Meer geholt.',
+    'Nebenfiguren: Mira, Mert, Eylül, Selim Serez',
+    'Çağatay Ulusoy und Serenay Sarıkaya im Remake von „O.C., California“',
+  ], [
+    'Yoksul bir genç, zengin bir avukat tarafından deniz kenarındaki bir köşke getirilir.',
+    'Yan karakterler: Mira, Mert, Eylül, Selim Serez',
+    'Çağatay Ulusoy ve Serenay Sarıkaya, „The O.C.“ uyarlamasında',
+  ], 'Der Titel bedeutet „Ebbe und Flut“.', 'Adı „gelgit“ anlamına gelir.'],
+
+  ['2015–2017 · Star TV', 'Kiralık Aşk', ['Love for Rent'], [
+    'Eine Kellnerin wird dafür bezahlt, einen arroganten Schuhdesigner verliebt zu machen.',
+    'Die Tante Neriman zieht im Hintergrund die Fäden.',
+    'Elçin Sangu als Defne und Barış Arduç als Ömer İplikçi',
+  ], [
+    'Bir garson kıza, kibirli bir ayakkabı tasarımcısını kendine âşık etmesi için para verilir.',
+    'İpleri perde arkasında Neriman teyze çeker.',
+    'Defne rolünde Elçin Sangu, Ömer İplikçi rolünde Barış Arduç',
+  ], 'International lief die romantische Komödie als „Love for Rent“.', 'Romantik komedi yurt dışında „Love for Rent“ adıyla yayınlandı.'],
+
+  ['2018–2019 · Star TV', 'Erkenci Kuş', ['DayDreamer'], [
+    'Eine Träumerin will nach Italien, landet aber in einer Werbeagentur bei ihrem wortkargen Chef.',
+    'Nebenfiguren: Emre, Ceyda, Leyla, Aziz Divit',
+    'Can Yaman und Demet Özdemir als Can und Sanem',
+  ], [
+    'Hayalperest bir kız İtalya’ya gitmek isterken bir reklam ajansında suskun patronunun yanında bulur kendini.',
+    'Yan karakterler: Emre, Ceyda, Leyla, Aziz Divit',
+    'Can ve Sanem rolünde Can Yaman ile Demet Özdemir',
+  ], 'Als „DayDreamer“ machte sie Can Yaman in Italien zum Superstar.', '„DayDreamer“ adıyla Can Yaman’ı İtalya’da süperstar yaptı.'],
+
+  ['2015–2017 · Star TV', 'Kara Sevda', ['Endless Love'], [
+    'Ein armer Ingenieur verliert seine große Liebe, die einen skrupellosen Geschäftsmann heiraten muss.',
+    'Bösewicht: Emir Kozcuoğlu (Kaan Urgancıoğlu)',
+    'Burak Özçivit und Neslihan Atagül als Kemal und Nihan',
+  ], [
+    'Yoksul bir mühendis, büyük aşkının acımasız bir iş adamıyla evlenmek zorunda kalmasıyla yıkılır.',
+    'Kötü adam: Emir Kozcuoğlu (Kaan Urgancıoğlu)',
+    'Kemal ve Nihan rolünde Burak Özçivit ile Neslihan Atagül',
+  ], 'Gewann 2017 als erste türkische Serie einen International Emmy.', '2017’de Uluslararası Emmy kazanan ilk Türk dizisi oldu.'],
+
+  ['2020–2022 · TRT 1', 'Masumlar Apartmanı', [], [
+    'Vier Geschwister leben mit Zwängen, Messie-Wohnung und Kindheitstrauma unter einem Dach.',
+    'Ezgi Mola, Merve Dizdar, Birkan Sokullu, Farah Zeynep Abdullah',
+    'Die Geschwister Safiye, Gülben, Han und İnci',
+  ], [
+    'Dört kardeş takıntılar, eşya biriktirme ve çocukluk travmasıyla aynı evde yaşar.',
+    'Ezgi Mola, Merve Dizdar, Birkan Sokullu, Farah Zeynep Abdullah',
+    'Safiye, Gülben, Han ve İnci kardeşler',
+  ], 'Gülben-Darstellerin Merve Dizdar gewann 2023 in Cannes den Preis als beste Darstellerin.', 'Gülben’i oynayan Merve Dizdar 2023’te Cannes’da En İyi Kadın Oyuncu ödülünü aldı.'],
+
+  ['2018–2022 · atv', 'Bir Zamanlar Çukurova', ['Tierra amarga', 'Bitter Lands'], [
+    'Ein junges Paar flieht in den Süden und schuftet auf den Baumwollfeldern einer mächtigen Familie.',
+    'Nebenfiguren: Hünkar Yaman, Demir, Fekeli, Müjgan',
+    'Hilal Altınbilek als Züleyha, Uğur Güneş als Yılmaz Akkaya',
+  ], [
+    'Genç bir çift güneye kaçar ve güçlü bir ailenin pamuk tarlalarında çalışmaya başlar.',
+    'Yan karakterler: Hünkar Yaman, Demir, Fekeli, Müjgan',
+    'Züleyha rolünde Hilal Altınbilek, Yılmaz Akkaya rolünde Uğur Güneş',
+  ], 'In Spanien und Lateinamerika wurde sie als „Tierra amarga“ zum Quotenhit.', 'İspanya ve Latin Amerika’da „Tierra amarga“ adıyla reyting rekorları kırdı.'],
+
+  ['2020 · Netflix', 'Bir Başkadır', ['Ethos'], [
+    'Eine Putzfrau aus der Vorstadt geht wegen Ohnmachtsanfällen zu einer Psychiaterin.',
+    'Nebenfiguren: Peri, Yasin, Ruhiye, Hayrünnisa, Sinan',
+    'Netflix-Serie von Berkun Oya mit Öykü Karayel als Meryem',
+  ], [
+    'Varoşta yaşayan bir temizlikçi, bayılma nöbetleri yüzünden bir psikiyatriste gider.',
+    'Yan karakterler: Peri, Yasin, Ruhiye, Hayrünnisa, Sinan',
+    'Berkun Oya’nın Netflix dizisi, Meryem rolünde Öykü Karayel',
+  ], 'International heißt sie „Ethos“ und löste eine große Debatte über die Spaltung der Gesellschaft aus.', 'Uluslararası adı „Ethos“; toplumdaki kutuplaşma üzerine büyük tartışma başlattı.'],
+
+  ['2018 · puhutv', 'Şahsiyet', ['Persona'], [
+    'Ein pensionierter Gerichtsbeamter erfährt von seiner Alzheimer-Diagnose und beginnt eine Mordserie.',
+    'Polizistin Nevra (Cansu Dere) jagt den Täter.',
+    'Haluk Bilginer als Agah Beyoğlu',
+  ], [
+    'Emekli bir adliye memuru Alzheimer olduğunu öğrenir ve bir dizi cinayete başlar.',
+    'Polis Nevra (Cansu Dere) katilin peşindedir.',
+    'Agah Beyoğlu rolünde Haluk Bilginer',
+  ], 'Haluk Bilginer gewann dafür 2019 als erster Türke den International Emmy als bester Schauspieler.', 'Haluk Bilginer bu rolle 2019’da Uluslararası Emmy’de En İyi Erkek Oyuncu ödülünü alan ilk Türk oldu.'],
+
+  ['2019–2021 · FOX', 'Mucize Doktor', ['Miracle Doctor'], [
+    'Ein junger Chirurg mit Autismus und Savant-Syndrom beginnt in einer Istanbuler Klinik.',
+    'Mentor Adil Erdem, Kollegen Nazlı und Ferman',
+    'Taner Ölmez als Ali Vefa',
+  ], [
+    'Otizmli ve savant sendromlu genç bir cerrah İstanbul’da bir hastanede işe başlar.',
+    'Akıl hocası Adil Erdem, meslektaşları Nazlı ve Ferman',
+    'Ali Vefa rolünde Taner Ölmez',
+  ], 'Remake der koreanischen Serie „Good Doctor“, die auch die US-Version „The Good Doctor“ inspirierte.', 'Kore dizisi „Good Doctor“un uyarlaması; aynı dizi ABD’deki „The Good Doctor“a da ilham oldu.'],
+
+  ['2019–2021 · atv', 'Hercai', [], [
+    'Aus Rache heiratet ein Mann in Midyat die Tochter der verfeindeten Familie.',
+    'Nebenfiguren: Azize Aslanbey, Hazar Şadoğlu, Cihan',
+    'Akın Akınözü und Ebru Şahin als Miran und Reyyan',
+  ], [
+    'Bir adam intikam için Midyat’ta düşman ailenin kızıyla evlenir.',
+    'Yan karakterler: Azize Aslanbey, Hazar Şadoğlu, Cihan',
+    'Miran ve Reyyan rolünde Akın Akınözü ile Ebru Şahin',
+  ], 'Die Steinhäuser von Mardin und Midyat machten die Region zum Ziel von Serien-Touristen.', 'Mardin ve Midyat’ın taş evleri bölgeyi dizi turistlerinin gözdesi yaptı.'],
+
+  ['2016–2017 · Show TV', 'İçerde', ['Inside'], [
+    'Getrennte Brüder: Einer ist Polizist undercover bei der Mafia, der andere Spitzel bei der Polizei.',
+    'Mafiaboss Celal Baba (Çetin Tekindor)',
+    'Çağatay Ulusoy als Sarp, Aras Bulut İynemli als Mert',
+  ], [
+    'Çocukken ayrılan iki kardeş: biri mafyaya sızan polis, öbürü polise sızan köstebek.',
+    'Mafya babası Celal Baba (Çetin Tekindor)',
+    'Sarp rolünde Çağatay Ulusoy, Mert rolünde Aras Bulut İynemli',
+  ], 'Die Handlung erinnert an Scorseses „The Departed“ und dessen Vorlage „Infernal Affairs“.', 'Hikâyesi Scorsese’nin „The Departed“ filmini ve onun kaynağı „Infernal Affairs“i andırır.'],
+  ['2012–2015 · atv', 'Karadayı', [], [
+    'Im Istanbul der 1970er soll ein Vater für einen Mord hängen, den er nicht begangen hat.',
+    'Bergüzar Korel spielt Feride, seine große Liebe aus der Justizwelt.',
+    'Kenan İmirzalıoğlu als Mahir Kara',
+  ], [
+    '1970’lerin İstanbul’unda bir baba, işlemediği bir cinayet yüzünden idamla yargılanır.',
+    'Bergüzar Korel, adliyedeki büyük aşkı Feride’yi oynar.',
+    'Mahir Kara rolünde Kenan İmirzalıoğlu',
+  ], 'Hauptdarsteller Kenan İmirzalıoğlu moderiert seit 2014 auch „Kim Milyoner Olmak İster?“.', 'Başrol Kenan İmirzalıoğlu 2014’ten beri „Kim Milyoner Olmak İster?“ yarışmasını da sunuyor.'],
+
+  ['2017–2019 · Star TV', 'Söz', ['The Oath'], [
+    'Ein Oberleutnant führt eine Spezialeinheit der Armee gegen Terrorzellen.',
+    'Spitzname des Kommandanten: „Sarı Komutan“; Ärztin Bahar Kutlu',
+    'Tolga Sarıtaş als Yavuz Karasu',
+  ], [
+    'Bir üsteğmen, ordunun özel bir timiyle terör hücrelerine karşı savaşır.',
+    'Komutanın lakabı „Sarı Komutan“; doktor Bahar Kutlu',
+    'Yavuz Karasu rolünde Tolga Sarıtaş',
+  ], 'Hauptdarsteller Tolga Sarıtaş spielte danach in „Arıza“ die Hauptrolle.', 'Başrol Tolga Sarıtaş ardından „Arıza“nın başrolüne geçti.'],
+
+  ['2018–2019 · atv', 'Sen Anlat Karadeniz', ['SAK'], [
+    'Eine Frau versteckt sich mit ihrem Sohn im Kofferraum eines Fremden, um ihrem Peiniger zu entkommen.',
+    'Psychopathischer Ehemann: Vedat Sayar, Sohn: Yiğit',
+    'İrem Helvacıoğlu und Ulaş Tuna Astepe als Nefes und „Deli“ Tahir',
+  ], [
+    'Bir kadın, işkenceci kocasından kaçmak için oğluyla bir yabancının bagajına saklanır.',
+    'Psikopat koca: Vedat Sayar, oğlu: Yiğit',
+    'Nefes ve „Deli“ Tahir rolünde İrem Helvacıoğlu ile Ulaş Tuna Astepe',
+  ], 'Nefes-Darstellerin İrem Helvacıoğlu wurde 1990 in Deutschland geboren.', 'Nefes’i oynayan İrem Helvacıoğlu 1990’da Almanya’da doğdu.'],
+
+  ['2020–2023 · TRT 1', 'Gönül Dağı', [], [
+    'Drei Cousins in der Steppe wollen ein selbstgebautes Flugzeug zum Fliegen bringen.',
+    'Taner wartet seit Jahren auf seine Jugendliebe Dilek; Cousins Veysel und Ramazan',
+    'TRT-1-Serie nach Steppengeschichten von Mustafa Çiftçi, gedreht in Sivrihisar',
+  ], [
+    'Bozkırdaki üç kuzen kendi yaptıkları uçağı uçurmanın peşindedir.',
+    'Taner yıllardır çocukluk aşkı Dilek’i bekler; kuzenleri Veysel ve Ramazan',
+    'Mustafa Çiftçi’nin bozkır öykülerinden uyarlanan TRT 1 dizisi, Sivrihisar’da çekildi',
+  ], 'Das Flugzeug der Cousins heißt „Altmış Altı“ (66), wie das Kennzeichen von Yozgat.', 'Kuzenlerin uçağının adı „Altmış Altı“, yani Yozgat’ın plakası.'],
+
+  ['2021–2024 · atv', 'Kardeşlerim', ['For My Family'], [
+    'Vier Geschwister verlieren ihre Eltern und landen an der Privatschule des Mannes, der schuld daran ist.',
+    'Bösewicht Akif Atakul, Tante Şengül',
+    'Die Geschwister Kadir, Ömer, Asiye und Emel Eren',
+  ], [
+    'Anne babasını kaybeden dört kardeş, bunun sorumlusu olan adamın kolejine düşer.',
+    'Kötü adam Akif Atakul, yenge Şengül',
+    'Kadir, Ömer, Asiye ve Emel Eren kardeşler',
+  ], 'Lief vier Staffeln lang und war eine der meistgesehenen Jugendserien auf atv.', 'Dört sezon sürdü ve atv’nin en çok izlenen gençlik dizilerinden biri oldu.'],
+
+  ['2021– · TRT 1', 'Teşkilat', [], [
+    'Agenten des türkischen Nachrichtendienstes jagen ausländische Terror- und Spionagenetzwerke.',
+    'Nebenfiguren: Korkut Sönmezay, Zehra Balaban',
+    'Çağlar Ertuğrul als Agent Serdar Kılıçarslan',
+  ], [
+    'Türk istihbaratının ajanları yabancı terör ve casusluk ağlarının peşine düşer.',
+    'Yan karakterler: Korkut Sönmezay, Zehra Balaban',
+    'Ajan Serdar Kılıçarslan rolünde Çağlar Ertuğrul',
+  ], 'Läuft seit 2021 sonntags auf TRT 1 und ist mittlerweile in der 6. Staffel.', '2021’den beri pazar akşamları TRT 1’de; 6. sezonuna ulaştı.'],
+
+  ['2014–2015 · Star TV', 'Kardeş Payı', [], [
+    'Zwei chaotische Brüder schlagen sich mit Gaunereien und Familienstreit durch.',
+    'Nebenfiguren: Feyza, Hilmi Kazmıkçı, Vater Tahsin',
+    'Ahmet Kural und Murat Cemcir als Metin und Ali Özdemir',
+  ], [
+    'İki sakar birader ufak dalavereler ve aile kavgalarıyla hayata tutunur.',
+    'Yan karakterler: Feyza, Hilmi Kazmıkçı, baba Tahsin',
+    'Metin ve Ali Özdemir rolünde Ahmet Kural ile Murat Cemcir',
+  ], 'Das Duo Kural/Cemcir landete auch im Kino Hits wie „Çalgı Çengi“ und „Düğün Dernek“.', 'Kural-Cemcir ikilisi sinemada da „Çalgı Çengi“ ve „Düğün Dernek“ gibi hitlere imza attı.'],
+
+  ['2020–2021 · Show TV', 'Ramo', [], [
+    'Ein junger Mann aus einem armen Viertel rebelliert gegen die Familie, für die seine Sippe jahrelang schuftete.',
+    'Er liebt Sibel, die Tochter des Unterweltbosses Cengiz.',
+    'Murat Yıldırım und Esra Bilgiç, gedreht in Adana',
+  ], [
+    'Yoksul bir mahalleden bir delikanlı, ailesinin yıllarca hizmet ettiği nüfuzlu aileye başkaldırır.',
+    'Yeraltı patronu Cengiz’in kızı Sibel’e âşık olur.',
+    'Murat Yıldırım ve Esra Bilgiç, Adana’da çekildi',
+  ], 'Esra Bilgiç wurde zuvor als Halime Sultan in „Diriliş: Ertuğrul“ weltbekannt.', 'Esra Bilgiç daha önce „Diriliş: Ertuğrul“daki Halime Sultan rolüyle dünyaca tanındı.'],
+
+  ['2015–2021 · atv', 'Eşkıya Dünyaya Hükümdar Olmaz', ['EDHO'], [
+    'Ein Pate stieg als junger Mann in die Unterwelt ein und führt nun die mächtigste Familie des Landes.',
+    'Nebenfiguren: Alpaslan, İlyas, Hızır Ali',
+    'Oktay Kaynarca als Hızır Reis Çakırbeyli',
+  ], [
+    'Gençken yeraltına giren bir reis artık ülkenin en güçlü ailesinin başındadır.',
+    'Yan karakterler: Alpaslan, İlyas, Hızır Ali',
+    'Hızır Reis Çakırbeyli rolünde Oktay Kaynarca',
+  ], 'Brachte es in sechs Staffeln auf 199 Folgen.', 'Altı sezonda 199 bölüme ulaştı.'],
+
+  ['2016–2019 · YouTube, BluTV', 'Sıfır Bir', ['Bir Zamanlar Adanada'], [
+    'Drei Freunde kämpfen in ihrem Viertel gegen Drogen, Kriminelle und Mafia.',
+    'Savaş, Cio und Özgür aus dem Viertel Hürriyet',
+    'Internetserie aus Adana, benannt nach dem Kfz-Kennzeichen der Stadt',
+  ], [
+    'Üç arkadaş mahallelerinde uyuşturucuya, suçlulara ve mafyaya karşı savaşır.',
+    'Hürriyet Mahallesi’nden Savaş, Cio ve Özgür',
+    'Adana’da geçen internet dizisi, adı şehrin plaka kodundan gelir',
+  ], 'Startete 2016 kostenlos auf YouTube und wechselte später zu BluTV.', '2016’da YouTube’da ücretsiz başladı, sonra BluTV’ye geçti.'],
+
+  ['2023–2024 · FOX/NOW', 'Kızıl Goncalar', [], [
+    'Nach einem Erdbeben zieht eine Familie aus einem Orden nach Istanbul; ein Gerichtsfall verbindet zwei Welten.',
+    'Nebenfiguren: Meryem, Naim, Zeynep, Cüneyd',
+    'Özcan Deniz als säkularer Psychiater Levent, Özgü Namal als Meryem',
+  ], [
+    'Depremden sonra tarikat çevresinden bir aile İstanbul’a göçer; bir dava iki dünyayı karşılaştırır.',
+    'Yan karakterler: Meryem, Naim, Zeynep, Cüneyd',
+    'Laik psikiyatrist Levent rolünde Özcan Deniz, Meryem rolünde Özgü Namal',
+  ], 'Während der Laufzeit wurde der Sender FOX Türkiye in NOW umbenannt.', 'Yayın sürecinde FOX Türkiye’nin adı NOW olarak değişti.'],
+
+  ['2024–2025 · Show TV', 'Bahar', [], [
+    'Eine Hausfrau, die nach dem Medizinstudium nie gearbeitet hat, startet nach Leberversagen neu durch.',
+    'Ehemann Timur, Arzt Evren, Mutter Gülçiçek',
+    'Demet Evgar in der Titelrolle, Buğra Gülsoy als Evren',
+  ], [
+    'Tıp fakültesini bitirip hiç çalışmayan bir ev kadını, karaciğer yetmezliğinden sonra hayatına yeniden başlar.',
+    'Kocası Timur, doktor Evren, annesi Gülçiçek',
+    'Başrolde Demet Evgar, Evren rolünde Buğra Gülsoy',
+  ], 'Im Staffelfinale stürzt das Flugzeug von Timur auf dem Weg nach New York ab.', 'Sezon finalinde Timur’un New York uçağı düşer.'],
+
+  ['2024–2025 · Kanal D', 'Annem Ankara', [], [
+    'In den 1990ern zieht eine Mutter in der Hauptstadt ihre drei Kinder allein groß.',
+    'Mehmet Günsür, Özgürcan Çevik, Sevinç Erbulak',
+    'Bergüzar Korel als Zuhal Soydaşlı',
+  ], [
+    '1990’larda bir anne başkentte üç çocuğunu tek başına büyütür.',
+    'Mehmet Günsür, Özgürcan Çevik, Sevinç Erbulak',
+    'Zuhal Soydaşlı rolünde Bergüzar Korel',
+  ], 'Die Geschichte ist von einem wahren Leben inspiriert.', 'Hikâye gerçek bir yaşam öyküsünden esinlenildi.'],
+
+  ['2022–2025 · Star TV', 'Yalı Çapkını', ['Golden Boy'], [
+    'Ein verwöhnter Erbe aus Istanbul wird mit einer jungen Frau aus Gaziantep verheiratet.',
+    'Nebenfiguren: Halis Ağa, Kazım, Suna, İfakat',
+    'Mert Ramazan Demir und Afra Saraçoğlu als Ferit und Seyran',
+  ], [
+    'Şımarık bir İstanbul varisi, Gaziantepli genç bir kızla evlendirilir.',
+    'Yan karakterler: Halis Ağa, Kazım, Suna, İfakat',
+    'Ferit ve Seyran rolünde Mert Ramazan Demir ile Afra Saraçoğlu',
+  ], 'Endete im April 2025 nach drei Staffeln und 101 Folgen.', 'Üç sezon ve 101 bölümün ardından Nisan 2025’te final yaptı.'],
+
+  ['2022– · Show TV', 'Kızılcık Şerbeti', [], [
+    'Eine konservative und eine säkulare Familie werden durch eine Blitzhochzeit verbunden.',
+    'Nebenfiguren: Pembe, Abdullah, Nursema, Kıvılcım',
+    'Sıla Türkoğlu und Doğukan Güngör als Doğa und Fatih Ünal',
+  ], [
+    'Muhafazakâr ve laik iki aile, aceleyle yapılan bir düğünle akraba olur.',
+    'Yan karakterler: Pembe, Abdullah, Nursema, Kıvılcım',
+    'Doğa ve Fatih Ünal rolünde Sıla Türkoğlu ile Doğukan Güngör',
+  ], 'Die Ünal-Familie löst jede Woche Social-Media-Debatten über Religion und Lebensstil aus.', 'Ünal ailesi her hafta sosyal medyada din ve yaşam tarzı tartışması başlatır.'],
+
+  ['2021–2025 · Exxen', 'Gibi', [], [
+    'Alltägliche Banalitäten eskalieren in staubtrockenen, absurden Dialogen zwischen Freunden.',
+    'Ersoy (Ahmet Kürşat Öçalan) und İlkkan (Kıvanç Kılınç)',
+    'Feyyaz Yiğit als Yılmaz, Kult-Comedy auf Exxen',
+  ], [
+    'Sıradan gündelik olaylar, arkadaşlar arasında kupkuru ve absürt diyaloglara dönüşür.',
+    'Ersoy (Ahmet Kürşat Öçalan) ve İlkkan (Kıvanç Kılınç)',
+    'Yılmaz rolünde Feyyaz Yiğit, Exxen’in kült komedisi',
+  ], 'Feyyaz Yiğit beendete die Serie 2025 freiwillig nach sechs Staffeln.', 'Feyyaz Yiğit diziyi 2025’te altı sezonun ardından kendi isteğiyle bitirdi.'],
+
+  ['2021–2023 · Netflix', 'Kulüp', ['The Club'], [
+    'Eine Jüdin kommt aus dem Gefängnis und arbeitet in einem Istanbuler Nachtklub der 1950er.',
+    'Ihre Tochter Raşel verliebt sich in den Pera-Raufbold Fıstık İsmet.',
+    'Gökçe Bahadır als Matilda in einer Netflix-Serie',
+  ], [
+    'Hapisten çıkan Yahudi bir kadın, 1950’lerin İstanbul’unda bir gece kulübünde çalışır.',
+    'Kızı Raşel, Pera’nın belalısı Fıstık İsmet’e âşık olur.',
+    'Matilda rolünde Gökçe Bahadır, Netflix dizisi',
+  ], 'Viele Lieder und Dialoge sind auf Ladino, dem Judenspanisch der sephardischen Juden.', 'Pek çok şarkı ve diyalog Sefarad Yahudilerinin dili Ladino ile.'],
+
+  ['2021–2024 · Kanal D', 'Yargı', ['Family Secrets'], [
+    'Ein Staatsanwalt und eine junge Anwältin geraten über einen Mordfall aneinander.',
+    'Polizist Eren Duman, Familie Kaya und Familie Yiğit',
+    'Kaan Urgancıoğlu und Pınar Deniz als Ilgaz und Ceylin',
+  ], [
+    'Bir savcı ile genç bir avukat bir cinayet davası yüzünden karşı karşıya gelir.',
+    'Komiser Eren Duman, Kaya ve Yiğit aileleri',
+    'Ilgaz ve Ceylin rolünde Kaan Urgancıoğlu ile Pınar Deniz',
+  ], 'Gewann 2023 den International Emmy als beste Telenovela.', '2023’te Uluslararası Emmy’de En İyi Telenovela ödülünü kazandı.'],
+
+  ['2020–2022 · Kanal D', 'Sadakatsiz', [], [
+    'Eine Ärztin entdeckt, dass ihr Mann sie seit Jahren betrügt und ihr Umfeld davon wusste.',
+    'Ehemann Volkan, Geliebte Derin',
+    'Cansu Dere als Asya, Remake von „Doctor Foster“',
+  ], [
+    'Bir doktor, kocasının yıllardır onu aldattığını ve çevresinin bunu bildiğini öğrenir.',
+    'Kocası Volkan, metresi Derin',
+    'Asya rolünde Cansu Dere, „Doctor Foster“ uyarlaması',
+  ], 'Basiert auf der BBC-Serie „Doctor Foster“, die auch in Indien und Südkorea adaptiert wurde.', 'BBC dizisi „Doctor Foster“dan uyarlandı; bu dizi Hindistan ve Güney Kore’de de uyarlandı.'],
+
+  ['2017–2021 · TRT 1', 'Payitaht: Abdülhamid', ['Payitaht', 'The Last Emperor'], [
+    'Theodor Herzl versucht vergeblich, dem Sultan Land in Palästina abzukaufen.',
+    'Nebenfiguren: Tahsin Paşa, Bidar Sultan, Mahmud Paşa',
+    'Bülent İnal als Sultan zur Zeit der Hedschasbahn',
+  ], [
+    'Theodor Herzl, padişahtan Filistin’de toprak almaya çalışır ama başaramaz.',
+    'Yan karakterler: Tahsin Paşa, Bidar Sultan, Mahmud Paşa',
+    'Hicaz Demiryolu döneminin padişahı rolünde Bülent İnal',
+  ], 'Der Titel bedeutet „Hauptstadt“, gemeint ist Istanbul.', 'Payitaht „başkent“ demek; kastedilen İstanbul.'],
+  ['2016–2018 · Kanal D', 'Vatanım Sensin', ['Wounded Love'], [
+    'Ein Major spielt während der Besatzung Izmirs den Verräter, um als Spion für die Befreiung zu arbeiten.',
+    'Nebenfiguren: Tevfik, Leon, Hilal, Yıldız',
+    'Das Ehepaar Halit Ergenç und Bergüzar Korel als Cevdet und Azize',
+  ], [
+    'Bir binbaşı, İzmir’in işgali sırasında kurtuluş için casusluk yapmak üzere hain rolüne bürünür.',
+    'Yan karakterler: Tevfik, Leon, Hilal, Yıldız',
+    'Gerçek hayatta da evli Halit Ergenç ve Bergüzar Korel, Cevdet ile Azize rolünde',
+  ], 'Die beiden Hauptdarsteller sind auch im echten Leben verheiratet.', 'İki başrol oyuncusu gerçek hayatta da evli.'],
+
+  ['2014 · Star TV', 'Kurt Seyit ve Şura', [], [
+    'Ein Offizier des Zaren von der Krim flieht nach der Revolution mit seiner Geliebten nach Istanbul.',
+    'Nach dem Roman von Nermin Bezmen über ihren eigenen Großvater',
+    'Kıvanç Tatlıtuğ und Farah Zeynep Abdullah als Offizier und russische Adlige',
+  ], [
+    'Çar ordusunda subay olan Kırımlı bir genç, devrimden sonra sevgilisiyle İstanbul’a kaçar.',
+    'Nermin Bezmen’in kendi dedesini anlattığı romandan uyarlandı',
+    'Kıvanç Tatlıtuğ ve Farah Zeynep Abdullah, subay ve Rus soylusu rolünde',
+  ], 'Nermin Bezmens Roman erzählt die wahre Geschichte ihres Großvaters.', 'Nermin Bezmen’in romanı kendi dedesinin gerçek hikâyesini anlatır.'],
+
+  ['2019–2021 · Star TV', 'Sefirin Kızı', ['The Ambassador’s Daughter'], [
+    'Eine Braut verschwindet in der Hochzeitsnacht und taucht neun Jahre später bei seiner nächsten Hochzeit auf.',
+    'Der Sohn eines armen Olivenbauern aus Muğla; Geschäftspartner Gediz',
+    'Engin Akyürek und Neslihan Atagül als Sancar und Nare',
+  ], [
+    'Bir gelin düğün gecesi kaybolur, dokuz yıl sonra damadın bir sonraki düğününde ortaya çıkar.',
+    'Muğlalı yoksul bir yarıcının oğlu; ortağı Gediz',
+    'Sancar ve Nare rolünde Engin Akyürek ile Neslihan Atagül',
+  ], 'Die Verschwundene bringt zur zweiten Hochzeit eine Überraschung mit: seine Tochter. Laut Drehbuch spricht Nare acht Sprachen.', 'Kaybolan gelin ikinci düğüne bir sürprizle gelir: onun kızıyla. Senaryoya göre Nare sekiz dil biliyor.'],
+
+  ['2024– · Kanal D', 'Uzak Şehir', [], [
+    'Eine Witwe bringt den Sarg ihres Mannes und ihren fünfjährigen Sohn aus Kanada nach Mardin.',
+    'Die mächtige Familie Albora lässt sie mit dem Kind nicht mehr gehen.',
+    'Ozan Akbaba und Sinem Ünsal als Cihan und Alya',
+  ], [
+    'Dul bir kadın, kocasının cenazesini ve beş yaşındaki oğlunu Kanada’dan Mardin’e getirir.',
+    'Güçlü Albora ailesi onun çocukla gitmesine izin vermez.',
+    'Cihan ve Alya rolünde Ozan Akbaba ile Sinem Ünsal',
+  ], 'Gedreht in Mardin, das nach „Hercai“ erneut zur Serienkulisse wurde.', 'Mardin’de çekildi; şehir „Hercai“den sonra yine dizi platosu oldu.'],
+
+  ['2023–2024 · Show TV', 'Aile', ['The Family'], [
+    'Ein Clan-Erbe, der einen Nachtklub führt, verliebt sich auf einem Flug in eine Psychologin.',
+    'Die herrische Mutter Hülya Soykan (Nur Sürer)',
+    'Kıvanç Tatlıtuğ und Serenay Sarıkaya als Aslan und Devin',
+  ], [
+    'Bir gece kulübü işleten suç klanının varisi, uçakta bir psikoloğa âşık olur.',
+    'Otoriter anne Hülya Soykan (Nur Sürer)',
+    'Aslan ve Devin rolünde Kıvanç Tatlıtuğ ile Serenay Sarıkaya',
+  ], 'Trotz Starbesetzung endete sie nach nur 30 Folgen.', 'Yıldız kadrosuna rağmen sadece 30 bölümde final yaptı.'],
+
+  ['2023–2025 · NOW', 'Hudutsuz Sevda', ['Boundless Love'], [
+    'Nach 20 Jahren kehrt ein Mann, dessen Vater in einer Blutfehde starb, an die Schwarzmeerküste zurück.',
+    'Die Familie Leto mit Patriarch Rızvan und Mutter Nedime',
+    'Deniz Can Aktaş und Miray Daner als Halil İbrahim und Zeynep',
+  ], [
+    'Babasını kan davasında kaybeden bir adam 20 yıl sonra Karadeniz’e geri döner.',
+    'Leto ailesi: Rızvan ve Nedime',
+    'Halil İbrahim ve Zeynep rolünde Deniz Can Aktaş ile Miray Daner',
+  ], 'Endete im Mai 2025 nach 63 Folgen.', 'Mayıs 2025’te 63. bölümle sona erdi.'],
+
+  ['2014–2015 · atv', 'Kara Para Aşk', ['Black Money Love'], [
+    'Die Verlobte eines Kommissars und der Vater einer jungen Frau liegen erschossen im selben Auto.',
+    'Kommissar Ömer Demir und Schmuckdesignerin Elif Denizer',
+    'Engin Akyürek und Tuba Büyüküstün',
+  ], [
+    'Bir komiserin nişanlısı ile genç bir kadının babası aynı arabada vurulmuş bulunur.',
+    'Komiser Ömer Demir ve mücevher tasarımcısı Elif Denizer',
+    'Engin Akyürek ve Tuba Büyüküstün',
+  ], 'Elif lebte zu Beginn in Rom und kam nur zu ihrem Geburtstag nach Istanbul.', 'Elif başlangıçta Roma’da yaşıyordu, doğum günü için İstanbul’a gelmişti.'],
+
+  ['2016–2017 · Show TV', 'Aşk Laftan Anlamaz', ['Love Doesn’t Understand Words', 'Pyaar Lafzon Mein Kahan'], [
+    'Eine junge Frau landet als Assistentin bei einem arroganten Firmenerben, der Gefühle verachtet.',
+    'Die Familie Sarsılmaz und ihr Konzern',
+    'Hande Erçel und Burak Deniz als Hayat und Murat',
+  ], [
+    'Genç bir kız, duygulardan hazzetmeyen kibirli bir şirket varisinin asistanı olur.',
+    'Sarsılmaz ailesi ve holdingi',
+    'Hayat ve Murat rolünde Hande Erçel ile Burak Deniz',
+  ], 'In Pakistan lief sie auf Urdu als „Pyaar Lafzon Mein Kahan“ und wurde Kult.', 'Pakistan’da Urduca „Pyaar Lafzon Mein Kahan“ adıyla yayınlanıp kült oldu.'],
+
+  ['2020–2021 · FOX', 'Sen Çal Kapımı', ['Love Is in the Air'], [
+    'Eine Floristin verliert ihr Stipendium wegen eines Architekten und muss zwei Monate seine Verlobte spielen.',
+    'Die Firma Art Life, Freundinnen Melek und Ceren',
+    'Kerem Bürsin und Hande Erçel als Serkan Bolat und Eda Yıldız',
+  ], [
+    'Bir çiçekçi kız bir mimar yüzünden bursunu kaybeder ve iki ay onun nişanlısını oynamak zorunda kalır.',
+    'Art Life şirketi, arkadaşları Melek ve Ceren',
+    'Serkan Bolat ve Eda Yıldız rolünde Kerem Bürsin ile Hande Erçel',
+  ], 'Als „Love Is in the Air“ wurde sie besonders in Italien und Spanien ein Hit.', '„Love Is in the Air“ adıyla özellikle İtalya ve İspanya’da hit oldu.'],
+
+  ['2019–2021 · TV8', 'Doğduğun Ev Kaderindir', ['My Home My Destiny'], [
+    'Eine Frau aus ärmsten Verhältnissen wächst bei Reichen auf und kehrt dann zur leiblichen Mutter zurück.',
+    'Nach einer wahren Geschichte aus den Büchern der Psychiaterin Gülseren Budayıcıoğlu',
+    'Demet Özdemir und İbrahim Çelikkol als Zeynep und Mehdi',
+  ], [
+    'Yoksul bir evde doğan kız zengin bir ailenin yanında büyür, sonra öz annesine geri döner.',
+    'Psikiyatrist Gülseren Budayıcıoğlu’nun kitaplarındaki gerçek bir hikâyeden',
+    'Zeynep ve Mehdi rolünde Demet Özdemir ile İbrahim Çelikkol',
+  ], 'Budayıcıoğlus Fallgeschichten lieferten auch die Vorlage für „Masumlar Apartmanı“ und „Kırmızı Oda“.', 'Budayıcıoğlu’nun vakaları „Masumlar Apartmanı“ ve „Kırmızı Oda“ya da kaynak oldu.'],
+
+  ['2015–2018 · atv', 'Kırgın Çiçekler', [], [
+    'Ein Mädchen wird vom Stiefvater belästigt und landet im Kinderheim, wo sie vier Freundinnen findet.',
+    'Freundinnen: Cemre, Songül, Kader, Meral; Stiefvater Kemal',
+    'Biran Damla Yılmaz als Eylül',
+  ], [
+    'Üvey babasının tacizine uğrayan bir kız yetiştirme yurduna düşer ve orada dört arkadaş edinir.',
+    'Arkadaşları: Cemre, Songül, Kader, Meral; üvey baba Kemal',
+    'Eylül rolünde Biran Damla Yılmaz',
+  ], 'Lief drei Staffeln mit 113 Folgen.', 'Üç sezonda 113 bölüm sürdü.'],
+
+  ['2017–2019 · FOX', 'Bizim Hikaye', ['Our Story'], [
+    'Eine junge Frau zieht ihre fünf Geschwister groß, weil die Mutter weg und der Vater ein Trinker ist.',
+    'Geschwister Rahmet, Hikmet, Kiraz, Fikret, İsmet; Vater Fikri',
+    'Hazal Kaya und Burak Deniz als Filiz Elibol und Barış',
+  ], [
+    'Annesi gidip babası alkolik olunca beş kardeşine genç bir kız bakar.',
+    'Kardeşler Rahmet, Hikmet, Kiraz, Fikret, İsmet; baba Fikri',
+    'Filiz Elibol ve Barış rolünde Hazal Kaya ile Burak Deniz',
+  ], 'Türkische Adaption der US-Serie „Shameless“.', 'ABD dizisi „Shameless“ın Türk uyarlaması.'],
+
+  ['2015–2017 · Kanal D', 'Poyraz Karayel', [], [
+    'Ein abgestürzter Ex-Polizist schleust sich bei einem Paten ein, um seinen Sohn zurückzubekommen.',
+    'Mafiaboss Bahri Umman, Sohn Sinan',
+    'İlker Kaleli in der Titelrolle, Burçin Terzioğlu als Ayşegül',
+  ], [
+    'Dibe vurmuş eski bir polis, oğlunu geri almak için bir babanın örgütüne sızar.',
+    'Mafya babası Bahri Umman, oğlu Sinan',
+    'Başrolde İlker Kaleli, Ayşegül rolünde Burçin Terzioğlu',
+  ], 'Die Geliebte des Helden ist ausgerechnet die Tochter des Bosses, den er ausspioniert.', 'Kahramanın âşık olduğu kız, gözetlediği babanın kızıdır.'],
+
+  ['2012–2014 · Kanal D', 'Yalan Dünya', [], [
+    'Eine Schauspielerin aus Izmir bekommt zufällig eine Serienhauptrolle und zieht bei einer schrägen Familie ein.',
+    'Nebenfiguren: Rıza Kocabaş, Tülay, Selahattin, Nurhayat',
+    'Sitcom von und mit Gülse Birsel als Deniz Alsancak',
+  ], [
+    'İzmirli bir oyuncu tesadüfen bir dizide başrol kapar ve tuhaf bir ailenin dairesine taşınır.',
+    'Yan karakterler: Rıza Kocabaş, Tülay, Selahattin, Nurhayat',
+    'Gülse Birsel’in yazıp oynadığı sitcom, Deniz Alsancak rolünde',
+  ], 'Beyazıt Öztürk spielte hier Rıza, eine seiner wenigen Serienrollen.', 'Beyazıt Öztürk burada Rıza’yı oynadı; nadir dizi rollerinden biri.'],
+
+  ['2018–2020 · Star TV, TV8, puhutv', 'Jet Sosyete', [], [
+    'Ein Möchtegern-Model aus den 90ern will verzweifelt in die High Society.',
+    'Mit Çağlar Çorumlu, Derya Karadaş und Cengiz Bozkurt',
+    'Gülse Birsel als Gizem Özpamuk',
+  ], [
+    '90’lardan kalma bir manken, ne yapıp edip sosyeteye girmek ister.',
+    'Çağlar Çorumlu, Derya Karadaş ve Cengiz Bozkurt',
+    'Gizem Özpamuk rolünde Gülse Birsel',
+  ], 'Wechselte in drei Staffeln dreimal den Sender: Star TV, TV8, puhutv.', 'Üç sezonda üç kez kanal değiştirdi: Star TV, TV8, puhutv.'],
+
+  ['2012–2022 · TRT 1', 'Seksenler', [], [
+    'Nostalgische Familien-Comedy über Kassettenrekorder, Nachbarschaft und Liebe im Istanbul der 1980er.',
+    'Sohn Ahmet und Gülden, Tochter Nazlı',
+    'Rasim Öztekin als Familienvater Fehmi Özdemir',
+  ], [
+    '1980’lerin İstanbul’unda kasetçalar, mahalle ve aşk üzerine nostaljik aile komedisi',
+    'Oğul Ahmet ile Gülden, kız Nazlı',
+    'Aile babası Fehmi Özdemir rolünde Rasim Öztekin',
+  ], 'Brachte es in zehn Staffeln auf 655 Folgen.', 'On sezonda 655 bölüme ulaştı.'],
+
+  ['2011–2012 · Show TV', 'Adını Feriha Koydum', ['Feriha', 'Emirin Yolu'], [
+    'Die Tochter eines Hausmeisters gibt sich an einer Elite-Uni als reiche Erbin aus.',
+    'Ihr Vater Rıza ist Hausmeister im Wohnhaus der Reichen.',
+    'Hazal Kaya und Çağatay Ulusoy als Emir Sarrafoğlu',
+  ], [
+    'Bir kapıcının kızı, seçkin bir üniversitede kendini zengin bir varis gibi tanıtır.',
+    'Babası Rıza, zenginlerin apartmanında kapıcıdır.',
+    'Hazal Kaya ve Emir Sarrafoğlu rolünde Çağatay Ulusoy',
+  ], 'Die dritte Staffel lief unter dem eigenen Titel „Emir’in Yolu“.', 'Üçüncü sezon „Emir’in Yolu“ adıyla yayınlandı.'],
+
+  ['2010–2013 · Kanal D', 'Öyle Bir Geçer Zaman ki', ['Time Goes By'], [
+    'In den 1960ern zerbricht die Familie eines Kapitäns an seiner Affäre mit einer Holländerin.',
+    'Die Kinder Mete, Aylin, Berrin und Osman; Geliebte Caroline',
+    'Erkan Petekkaya als Ali Kaptan, Ayça Bingöl als Cemile',
+  ], [
+    '1960’larda bir kaptanın Hollandalı bir kadınla ilişkisi yüzünden ailesi dağılır.',
+    'Çocuklar Mete, Aylin, Berrin ve Osman; sevgili Caroline',
+    'Ali Kaptan rolünde Erkan Petekkaya, Cemile rolünde Ayça Bingöl',
+  ], 'Caroline-Darstellerin Wilma Elles ist eine deutsche Schauspielerin.', 'Caroline’i oynayan Wilma Elles Alman bir oyuncu.'],
+
+  ['2018–2020 · Netflix', 'Hakan: Muhafız', ['The Protector'], [
+    'Ein junger Antiquitätenhändler erfährt, dass er Istanbul gegen unsterbliche Feinde verteidigen muss.',
+    'Die erste türkische Netflix-Eigenproduktion',
+    'Çağatay Ulusoy als magischer Beschützer im Großen Basar',
+  ], [
+    'Genç bir antikacı, İstanbul’u ölümsüz düşmanlara karşı koruması gerektiğini öğrenir.',
+    'Netflix’in ilk Türk orijinal dizisi',
+    'Kapalıçarşı’daki büyülü koruyucu rolünde Çağatay Ulusoy',
+  ], 'War die erste türkische Originalserie von Netflix.', 'Netflix’in ilk Türk yapımı orijinal dizisiydi.'],
+
+  ['2019–2021 · Netflix', 'Atiye', ['The Gift'], [
+    'Eine Malerin entdeckt, dass ein Symbol aus ihren Bildern bei einer uralten Ausgrabung auftaucht.',
+    'Archäologe Erhan (Mehmet Günsür), Ausgrabung in Göbeklitepe',
+    'Beren Saat als Malerin in einer Netflix-Mysteryserie',
+  ], [
+    'Bir ressam, tablolarındaki bir sembolün çok eski bir kazıda ortaya çıktığını keşfeder.',
+    'Arkeolog Erhan (Mehmet Günsür), Göbeklitepe kazısı',
+    'Netflix gizem dizisinde ressam rolünde Beren Saat',
+  ], 'Brachte die Steinzeit-Stätte Göbeklitepe einem weltweiten Publikum näher.', 'Göbeklitepe’yi dünya çapında bir izleyiciye tanıttı.'],
+
+  ['2022–2024 · Netflix', 'Erşan Kuneri', [], [
+    'Ein Produzent erotischer Yeşilçam-Filme der 70er will sich an anderen Genres versuchen.',
+    'Seyyal Par (Nilperi Şahinkaya), Altın Oran, Payro Kemal',
+    'Cem Yılmaz schrieb, inszenierte und spielte die Hauptrolle.',
+  ], [
+    '70’lerde erotik Yeşilçam filmleri çeken bir yapımcı başka türleri de denemek ister.',
+    'Seyyal Par (Nilperi Şahinkaya), Altın Oran, Payro Kemal',
+    'Senaryo, yönetmenlik ve başrol Cem Yılmaz’dan',
+  ], 'Die zweite Staffel kam 2024 auf Netflix.', 'İkinci sezon 2024’te Netflix’e geldi.'],
+
+  ['2014–2017 · Star TV', 'Paramparça', ['Broken Pieces'], [
+    'Wegen ähnlicher Nachnamen vertauscht eine Krankenschwester zwei Babys, 15 Jahre später kommt es heraus.',
+    'Familie Gürpınar und Familie Gülpınar',
+    'Nurgül Yeşilçay als Gülseren, Erkan Petekkaya als Cihan',
+  ], [
+    'Soyadları benzediği için bir hemşire iki bebeği karıştırır; gerçek 15 yıl sonra ortaya çıkar.',
+    'Gürpınar ailesi ve Gülpınar ailesi',
+    'Gülseren rolünde Nurgül Yeşilçay, Cihan rolünde Erkan Petekkaya',
+  ], 'Wurde in viele Länder verkauft, besonders erfolgreich in Lateinamerika.', 'Pek çok ülkeye satıldı, özellikle Latin Amerika’da başarılı oldu.'],
+
+  ['2019–2021 · Kanal D', 'Hekimoğlu', [], [
+    'Ein mürrischer, genialer Diagnostiker löst medizinische Rätsel und beleidigt dabei alle.',
+    'Offizielles türkisches Remake von „Dr. House“',
+    'Timuçin Esen als Ateş',
+  ], [
+    'Huysuz ama dâhi bir teşhis uzmanı tıbbi gizemleri çözer, bu arada herkesi kırar.',
+    '„Dr. House“un resmî Türk uyarlaması',
+    'Ateş rolünde Timuçin Esen',
+  ], 'Lizenz-Remake der US-Serie „House“ mit Hugh Laurie.', 'Hugh Laurie’li ABD dizisi „House“un lisanslı uyarlaması.'],
+
+  ['2017–2019 · Star TV', 'İstanbullu Gelin', ['Bride of Istanbul'], [
+    'Eine Musikerin heiratet in eine konservative Busunternehmer-Familie aus Bursa ein.',
+    'Die herrische Schwiegermutter Esma Sultan',
+    'Özcan Deniz und Aslı Enver als Faruk Boran und Süreyya',
+  ], [
+    'Müzisyen bir kadın, Bursalı muhafazakâr bir otobüs firması ailesinin oğluyla evlenir.',
+    'Otoriter kayınvalide Esma Sultan',
+    'Faruk Boran ve Süreyya rolünde Özcan Deniz ile Aslı Enver',
+  ], 'Szenen der Busfirma wurden am echten Busbahnhof von Bursa gedreht.', 'Otobüs firmasının sahneleri Bursa’nın gerçek otogarında çekildi.'],
+
+  ['2018–2019 · Show TV', 'Çarpışma', ['Collision'], [
+    'Ein schwerer Verkehrsunfall verknüpft die Schicksale mehrerer Fremder.',
+    'Ein Kommissar hat Frau und Tochter bei einem Anschlag verloren.',
+    'Kıvanç Tatlıtuğ und Elçin Sangu als Kadir und Zeynep',
+  ], [
+    'Ağır bir trafik kazası birbirini tanımayan insanların kaderini birleştirir.',
+    'Bir komiser karısını ve kızını bir saldırıda kaybetmiştir.',
+    'Kadir ve Zeynep rolünde Kıvanç Tatlıtuğ ile Elçin Sangu',
+  ], 'Der Unfall verbindet vier Autos und vier Leben: Kadir, Zeynep, Cemre und Kerem.', 'Kaza dört arabayı ve dört hayatı birleştirir: Kadir, Zeynep, Cemre ve Kerem.'],
 ]);
 
 </script>
@@ -3377,7 +4698,7 @@ QZ("logos", "logo", [
   const REACTIONS = ['😂', '🔥', '😱', '👏', '🤡', '🧿', '🤯', '🎉'];
   const T = window.I18N.t;
   const MODES = { mix: { e: '🎲' }, guess: { e: '📏' }, cmp: { e: '⚖️' }, num: { e: '🔢' }, quiz: { e: '🧩' } };
-  const NCATS = { all: { e: '🎲' }, detr: { e: '🤝' }, essen: { e: '🥙' }, welt: { e: '🌍' }, geld: { e: '💶' }, sport: { e: '⚽' }, internet: { e: '📱' }, wissen: { e: '🧠' } };
+  const NCATS = { all: { e: '🎲' }, detr: { e: '🤝' }, diziler: { e: '📺' }, essen: { e: '🥙' }, welt: { e: '🌍' }, geld: { e: '💶' }, sport: { e: '⚽' }, internet: { e: '📱' }, wissen: { e: '🧠' } };
   const NUMQ = window.NUMQ || [];
   const ncatName = k => T('ncats')[k] || k;
   const CATS = {
@@ -3416,7 +4737,7 @@ QZ("logos", "logo", [
   };
 
   // ---------- Modus „Erraten“ ----------
-  const QCATS = { all: { e: '🎲' }, logos: { e: '🏷️' }, autos: { e: '🚗' }, fussball: { e: '⚽' }, flaggen: { e: '🏳️' } };
+  const QCATS = { all: { e: '🎲' }, logos: { e: '🏷️' }, autos: { e: '🚗' }, fussball: { e: '⚽' }, diziler: { e: '📺' }, flaggen: { e: '🏳️' } };
   const QUIZ = window.QUIZ || [];
   const QZBYID = Object.fromEntries(QUIZ.map(q => [q.id, q]));
   const qcatName = k => T('qcats')[k] || k;
@@ -3465,12 +4786,24 @@ QZ("logos", "logo", [
   function quizMedia(it, cls = '') {
     if (it.kind === 'flag') return `<div class="qimg qflag ${cls}"><img src="${it.img}" alt="" draggable="false"></div>`;
     if (it.kind === 'img') return `<div class="qimg qcrest ${cls}"><img src="${it.img}" alt="" draggable="false"></div>`;
+    if (it.kind === 'clue') return `<div class="qclues ${cls}" ${cls ? '' : 'id="qClues"'}>${clueList(it, cls ? 99 : clueShown(it))}</div>`;
     if (it.kind === 'logo') {
       const n = parseInt(it.hex, 16), lum = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
       return `<div class="qimg logo ${lum > 0.72 ? 'dark' : ''} ${cls}"><svg viewBox="0 0 24 24"><path fill="#${it.hex}" d="${it.d}"/></svg></div>`;
     }
     return `<div class="qimg emo ${it.kind === 'text' ? 'small' : ''} ${it.cat === 'emoji' ? 'riddle' : ''} ${cls}">${it.e}</div>`;
   }
+  // Hinweis-Quiz: erster Hinweis sofort, die weiteren gleichmäßig bis 60 % der Zeit (schwer → leicht)
+  function clueShown(it) {
+    const n = it.cl[0].length;
+    if (!S || S.phase !== 'question' || G.locked) return n;
+    const frac = 1 - Math.max(0, deadline - Date.now()) / (S.settings.time * 1000);
+    return Math.max(1, Math.min(n, 1 + Math.floor(frac / (0.6 / (n - 1)))));
+  }
+  const clueItem = (it, i, open) => (open
+    ? `<div class="clue"><span>${i + 1}</span>${esc(it.cl[LI()][i])}</div>`
+    : `<div class="clue locked"><span>${i + 1}</span>🔒</div>`);
+  const clueList = (it, shown) => it.cl[LI()].map((c, i) => clueItem(it, i, i < shown)).join('');
   // Antwort-Text eines Quiz-Items (für Auszeichnungen und Auflösung)
   function quizAnswer(it) { return it.kind === 'text' ? it.opts[0][LI()] : it.a[LI()]; }
 
@@ -4397,7 +5730,7 @@ QZ("logos", "logo", [
     if (!it) return;
     const draft = keep ? ($('#quizIn')?.value || '') : '';
     app().innerHTML = questionShell(q, `
-            <div class="qmedia ${it.kind === 'text' ? 'text' : ''}">${quizMedia(it)}</div>
+            <div class="qmedia ${it.kind === 'text' ? 'text' : ''} ${it.kind === 'clue' ? 'clues' : ''}">${quizMedia(it)}</div>
             <div class="qhint" id="qHint"></div>
             <div class="qnear" id="qNear"></div>
             <form class="qinput" id="quizForm" autocomplete="off">
@@ -4465,8 +5798,13 @@ QZ("logos", "logo", [
     const el = $('#qHint'); if (!el || !S || S.phase !== 'question' || S.q?.type !== 'quiz') return;
     const total = S.settings.time * 1000;
     const left = deadline - Date.now();
-    if (left > total * 0.5 || G.locked) { el.textContent = ''; return; }
     const it = QZBYID[S.q.id]; if (!it) return;
+    if (it.kind === 'clue') {
+      const box = $('#qClues'), k = clueShown(it);
+      // nur neu aufgedeckte Hinweise ersetzen, damit die sichtbaren nicht erneut einblenden
+      if (box) [...box.children].forEach((el, i) => { if (i < k && el.classList.contains('locked')) el.outerHTML = clueItem(it, i, true); });
+    }
+    if (left > total * (it.kind === 'clue' ? 0.25 : 0.5) || G.locked) { el.textContent = ''; return; }
     const ans = quizAnswer(it);
     const mask = [...ans].map((c, i) => (i === 0 ? c : /[\p{L}\p{N}]/u.test(c) ? '_' : c)).join(' ');
     el.innerHTML = `💡 ${T('quizHintLbl')}: <b>${esc(mask)}</b>`;
@@ -4683,11 +6021,11 @@ QZ("logos", "logo", [
           ${timerHtml()}
         </div>
         <div class="answer card">
-          <div class="qmedia small">${quizMedia(it)}</div>
+          ${it.kind === 'clue' ? '<div class="qmedia small"><div class="qimg emo">📺</div></div>' : `<div class="qmedia small">${quizMedia(it)}</div>`}
           <div>
             <div class="kicker">${T('correct')}</div>
             <div class="abig done">${esc(quizAnswer(it))}</div>
-            <div class="acmp">${esc(it.kind === 'text' ? it.opts[0][1 - LI()] : it.a[1 - LI()])}</div>
+            <div class="acmp">${esc(it.kind === 'text' ? it.opts[0][1 - LI()] : it.kind === 'clue' ? it.y : it.a[1 - LI()])}</div>
           </div>
         </div>
         <div class="card results">
