@@ -413,6 +413,20 @@ input[type=range]:disabled { filter: grayscale(.7); opacity: .6; cursor: default
 .qmedia.small { min-height: 0; padding: 0; background: none; }
 .qmedia.clues { place-items: stretch; align-content: center; padding: 16px; }
 .qmedia.photo { gap: 12px; }
+.qmedia.music { gap: 14px; min-height: 180px; }
+.mviz { display: flex; align-items: flex-end; gap: 6px; height: 110px; }
+.mviz i { width: 12px; height: 18%; border-radius: 6px; background: var(--grad); opacity: .5; transition: height .2s; }
+.mviz.on i { opacity: 1; animation: eq 1s ease-in-out infinite alternate; }
+.mviz.on i:nth-child(2n) { animation-duration: .7s; } .mviz.on i:nth-child(3n) { animation-duration: 1.3s; } .mviz.on i:nth-child(4n) { animation-duration: .9s; }
+@keyframes eq { from { height: 15%; } to { height: 100%; } }
+.mopts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.mopt { display: flex; align-items: center; gap: 10px; text-align: left; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--card-b); background: var(--card); color: var(--text); font-weight: 600; font-size: 15px; line-height: 1.3; transition: transform .12s, background .2s, border-color .2s; }
+.mopt:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--acc2); background: rgba(255, 255, 255, .1); }
+.mopt kbd { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: rgba(255, 255, 255, .12); font: 700 13px var(--body); }
+.mopt:disabled { opacity: .45; cursor: default; }
+.mopt.picked { opacity: 1; border-color: var(--acc2); background: color-mix(in srgb, var(--acc2) 20%, transparent); }
+.mart { width: 120px; height: 120px; border-radius: 14px; object-fit: cover; box-shadow: 0 10px 26px rgba(0, 0, 0, .45); }
+.mwrong { color: var(--bad); display: inline-block; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
 .qphoto { display: grid; place-items: center; }
 .qphoto img { display: block; max-width: 100%; height: clamp(180px, 34vh, 320px); object-fit: cover; aspect-ratio: 4 / 3; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); user-select: none; -webkit-user-drag: none; }
 .qmedia.photo .clue { padding: 8px 14px; font-size: clamp(14px, 1.9vw, 17px); }
@@ -461,6 +475,10 @@ input[type=range]:disabled { filter: grayscale(.7); opacity: .6; cursor: default
   .qimg.emo { font-size: 112px; }
   .qopt { padding: 12px; font-size: 15px; gap: 8px; }
   .qopt kbd { display: none; }
+  .mopts { grid-template-columns: 1fr; gap: 8px; }
+  .mopt { padding: 11px 14px; font-size: 14px; }
+  .mopt kbd { display: none; }
+  .mviz { height: 80px; }
 }
 @media (max-width: 560px) {
   .top-right { gap: 6px; }
@@ -689,12 +707,12 @@ window.I18N = (() => {
       n_tsd: 'Tsd.', n_mio: 'Mio.', n_mrd: 'Mrd.', n_bio: 'Bio.',
       nunits: { Jahre: 'Jahre', Tage: 'Tage', 'Std.': 'Std.', 'Min.': 'Min.', 'Sek.': 'Sek.', Liter: 'Liter', Kalorien: 'Kalorien' },
       qcats: {
-        all: 'Alles gemischt', logos: 'Logos & Marken', autos: 'Automarken', fussball: 'Fußballvereine', diziler: 'Türkische Serien', orte: 'Sehenswürdigkeiten Welt', tuerkei: 'Sehenswürdigkeiten Türkei', flaggen: 'Flaggen',
+        all: 'Alles gemischt', logos: 'Logos & Marken', autos: 'Automarken', fussball: 'Fußballvereine', diziler: 'Türkische Serien', orte: 'Sehenswürdigkeiten Welt', tuerkei: 'Sehenswürdigkeiten Türkei', muzik_int: 'Welthits', muzik_tr: 'Türkische Lieder', flaggen: 'Flaggen',
       },
-      qprompt: { flaggen: 'Welches Land hat diese Flagge?', logos: 'Welche Marke ist das?', autos: 'Welche Automarke ist das?', fussball: 'Welcher Verein ist das?', diziler: 'Welche Serie ist das?', orte: 'Welche Sehenswürdigkeit ist das?', tuerkei: 'Welcher Ort in der Türkei ist das?' },
+      qprompt: { flaggen: 'Welches Land hat diese Flagge?', logos: 'Welche Marke ist das?', autos: 'Welche Automarke ist das?', fussball: 'Welcher Verein ist das?', diziler: 'Welche Serie ist das?', orte: 'Welche Sehenswürdigkeit ist das?', tuerkei: 'Welcher Ort in der Türkei ist das?', muzik_int: 'Welcher Song läuft?', muzik_tr: 'Welches Lied läuft?' },
       quizHint: 'Tippe die Antwort ein, auf Deutsch oder Türkisch. Kleine Tippfehler sind ok, Versuche unbegrenzt.',
       quizInput: 'Antwort eintippen …', quizSend: 'Raten', quizHintLbl: 'Tipp', thTime: 'Zeit',
-      quizFoundOther: '{who} hat es!', quizClose: '🔥 nah dran', chatTitle: '💬 Chat', chatPh: 'Nachricht …', chatSend: 'Senden', chatSlow: 'Langsam! Kurz warten, dann weiterschreiben.', chatSpoiler: '🤐 Nicht spoilern! Die Lösung gehört ins Antwortfeld.', reactBlocked: 'Emoji-Pause {s} s', quizCloseBig: '🔥 Ganz nah dran! Prüf die Schreibweise.', multiHint: '(mehrere wählbar)', quizFound: 'Richtig! Gefunden nach {s}{j}. Warte auf die anderen …',
+      quizFoundOther: '{who} hat es!', quizClose: '🔥 nah dran', chatTitle: '💬 Chat', musicLoading: '🎵 Songs werden geladen …', musicFail: 'Die Song-Ausschnitte konnten nicht geladen werden. Prüfe die Internetverbindung oder wähle andere Kategorien.', musicPlay: 'Abspielen', musicHint: 'Hör genau hin und tippe die richtige Antwort. Nur ein Versuch, je schneller desto mehr Punkte.', musicAnswered: '{who} hat geantwortet', musicLocked: 'Antwort abgegeben{j}. Auflösung gleich!', chatPh: 'Nachricht …', chatSend: 'Senden', chatSlow: 'Langsam! Kurz warten, dann weiterschreiben.', chatSpoiler: '🤐 Nicht spoilern! Die Lösung gehört ins Antwortfeld.', reactBlocked: 'Emoji-Pause {s} s', quizCloseBig: '🔥 Ganz nah dran! Prüf die Schreibweise.', multiHint: '(mehrere wählbar)', quizFound: 'Richtig! Gefunden nach {s}{j}. Warte auf die anderen …',
       quizHintText: 'Je schneller du richtig liegst, desto mehr Punkte!',
       quizLocked: 'Deine Antwort: <b>{a}</b>{j}. Warte auf die anderen …',
       jokerTitleQuiz: 'Gefunden: doppelte Punkte. Nicht gefunden: 0.',
@@ -792,12 +810,12 @@ window.I18N = (() => {
       n_tsd: 'bin', n_mio: 'milyon', n_mrd: 'milyar', n_bio: 'trilyon',
       nunits: { Jahre: 'yıl', Tage: 'gün', 'Std.': 'saat', 'Min.': 'dk', 'Sek.': 'sn', Liter: 'litre', Kalorien: 'kalori' },
       qcats: {
-        all: 'Hepsi karışık', logos: 'Logolar ve Markalar', autos: 'Otomobil Markaları', fussball: 'Futbol Kulüpleri', diziler: 'Türk Dizileri', orte: 'Dünyanın Simgeleri', tuerkei: 'Türkiye’nin Güzellikleri', flaggen: 'Bayraklar',
+        all: 'Hepsi karışık', logos: 'Logolar ve Markalar', autos: 'Otomobil Markaları', fussball: 'Futbol Kulüpleri', diziler: 'Türk Dizileri', orte: 'Dünyanın Simgeleri', tuerkei: 'Türkiye’nin Güzellikleri', muzik_int: 'Dünya Hitleri', muzik_tr: 'Türkçe Şarkılar', flaggen: 'Bayraklar',
       },
-      qprompt: { flaggen: 'Bu bayrak hangi ülkenin?', logos: 'Bu hangi marka?', autos: 'Bu hangi otomobil markası?', fussball: 'Bu hangi kulüp?', diziler: 'Hangi dizi?', orte: 'Burası neresi?', tuerkei: 'Türkiye’de burası neresi?' },
+      qprompt: { flaggen: 'Bu bayrak hangi ülkenin?', logos: 'Bu hangi marka?', autos: 'Bu hangi otomobil markası?', fussball: 'Bu hangi kulüp?', diziler: 'Hangi dizi?', orte: 'Burası neresi?', tuerkei: 'Türkiye’de burası neresi?', muzik_int: 'Hangi şarkı çalıyor?', muzik_tr: 'Hangi şarkı çalıyor?' },
       quizHint: 'Cevabı Türkçe ya da Almanca yaz. Küçük yazım hataları sorun değil, deneme hakkı sınırsız.',
       quizInput: 'Cevabını yaz …', quizSend: 'Tahmin et', quizHintLbl: 'İpucu', thTime: 'Süre',
-      quizFoundOther: '{who} buldu!', quizClose: '🔥 çok yakın', chatTitle: '💬 Sohbet', chatPh: 'Mesaj yaz …', chatSend: 'Gönder', chatSlow: 'Yavaş! Biraz bekle, sonra yaz.', chatSpoiler: '🤐 Spoiler yok! Cevabı cevap kutusuna yaz.', reactBlocked: 'Emoji molası {s} sn', quizCloseBig: '🔥 Çok yakın! Yazımı kontrol et.', multiHint: '(birden fazla seçilebilir)', quizFound: 'Doğru! {s} içinde buldun{j}. Diğerleri bekleniyor …',
+      quizFoundOther: '{who} buldu!', quizClose: '🔥 çok yakın', chatTitle: '💬 Sohbet', musicLoading: '🎵 Şarkılar yükleniyor …', musicFail: 'Şarkı parçaları yüklenemedi. İnternet bağlantını kontrol et ya da başka kategoriler seç.', musicPlay: 'Çal', musicHint: 'İyi dinle ve doğru cevaba dokun. Tek hakkın var, ne kadar hızlıysan o kadar puan.', musicAnswered: '{who} cevap verdi', musicLocked: 'Cevap verildi{j}. Sonuç birazdan!', chatPh: 'Mesaj yaz …', chatSend: 'Gönder', chatSlow: 'Yavaş! Biraz bekle, sonra yaz.', chatSpoiler: '🤐 Spoiler yok! Cevabı cevap kutusuna yaz.', reactBlocked: 'Emoji molası {s} sn', quizCloseBig: '🔥 Çok yakın! Yazımı kontrol et.', multiHint: '(birden fazla seçilebilir)', quizFound: 'Doğru! {s} içinde buldun{j}. Diğerleri bekleniyor …',
       quizHintText: 'Ne kadar hızlı doğru cevap verirsen o kadar çok puan!',
       quizLocked: 'Cevabın: <b>{a}</b>{j}. Diğerleri bekleniyor …',
       jokerTitleQuiz: 'Bulursan: iki kat puan. Bulamazsan: 0.',
@@ -3279,6 +3297,11 @@ window.QUIZ = [];
         const a = Array.isArray(n) ? n : [n, n];
         it = { id: uid((cat === 'diziler' ? 'dizi-' : cat + '-') + slug(a[0])), y, a, al, cl: [cde, ctr], f: [fde, ftr] };
         if (photo) it.photo = photo;
+      } else if (kind === 'music') {
+        // Musik: [Interpret, Titel, Jahr]; der 30-s-Ausschnitt wird erst im Spiel über die iTunes-Suche geladen
+        const [artist, title, year] = r;
+        const ans = artist + ' – ' + title;
+        it = { id: uid(cat + '-' + slug(artist + ' ' + title)), a: [ans, ans], artist, title, year };
       } else if (kind === 'emoji') {
         const [g, e, de, tr, fde, ftr, pde, ptr] = r;
         it = { id: uid(cat + '-' + slug(de)), g, e, a: [de, tr], f: [fde, ftr], p: pde ? [pde, ptr] : null };
@@ -5376,6 +5399,265 @@ QZ("logos", "logo", [
 
 </script>
 <script>
+// Kategorie „muzik_int“ – weltbekannte Hits aller Epochen. Zeile: [Interpret, Titel, Jahr (0 = unbekannt)]
+// Der 30-s-Ausschnitt wird per iTunes-Suche „Interpret Titel“ geladen.
+QZ('muzik_int', 'music', [
+  // 50er bis 70er
+  ['Elvis Presley', 'Jailhouse Rock', 1957],
+  ['Elvis Presley', 'Can\'t Help Falling in Love', 1961],
+  ['Elvis Presley', 'Suspicious Minds', 1969],
+  ['Ben E. King', 'Stand by Me', 1961],
+  ['Frank Sinatra', 'My Way', 1969],
+  ['Louis Armstrong', 'What a Wonderful World', 1967],
+  ['The Beatles', 'Yesterday', 1965],
+  ['The Beatles', 'Hey Jude', 1968],
+  ['The Beatles', 'Let It Be', 1970],
+  ['The Rolling Stones', '(I Can\'t Get No) Satisfaction', 1965],
+  ['The Animals', 'The House of the Rising Sun', 1964],
+  ['Aretha Franklin', 'Respect', 1967],
+  ['John Lennon', 'Imagine', 1971],
+  ['Led Zeppelin', 'Stairway to Heaven', 1971],
+  ['Deep Purple', 'Smoke on the Water', 1972],
+  ['Elton John', 'I\'m Still Standing', 1983],
+  ['ABBA', 'Waterloo', 1974],
+  ['ABBA', 'Mamma Mia', 1975],
+  ['ABBA', 'Dancing Queen', 1976],
+  ['Queen', 'Bohemian Rhapsody', 1975],
+  ['Queen', 'We Will Rock You', 1977],
+  ['Queen', 'Don\'t Stop Me Now', 1979],
+  ['Queen', 'Another One Bites the Dust', 1980],
+  ['Eagles', 'Hotel California', 1976],
+  ['Boney M.', 'Rasputin', 1978],
+  ['Bee Gees', 'Stayin\' Alive', 1977],
+  ['Bob Marley', 'Is This Love', 1978],
+  ['Bob Marley', 'Could You Be Loved', 1980],
+  ['Gloria Gaynor', 'I Will Survive', 1978],
+  ['AC/DC', 'Highway to Hell', 1979],
+
+  // 80er
+  ['Michael Jackson', 'Billie Jean', 1982],
+  ['Michael Jackson', 'Beat It', 1982],
+  ['Michael Jackson', 'Thriller', 1982],
+  ['Michael Jackson', 'Smooth Criminal', 1987],
+  ['Toto', 'Africa', 1982],
+  ['Survivor', 'Eye of the Tiger', 1982],
+  ['Nena', '99 Luftballons', 1983],
+  ['Eurythmics', 'Sweet Dreams (Are Made of This)', 1983],
+  ['Wham!', 'Last Christmas', 1984],
+  ['George Michael', 'Careless Whisper', 1984],
+  ['Alphaville', 'Forever Young', 1984],
+  ['Modern Talking', 'You\'re My Heart, You\'re My Soul', 1984],
+  ['a-ha', 'Take On Me', 1985],
+  ['Falco', 'Rock Me Amadeus', 1985],
+  ['Europe', 'The Final Countdown', 1986],
+  ['Bon Jovi', 'Livin\' on a Prayer', 1986],
+  ['Whitney Houston', 'I Wanna Dance with Somebody (Who Loves Me)', 1987],
+  ['Whitney Houston', 'I Will Always Love You', 1992],
+  ['Guns N\' Roses', 'Sweet Child O\' Mine', 1987],
+  ['Madonna', 'Like a Prayer', 1989],
+  ['Tina Turner', 'The Best', 1989],
+
+  // 90er
+  ['Scorpions', 'Wind of Change', 1990],
+  ['Nirvana', 'Smells Like Teen Spirit', 1991],
+  ['Haddaway', 'What Is Love', 1993],
+  ['Coolio', 'Gangsta\'s Paradise', 1995],
+  ['2Pac', 'California Love', 1995],
+  ['Spice Girls', 'Wannabe', 1996],
+  ['Rammstein', 'Du hast', 1997],
+  ['Celine Dion', 'My Heart Will Go On', 1997],
+  ['Robbie Williams', 'Angels', 1997],
+  ['Britney Spears', '...Baby One More Time', 1998],
+  ['Britney Spears', 'Toxic', 2003],
+  ['Backstreet Boys', 'I Want It That Way', 1999],
+  ['Ricky Martin', 'Livin\' la Vida Loca', 1999],
+  ['Lou Bega', 'Mambo No. 5 (A Little Bit of...)', 1999],
+
+  // 2000er
+  ['Eminem', 'The Real Slim Shady', 2000],
+  ['Eminem', 'Without Me', 2002],
+  ['Eminem', 'Lose Yourself', 2002],
+  ['Linkin Park', 'In the End', 2000],
+  ['Linkin Park', 'Numb', 2003],
+  ['Shaggy', 'It Wasn\'t Me', 2000],
+  ['Daft Punk', 'Get Lucky', 2013],
+  ['Shakira', 'Whenever, Wherever', 2001],
+  ['Shakira', 'Hips Don\'t Lie', 2006],
+  ['Shakira', 'Waka Waka (This Time for Africa)', 2010],
+  ['Coldplay', 'Yellow', 2000],
+  ['Coldplay', 'Viva la Vida', 2008],
+  ['50 Cent', 'In da Club', 2003],
+  ['Beyoncé', 'Crazy in Love', 2003],
+  ['Beyoncé', 'Single Ladies (Put a Ring on It)', 2008],
+  ['Outkast', 'Hey Ya!', 2003],
+  ['Black Eyed Peas', 'I Gotta Feeling', 2009],
+  ['Snoop Dogg', 'Drop It Like It\'s Hot', 2004],
+  ['Amy Winehouse', 'Rehab', 2006],
+  ['Rihanna', 'Umbrella', 2007],
+  ['Rihanna', 'Diamonds', 2012],
+  ['Lady Gaga', 'Bad Romance', 2009],
+
+  // 2010er bis heute
+  ['Bruno Mars', 'Just the Way You Are', 2010],
+  ['Adele', 'Rolling in the Deep', 2010],
+  ['Adele', 'Someone Like You', 2011],
+  ['Gotye', 'Somebody That I Used to Know', 2011],
+  ['Avicii', 'Wake Me Up', 2013],
+  ['PSY', 'Gangnam Style', 2012],
+  ['Pharrell Williams', 'Happy', 2013],
+  ['Mark Ronson', 'Uptown Funk', 2014],
+  ['Taylor Swift', 'Shake It Off', 2014],
+  ['Ed Sheeran', 'Thinking Out Loud', 2014],
+  ['Ed Sheeran', 'Shape of You', 2017],
+  ['Ed Sheeran', 'Perfect', 2017],
+  ['Justin Bieber', 'Sorry', 2015],
+  ['Drake', 'One Dance', 2016],
+  ['The Weeknd', 'Starboy', 2016],
+  ['The Weeknd', 'Blinding Lights', 2019],
+  ['Luis Fonsi', 'Despacito', 2017],
+  ['Imagine Dragons', 'Believer', 2017],
+  ['Dua Lipa', 'New Rules', 2017],
+  ['Dua Lipa', 'Don\'t Start Now', 2019],
+  ['Dua Lipa', 'Levitating', 2020],
+  ['Harry Styles', 'Sign of the Times', 2017],
+  ['Harry Styles', 'Watermelon Sugar', 2019],
+  ['Harry Styles', 'As It Was', 2022],
+  ['Lewis Capaldi', 'Someone You Loved', 2018],
+  ['Billie Eilish', 'bad guy', 2019],
+  ['Billie Eilish', 'BIRDS OF A FEATHER', 2024],
+  ['Tones and I', 'Dance Monkey', 2019],
+  ['Rema', 'Calm Down', 2022],
+  ['Miley Cyrus', 'Flowers', 2023],
+  ['Sabrina Carpenter', 'Espresso', 2024],
+]);
+
+</script>
+<script>
+// Kategorie „muzik_tr“ – türkische Hits aller Epochen. Zeile: [Interpret, Titel, Jahr (0 = unbekannt)]
+// Der 30-s-Ausschnitt wird per iTunes-Suche „Interpret Titel“ geladen.
+QZ('muzik_tr', 'music', [
+  // Oldies but Goldies
+  ['Barış Manço', 'Dönence', 1981],
+  ['Barış Manço', 'Gülpembe', 0],
+  ['Barış Manço', 'Arkadaşım Eşek', 0],
+  ['Cem Karaca', 'Resimdeki Gözyaşları', 0],
+  ['Cem Karaca', 'Islak Islak', 0],
+  ['Cem Karaca', 'Tamirci Çırağı', 0],
+  ['Erkin Koray', 'Fesupanallah', 0],
+  ['Erkin Koray', 'Öyle Bir Geçer Zaman Ki', 0],
+  ['Zeki Müren', 'Elbet Bir Gün Buluşacağız', 0],
+  ['Zeki Müren', 'Ah Bu Şarkıların Gözü Kör Olsun', 0],
+  ['Orhan Gencebay', 'Batsın Bu Dünya', 0],
+  ['Orhan Gencebay', 'Hatasız Kul Olmaz', 0],
+  ['Ferdi Tayfur', 'Emmoğlu', 0],
+  ['Müslüm Gürses', 'Affet', 0],
+  ['Müslüm Gürses', 'Hangimiz Sevmedik', 0],
+  ['Müslüm Gürses', 'Paramparça', 0],
+  ['İbrahim Tatlıses', 'Mavi Mavi', 0],
+  ['İbrahim Tatlıses', 'Haydi Söyle', 0],
+  ['İbrahim Tatlıses', 'Aramam', 0],
+  ['Ajda Pekkan', 'Bambaşka Biri', 1975],
+  ['Ajda Pekkan', 'Petrol', 0],
+  ['Sezen Aksu', 'Gülümse', 1991],
+  ['Sezen Aksu', 'Hadi Bakalım', 1991],
+  ['Sezen Aksu', 'Firuze', 1982],
+  ['Sezen Aksu', 'Sen Ağlama', 0],
+  ['Nilüfer', 'Göreceksin Kendini', 0],
+  ['Kayahan', 'Odalarda Işıksızım', 0],
+  ['Kayahan', 'Yemin Ettim', 0],
+  ['Selda Bağcan', 'Yaz Gazeteci Yaz', 0],
+  ['Fikret Kızılok', 'Bu Kalp Seni Unutur Mu', 0],
+  ['Neşet Ertaş', 'Gönül Dağı', 0],
+  ['MFÖ', 'Ali Desidero', 0],
+  ['MFÖ', 'Sakın Gelme', 0],
+  ['Ahmet Kaya', 'Kum Gibi', 0],
+  ['Ahmet Kaya', 'Nerden Bileceksiniz', 0],
+
+  // 90er und 2000er
+  ['Tarkan', 'Şımarık', 1997],
+  ['Tarkan', 'Şıkıdım', 1994],
+  ['Tarkan', 'Kuzu Kuzu', 2001],
+  ['Tarkan', 'Dudu', 2003],
+  ['Mustafa Sandal', 'Araba', 0],
+  ['Mustafa Sandal', 'Aya Benzer', 0],
+  ['Mustafa Sandal', 'İsyankar', 0],
+  ['Levent Yüksel', 'Medcezir', 0],
+  ['Yonca Evcimik', 'Abone', 0],
+  ['Mirkelam', 'Her Gece', 0],
+  ['Yıldız Tilbe', 'Delikanlım', 0],
+  ['Candan Erçetin', 'Hadi Gel Köyümüze Geri Dönelim', 0],
+  ['Sertab Erener', 'Everyway That I Can', 2003],
+  ['Kenan Doğulu', 'Shake It Up Şekerim', 2007],
+  ['Kenan Doğulu', 'Çakkıdı', 0],
+  ['Hande Yener', 'Acele Etme', 2000],
+  ['Hande Yener', 'Kibir', 0],
+  ['Serdar Ortaç', 'Karabiberim', 0],
+  ['Serdar Ortaç', 'Mesafe', 0],
+  ['Gülşen', 'Bangır Bangır', 2015],
+  ['Demet Akalın', 'Afedersin', 0],
+  ['Şebnem Ferah', 'Sigara', 0],
+  ['Şebnem Ferah', 'Vazgeçtim Dünyadan', 0],
+  ['Haluk Levent', 'Elfida', 0],
+  ['Teoman', 'İstanbul\'da Sonbahar', 0],
+  ['Teoman', 'Paramparça', 0],
+  ['Teoman', 'Papatya', 0],
+  ['Duman', 'Senden Daha Güzel', 0],
+  ['Duman', 'Bu Akşam', 0],
+  ['Duman', 'Her Şeyi Yak', 0],
+  ['maNga', 'Bir Kadın Çizeceksin', 2004],
+  ['maNga', 'We Could Be the Same', 2010],
+  ['mor ve ötesi', 'Bir Derdim Var', 0],
+  ['mor ve ötesi', 'Deli', 2008],
+  ['Athena', 'For Real', 2004],
+  ['Athena', 'Holigan', 0],
+  ['Model', 'Değmesin Ellerimiz', 0],
+  ['Gripin', 'Durma Yağmur Durma', 0],
+  ['Pinhani', 'Dön Bak Dünyaya', 0],
+  ['Nil Karaibrahimgil', 'Peri', 0],
+  ['Ceza', 'Holocaust', 0],
+  ['Ceza', 'Suspus', 0],
+  ['Ceza', 'Neyim Var Ki', 0],
+  ['Sagopa Kajmer', 'Galiba', 0],
+  ['Sagopa Kajmer', 'Uzun Yollara Devam', 0],
+  ['Hadise', 'Düm Tek Tek', 2009],
+  ['Emre Aydın', 'Afili Yalnızlık', 0],
+  ['Mustafa Ceceli', 'Es', 0],
+
+  // 2010er bis heute
+  ['Sıla', 'Yan Benimle', 0],
+  ['Sıla', 'Kafa', 0],
+  ['Sıla', 'Vaziyetler', 0],
+  ['Murat Boz', 'Aşkı Bulamam Ben', 0],
+  ['Murat Boz', 'Janti', 0],
+  ['Murat Dalkılıç', 'Bir Güzellik Yap', 0],
+  ['Edis', 'Benim Ol', 0],
+  ['Edis', 'Martılar', 0],
+  ['Simge', 'Aşkın Olayım', 0],
+  ['Simge', 'Miş Miş', 0],
+  ['Aleyna Tilki', 'Cevapsız Çınlama', 2017],
+  ['İlyas Yalçıntaş', 'İçimdeki Duman', 0],
+  ['Reynmen', 'Ela', 0],
+  ['Ben Fero', 'Demet Akalın', 0],
+  ['Mabel Matiz', 'Öyle Kolaysa', 0],
+  ['Mabel Matiz', 'Boyalı Da Saçların', 0],
+  ['Mert Demir', 'Antidepresan', 0],
+  ['Mert Demir', 'Ateşe Düştüm', 0],
+  ['Ezhel', 'Geceler', 0],
+  ['Ezhel', 'Felaket', 0],
+  ['Ezhel', 'Bul Beni', 0],
+  ['Zeynep Bastık', 'Uslanmıyor Bu', 0],
+  ['Zeynep Bastık', 'Lan', 0],
+  ['Semicenk', 'Pişman Değilim', 0],
+  ['Semicenk', 'Yana Yana', 0],
+  ['Semicenk', 'Geri Dönemedim', 0],
+  ['Uzi', 'Krvn', 2021],
+  ['Uzi', 'Makina', 0],
+  ['Uzi', 'Umrumda Değil', 0],
+  ['Lvbel C5', 'DOĞUŞTAN BERİ HAKLIYIM (tmm)', 0],
+]);
+
+</script>
+<script>
 // Sehenswürdigkeiten in der Türkei für den Modus „Erraten“ (Kategorie „tuerkei“).
 // Zeile: [Ort, [Name DE, Name TR], [weitere akzeptierte Antworten], [Hinweise DE schwer→leicht], [Hinweise TR gleiche Reihenfolge], Fakt DE, Fakt TR, Commons-Dateiname (optional)]
 QZ('tuerkei', 'clue', [
@@ -6766,7 +7048,7 @@ QZ('orte', 'clue', [
   };
 
   // ---------- Modus „Erraten“ ----------
-  const QCATS = { all: { e: '🎲' }, logos: { e: '🏷️' }, autos: { e: '🚗' }, fussball: { e: '⚽' }, diziler: { e: '📺' }, orte: { e: '🌍' }, tuerkei: { e: '🇹🇷' }, flaggen: { e: '🏳️' } };
+  const QCATS = { all: { e: '🎲' }, logos: { e: '🏷️' }, autos: { e: '🚗' }, fussball: { e: '⚽' }, diziler: { e: '📺' }, orte: { e: '🌍' }, tuerkei: { e: '🇹🇷' }, muzik_int: { e: '🎧' }, muzik_tr: { e: '🎵' }, flaggen: { e: '🏳️' } };
   const QUIZ = window.QUIZ || [];
   const QZBYID = Object.fromEntries(QUIZ.map(q => [q.id, q]));
   const qcatName = k => T('qcats')[k] || k;
@@ -7143,6 +7425,17 @@ QZ('orte', 'clue', [
     if (H.phase !== 'question') return;
     const p = findP(pid); if (!p) return;
     const g = H.guesses[pid]; if (g && g.locked) return;
+    if (H.q.type === 'quiz' && H.q.kind === 'music') {
+      // Musik: genau ein Versuch pro Spieler; ob richtig, verrät der Feed erst bei der Auflösung
+      const pick = Math.floor(+d.pick);
+      if (!(pick >= 0 && pick < H.q.opts.length)) return;
+      const now = Date.now();
+      H.guesses[pid] = { t: now, locked: true, joker: !!d.joker && p.joker, pick, wrong: pick !== H.q.ans };
+      H.tries[pid] = { n: 1, last: now };
+      H.feed.push({ pid, ans: true, ms: clamp(now - H.qStart, 0, H.settings.time * 1000) });
+      publish(); checkAllLocked();
+      return;
+    }
     if (H.q.type === 'quiz') {
       // Beliebig viele Versuche; der erste richtige zählt mit dem Zeitpunkt beim Host
       const txt = String(d.text ?? '').replace(/\s+/g, ' ').trim().slice(0, 40);
@@ -7285,8 +7578,66 @@ QZ('orte', 'clue', [
     return rounds;
   }
 
-  function startGame() {
+  // ---------- Musik: 30-s-Ausschnitte über die iTunes-Suche (JSONP), Deezer als Ersatz ----------
+  function jsonp(url, ms = 7000) {
+    return new Promise(resolve => {
+      const cb = '__sc' + rid(10), s = document.createElement('script');
+      const done = v => { clearTimeout(t); delete window[cb]; s.remove(); resolve(v); };
+      const t = setTimeout(() => done(null), ms);
+      window[cb] = d => done(d);
+      s.onerror = () => done(null);
+      s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+      document.head.appendChild(s);
+    });
+  }
+  const musicCache = {};
+  async function findPreview(it) {
+    if (it.id in musicCache) return musicCache[it.id];
+    const na = qnorm(it.artist), nt = qnorm(it.title).replace(/ /g, '');
+    const fit = (artist, title) => {
+      const a = qnorm(artist), t = qnorm(title).replace(/ /g, '');
+      return (a.includes(na) || na.includes(a)) && (t.startsWith(nt) || nt.startsWith(t) || t.includes(nt));
+    };
+    let hit = null;
+    for (const country of it.cat === 'muzik_tr' ? ['TR', 'DE'] : ['DE', 'US']) {
+      const d = await jsonp(`https://itunes.apple.com/search?term=${encodeURIComponent(it.artist + ' ' + it.title)}&media=music&entity=song&limit=15&country=${country}`);
+      const r = d && (d.results || []).find(x => x.previewUrl && fit(x.artistName, x.trackName));
+      if (r) { hit = { audio: r.previewUrl, art: (r.artworkUrl100 || '').replace('100x100', '300x300') }; break; }
+    }
+    if (!hit) {
+      const d = await jsonp(`https://api.deezer.com/search?q=${encodeURIComponent(`artist:"${it.artist}" track:"${it.title}"`)}&output=jsonp`);
+      const r = d && (d.data || []).find(x => x.preview && fit(x.artist?.name || '', x.title || ''));
+      if (r) hit = { audio: r.preview, art: r.album?.cover_medium || '' };
+    }
+    return (musicCache[it.id] = hit);
+  }
+  // Ersetzt Musik-Runden ohne Ausschnitt durch andere Songs derselben Kategorie
+  async function prepareMusic() {
+    const taken = new Set(H.order.map(r => r.id));
+    await Promise.all(H.order.map(async r => {
+      const it = QZBYID[r.id];
+      if (!it || it.kind !== 'music') return;
+      let hit = await findPreview(it);
+      for (let k = 0; !hit && k < 4; k++) {
+        const alt = shuffle(QUIZ.filter(x => x.cat === it.cat && !taken.has(x.id)))[0];
+        if (!alt) break;
+        taken.add(alt.id); r.id = alt.id;
+        hit = await findPreview(alt);
+      }
+      if (hit) Object.assign(r, hit); else r.drop = true;
+    }));
+    H.order = H.order.filter(r => !r.drop);
+  }
+
+  let starting = false;
+  async function startGame() {
+    if (starting) return;
     H.order = buildRounds();
+    if (H.order.some(r => QZBYID[r.id]?.kind === 'music')) {
+      starting = true; busy(T('musicLoading'));
+      try { await prepareMusic(); } finally { starting = false; unbusy(); }
+      if (!H.order.length) { overlay(T('error'), T('musicFail'), [{ t: 'OK', primary: true }]); return; }
+    }
     H.total = H.order.length; H.round = 0; H.best = null; H.worst = null; H.final = null;
     H.players = H.players.filter(p => p.online);
     H.players.forEach(p => Object.assign(p, { score: 0, joker: true, wins: 0, hits: 0 }));
@@ -7307,6 +7658,16 @@ QZ('orte', 'clue', [
     } else if (spec.type === 'quiz') {
       const it = QZBYID[spec.id];
       H.q = { type: 'quiz', id: it.id, cat: it.cat, kind: it.kind, acc: quizAccepted(it) };
+      if (it.kind === 'music') {
+        // 4 Antworten: richtiger Song plus 3 andere aus derselben Kategorie (andere Interpreten)
+        const others = shuffle(QUIZ.filter(x => x.cat === it.cat && x.artist !== it.artist));
+        const opts = [it];
+        for (const x of others) { if (opts.length === 4) break; if (!opts.some(o => o.artist === x.artist)) opts.push(x); }
+        const order = shuffle(opts);
+        H.q.opts = order.map(x => x.a[0]); H.q.ans = order.indexOf(it);
+        H.q.audio = spec.audio; H.q.art = spec.art;
+        H.q.acc = [qnorm(it.artist), qnorm(it.title)].filter(x => x.length >= 3); // für die Spoiler-Sperre im Chat
+      }
       H.feed = []; H.tries = {};
       H.used.add(it.id);
       H.range = null;
@@ -7340,12 +7701,12 @@ QZ('orte', 'clue', [
     for (const p of H.players) {
       const g = H.guesses[p.pid];
       if (!g) { if (p.online) res.push({ pid: p.pid, o: null, tried: !!H.tries[p.pid], right: false, ms: null, base: 0, pts: 0 }); continue; }
-      const right = true;
+      const right = !g.wrong;
       const ms = clamp(g.t - H.qStart, 0, total);
       const base = right ? Math.round(1000 - 500 * ms / total) : 0;
       let pts = base, joker = null;
       if (g.joker && p.joker) { p.joker = false; joker = right ? 'win' : 'lose'; pts = right ? pts * 2 : 0; }
-      res.push({ pid: p.pid, o: 1, right, ms, base, pts, joker });
+      res.push({ pid: p.pid, o: 1, right, ms, base, pts, joker, pick: g.pick });
     }
     const rights = res.filter(r => r.right);
     if (rights.length) {
@@ -7364,6 +7725,7 @@ QZ('orte', 'clue', [
     const rank = r => (r.right ? 0 : r.tried ? 1e7 : 2e7) + (r.ms ?? 0);
     res.sort((x, y) => rank(x) - rank(y));
     H.reveal = { res };
+    if (H.q.kind === 'music') Object.assign(H.reveal, { ans: H.q.ans, art: H.q.art || '' });
     H.phase = 'reveal';
     H.deadlineAt = Date.now() + REVEAL_MS;
     H.timer = setTimeout(advance, REVEAL_MS);
@@ -7447,7 +7809,7 @@ QZ('orte', 'clue', [
       q: H.q && H.phase !== 'lobby' ? (H.q.type === 'num'
         ? { type: 'num', id: H.q.id, e: H.q.e, n: H.q.n, p: H.q.p, cat: H.q.cat, u: H.q.u, lo: H.range.lo, hi: H.range.hi }
         : H.q.type === 'quiz'
-        ? { type: 'quiz', id: H.q.id, cat: H.q.cat, kind: H.q.kind }
+        ? { type: 'quiz', id: H.q.id, cat: H.q.cat, kind: H.q.kind, opts: H.q.opts, audio: H.q.audio }
         : H.q.type === 'cmp'
         ? { type: 'cmp', id: H.q.id, d: H.q.d, cat: H.q.cat, e: H.q.e, n: H.q.n, lo: H.range.lo, hi: H.range.hi,
           ref: { id: H.q.ref.id, e: H.q.ref.e, n: H.q.ref.n }, tgt: { id: H.q.tgt.id, e: H.q.tgt.e, n: H.q.tgt.n } }
@@ -7587,10 +7949,11 @@ QZ('orte', 'clue', [
 
   function render() {
     updateHeader();
-    if (!S) { if (mounted !== 'home') { mounted = 'home'; renderHome(); } return; }
+    if (!S) { stopMusic(); if (mounted !== 'home') { mounted = 'home'; renderHome(); } return; }
     const key = S.phase + ':' + S.round;
     const fresh = key !== mounted;
     mounted = key;
+    if (fresh && S.phase !== 'reveal' && !(S.phase === 'question' && S.q?.kind === 'music')) stopMusic();
     ({ lobby: renderLobby, question: renderQuestion, reveal: renderReveal, final: renderFinal })[S.phase](fresh);
     $('#reactbar').hidden = false;
   }
@@ -7846,6 +8209,7 @@ QZ('orte', 'clue', [
   function mountQuiz(q, keep) {
     const it = QZBYID[q.id];
     if (!it) return;
+    if (it.kind === 'music') return mountMusic(q, it, keep);
     const draft = keep ? ($('#quizIn')?.value || '') : '';
     app().innerHTML = questionShell(q, `
             <div class="qmedia ${it.kind === 'text' ? 'text' : ''} ${it.kind === 'clue' ? 'clues' : ''} ${it.photo ? 'photo' : ''}">${quizMedia(it)}</div>
@@ -7870,6 +8234,62 @@ QZ('orte', 'clue', [
     setTimeout(() => { const i = $('#quizIn'); if (i && !G.locked && matchMedia('(pointer: fine)').matches) i.focus(); }, keep ? 0 : INTRO_MS);
   }
 
+  // ---------- Musik erraten ----------
+  const player = new Audio();
+  player.preload = 'auto';
+  let audioUnlocked = false;
+  // iOS/Safari: Ton erst nach einer Berührung erlaubt; beim ersten Tippen einmal stumm abspielen
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
+    try { player.muted = true; player.play().then(() => { player.pause(); player.muted = Sound.muted; }).catch(() => { player.muted = Sound.muted; }); } catch { /* ignore */ }
+  }
+  document.addEventListener('pointerdown', unlockAudio, { once: true, capture: true });
+  function stopMusic() { try { player.pause(); } catch { /* ignore */ } }
+  function playMusic() {
+    player.muted = Sound.muted;
+    const btn = $('#musicPlay');
+    player.play().then(() => { if (btn) btn.hidden = true; $('#musicViz')?.classList.add('on'); })
+      .catch(() => { if (btn) btn.hidden = false; });
+  }
+  function mountMusic(q, it, keep) {
+    const opts = q.opts || [];
+    app().innerHTML = questionShell(q, `
+            <div class="qmedia music">
+              <div class="mviz" id="musicViz">${'<i></i>'.repeat(9)}</div>
+              <button class="btn primary" id="musicPlay" hidden>▶️ ${T('musicPlay')}</button>
+            </div>
+            <div class="mopts" id="mOpts">${opts.map((o, i) => `<button class="mopt" data-i="${i}"><kbd>${i + 1}</kbd><span>${esc(o)}</span></button>`).join('')}</div>
+            <div class="qfeed" id="qFeed"></div>
+            <div class="controls quiz">
+              <span class="hint">${T('musicHint')}</span>
+              ${lockControls().replace(/<button id="lockBtn"[\s\S]*$/, '')}
+            </div>`, `
+          <div class="qcard slim">
+            <div class="qtext"><div class="qname">${QCATS[it.cat].e} ${esc(qcatName(it.cat))}</div><h2>${esc(quizPrompt(it))}</h2></div>
+          </div>`, keep);
+    $$('#mOpts .mopt').forEach(b => b.onclick = () => pickMusic(+b.dataset.i));
+    $('#musicPlay').onclick = playMusic;
+    bindCommon();
+    G.feedN = -1;
+    updateFeed();
+    markMusicPick();
+    if (!keep) {
+      if (q.audio && player.dataset.src !== q.audio) { player.dataset.src = q.audio; player.src = q.audio; try { player.load(); } catch { /* ignore */ } }
+      setTimeout(() => { if (S && S.phase === 'question' && S.q?.id === q.id) playMusic(); }, INTRO_MS);
+    } else if (!player.paused) $('#musicViz')?.classList.add('on');
+    else if (q.audio) $('#musicPlay').hidden = false;
+  }
+  function pickMusic(i) {
+    if (G.locked || !S || S.phase !== 'question') return;
+    G.pick = i; G.locked = true;
+    send({ t: 'guess', pick: i, joker: G.joker });
+    Sound.lock(); markMusicPick(); updateGuessUi();
+  }
+  function markMusicPick() {
+    $$('#mOpts .mopt').forEach(b => { b.disabled = G.locked; b.classList.toggle('picked', +b.dataset.i === G.pick); });
+  }
+
   function sendQuiz() {
     const inp = $('#quizIn');
     if (!inp || G.locked || !S || S.phase !== 'question') return;
@@ -7890,6 +8310,7 @@ QZ('orte', 'clue', [
     box.innerHTML = S.feed.slice(-14).map(f => {
       const p = pById(f.pid);
       const who = `<b style="color:${p?.color || '#aaa'}">${p?.avatar || ''} ${esc(p?.name || '')}</b>`;
+      if (f.ans) return `<div class="fe">🎵 ${T('musicAnswered', { who })} <small>${secs(f.ms)}</small></div>`;
       if (f.ok) return `<div class="fe ok">✅ ${T('quizFoundOther', { who })} <small>${secs(f.ms)}</small></div>`;
       // „Nah dran“ sieht nur der Spieler selbst
       const near = f.close && f.pid === me.pid;
@@ -7916,7 +8337,7 @@ QZ('orte', 'clue', [
     const el = $('#qHint'); if (!el || !S || S.phase !== 'question' || S.q?.type !== 'quiz') return;
     const total = S.settings.time * 1000;
     const left = deadline - Date.now();
-    const it = QZBYID[S.q.id]; if (!it) return;
+    const it = QZBYID[S.q.id]; if (!it || it.kind === 'music') return;
     if (it.kind === 'clue') {
       const box = $('#qClues'), k = clueShown(it);
       // nur neu aufgedeckte Hinweise ersetzen, damit die sichtbaren nicht erneut einblenden
@@ -8081,7 +8502,8 @@ QZ('orte', 'clue', [
     if (S.q.type === 'quiz') { const i = $('#quizIn'); if (i) i.disabled = G.locked; const b = $('#quizSend'); if (b) b.disabled = G.locked; updateFeed(); }
     const lm = $('#lockedMsg');
     lm.hidden = !G.locked;
-    if (G.locked && S.q.type === 'quiz') lm.innerHTML = '✅ ' + T('quizFound', { s: G.foundMs != null ? secs(G.foundMs) : '…', j: G.joker ? T('jokerSet') : '' });
+    if (G.locked && S.q.kind === 'music') lm.innerHTML = '🔒 ' + T('musicLocked', { j: G.joker ? T('jokerSet') : '' });
+    else if (G.locked && S.q.type === 'quiz') lm.innerHTML = '✅ ' + T('quizFound', { s: G.foundMs != null ? secs(G.foundMs) : '…', j: G.joker ? T('jokerSet') : '' });
     else if (G.locked) lm.innerHTML = G.known
       ? '🔒 ' + T('locked', { v: fmtVal(S.q, G.cur, 3), j: G.joker ? T('jokerSet') : '' })
       : '🔒 ' + T('lockedShort');
@@ -8124,7 +8546,7 @@ QZ('orte', 'clue', [
         <div class="rk">${r.right ? i + 1 : '–'}</div>
         <div class="ra">${p.avatar}</div>
         <div class="rn"><b>${esc(p.name)}</b><div class="tags">${tags}</div></div>
-        <div class="rg ${r.right ? 'ok' : 'no'}">${r.right ? secs(r.ms) : `<small>${T('noAnswer')}</small>`}</div>
+        <div class="rg ${r.right ? 'ok' : 'no'}">${r.right ? secs(r.ms) : r.pick != null && q.opts ? `<small class="mwrong">✗ ${esc(q.opts[r.pick])}</small>` : `<small>${T('noAnswer')}</small>`}</div>
         <div class="rp">+${r.pts}</div>
         <div class="rt">${r.total}${mv}</div>
       </div>`;
@@ -8139,11 +8561,11 @@ QZ('orte', 'clue', [
           ${timerHtml()}
         </div>
         <div class="answer card">
-          ${it.kind === 'clue' ? (it.photo ? `<div class="qmedia small"><a class="qthumb" href="${photoPage(it)}" target="_blank" rel="noopener"><img src="${photoUrl(it, 400)}" alt="" referrerpolicy="no-referrer" onerror="this.closest('.qmedia').innerHTML='<div class=&quot;qimg emo&quot;>${QCATS[it.cat].e}</div>'"><small>📷 Wikimedia Commons</small></a></div>` : `<div class="qmedia small"><div class="qimg emo">${QCATS[it.cat].e}</div></div>`) : `<div class="qmedia small">${quizMedia(it)}</div>`}
+          ${it.kind === 'music' ? `<div class="qmedia small">${R.art ? `<img class="mart" src="${esc(R.art)}" alt="" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;qimg emo&quot;>🎵</div>'">` : '<div class="qimg emo">🎵</div>'}</div>` : it.kind === 'clue' ? (it.photo ? `<div class="qmedia small"><a class="qthumb" href="${photoPage(it)}" target="_blank" rel="noopener"><img src="${photoUrl(it, 400)}" alt="" referrerpolicy="no-referrer" onerror="this.closest('.qmedia').innerHTML='<div class=&quot;qimg emo&quot;>${QCATS[it.cat].e}</div>'"><small>📷 Wikimedia Commons</small></a></div>` : `<div class="qmedia small"><div class="qimg emo">${QCATS[it.cat].e}</div></div>`) : `<div class="qmedia small">${quizMedia(it)}</div>`}
           <div>
             <div class="kicker">${T('correct')}</div>
             <div class="abig done">${esc(quizAnswer(it))}</div>
-            <div class="acmp">${esc(it.kind === 'text' ? it.opts[0][1 - LI()] : it.kind === 'clue' ? (it.a[0] !== it.a[1] ? it.a[1 - LI()] + ' · ' : '') + clueInfo(it) : it.a[1 - LI()])}</div>
+            <div class="acmp">${esc(it.kind === 'text' ? it.opts[0][1 - LI()] : it.kind === 'clue' ? (it.a[0] !== it.a[1] ? it.a[1 - LI()] + ' · ' : '') + clueInfo(it) : it.kind === 'music' ? (it.year ? '📅 ' + it.year : '') : it.a[1 - LI()])}</div>
           </div>
         </div>
         <div class="card results">
@@ -8457,7 +8879,7 @@ QZ('orte', 'clue', [
       if (!txt || !S) return;
       send({ t: 'chat', text: txt }); i.value = '';
     };
-    $('#muteBtn').onclick = () => { Sound.muted = !Sound.muted; store.set('muted', Sound.muted); updateHeader(); };
+    $('#muteBtn').onclick = () => { Sound.muted = !Sound.muted; store.set('muted', Sound.muted); player.muted = Sound.muted; updateHeader(); };
     $('#leaveBtn').onclick = () => leave(false);
     $('#roomChip').onclick = () => S && copy(inviteLink() || S.code, inviteLink() ? T('inviteCopied') : T('codeCopied'));
     $('#langBtn').onclick = () => {
@@ -8477,6 +8899,7 @@ QZ('orte', 'clue', [
         if (e.key === '-') nudge(-15);
       }
       if (e.key === 'Escape' && chat.open) toggleChat(false);
+      if (!typing && S && S.phase === 'question' && S.q?.kind === 'music' && /^[1-4]$/.test(e.key)) pickMusic(+e.key - 1);
       if (e.key === 'Enter' && S && S.phase === 'question' && !typing) lockIn();
     });
     window.addEventListener('beforeunload', e => {
