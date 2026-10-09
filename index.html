@@ -1295,11 +1295,15 @@ body.geo-app .bg i:nth-child(2) { background: #1c7ed6; }
 .banchip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--pc) 60%, transparent); background: color-mix(in srgb, var(--pc) 16%, transparent); color: var(--text); font-weight: 700; font-size: 14px; transition: transform .12s, background .2s; }
 .banchip:hover { transform: translateY(-2px) scale(1.04); background: rgba(255, 77, 109, .35); border-color: #ff6b6b; }
 .card.guess.banned { position: relative; }
-.banover { position: absolute; inset: 0; z-index: 6; display: grid; place-content: center; justify-items: center; gap: 6px; text-align: center; padding: 20px; border-radius: inherit;
-  background: repeating-linear-gradient(-45deg, rgba(40, 8, 18, .92) 0 18px, rgba(60, 10, 24, .92) 18px 36px); animation: popin .35s cubic-bezier(.3, 1.6, .5, 1); }
-.banover .bo-e { font-size: 64px; animation: banShake .6s .2s; }
-.banover b { font-family: var(--head); font-size: 24px; }
-.banover small { color: var(--muted); font-size: 15px; }
+.banover { display: flex; align-items: center; gap: 14px; margin: -4px 0 14px; padding: 10px 16px; border-radius: 14px; border: 1px solid rgba(255, 107, 107, .5);
+  background: repeating-linear-gradient(-45deg, rgba(70, 12, 28, .85) 0 14px, rgba(95, 16, 36, .85) 14px 28px); animation: popin .35s cubic-bezier(.3, 1.6, .5, 1); }
+.banover .bo-e { font-size: 34px; line-height: 1; animation: banShake .6s .2s; }
+.banover b { display: block; font-family: var(--head); font-size: 18px; }
+.banover small { color: #ffc9c9; font-size: 13px; }
+/* Gebannt: alles sichtbar, nur die Eingaben sind gesperrt */
+.card.guess.banned :is(.slider-wrap, .controls, .qinput, .mopts, .exact, .stage) { pointer-events: none; }
+.card.guess.banned :is(.slider-wrap, .controls, .qinput, .exact) { opacity: .45; filter: grayscale(.6); }
+.card.guess.banned .mopts { opacity: .8; }
 @keyframes banShake { 20%, 60% { transform: rotate(-14deg) scale(1.1); } 40%, 80% { transform: rotate(14deg) scale(1.1); } }
 .lchip.banned { opacity: .55; text-decoration: line-through; }
 .lchip .fire { font-style: normal; font-size: 12px; margin-left: 4px; color: #ffa94d; }
@@ -11526,7 +11530,7 @@ window.__launchGate = (() => {
   const PREFIX = 'sizeclash-v1-';
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = 'be11548c66';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = 'f1154fab21';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -13304,10 +13308,10 @@ window.__launchGate = (() => {
     if (!by) return;
     G.locked = true; G.banned = true;
     card.classList.add('banned');
+    // Nur ein Banner oben: Frage, Hinweise, Musik und Antworten der anderen bleiben sichtbar, nur die Eingabe ist gesperrt
     if (!$('#banOver')) {
-      card.insertAdjacentHTML('beforeend', `<div class="banover" id="banOver"><div class="bo-e">🚫</div><b>${T('youBanned', { who: esc(pById(by)?.name || '?') })}</b><small>${T('youBannedSub')}</small></div>`);
-      card.querySelectorAll('input, button, select').forEach(el => { el.disabled = true; });
-      stopMusic();
+      card.insertAdjacentHTML('afterbegin', `<div class="banover" id="banOver"><div class="bo-e">🚫</div><div><b>${T('youBanned', { who: esc(pById(by)?.name || '?') })}</b><small>${T('youBannedSub')}</small></div></div>`);
+      card.querySelectorAll('input, button, select').forEach(el => { if (el.id !== 'musicPlay') el.disabled = true; });
     }
   }
   function onBanned(by, target) {
