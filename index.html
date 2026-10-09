@@ -1579,6 +1579,16 @@ body.spy-app .bg i:nth-child(3) { background: #08d9d6; opacity: .25; }
 .jk-coins i { position: absolute; top: -60px; font-style: normal; animation: jkFall linear infinite; }
 @keyframes jkFall { to { transform: translateY(115vh) rotate(720deg); } }
 @media (prefers-reduced-motion: reduce) { .jackshow * { animation-duration: .01s !important; animation-iteration-count: 1 !important; } }
+
+/* Geo Clash: eigene Ländernamen auf der Karte (Türkisch bzw. Deutsch) */
+.cl { pointer-events: none; }
+.cl span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font: 700 11px/1.1 var(--body, sans-serif); color: #3b3f58; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 6px #fff; letter-spacing: .02em; }
+.cl.t0 span, .cl.t1 span { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #2a2e48; }
+.cl.t2 span { font-size: 12px; }
+[data-z="1"] .cl:not(.t0), [data-z="2"] .cl.t2, [data-z="2"] .cl.t3, [data-z="2"] .cl.t4, [data-z="3"] .cl.t3, [data-z="3"] .cl.t4, [data-z="4"] .cl.t4 { display: none; }
+[data-z="1"] .cl span { font-size: 10px; }
+[data-z="5"] .cl span, [data-z="6"] .cl span { font-size: 14px; }
+[data-z="7"] .cl, [data-z="8"] .cl, [data-z="9"] .cl, [data-z="10"] .cl, [data-z="11"] .cl, [data-z="12"] .cl, [data-z="13"] .cl, [data-z="14"] .cl, [data-z="15"] .cl, [data-z="16"] .cl, [data-z="17"] .cl, [data-z="18"] .cl, [data-z="19"] .cl { display: none; }
 </style>
 </head>
 <body>
@@ -11614,6 +11624,213 @@ QZ('yabanci', 'clue', [
 
 </script>
 <script>
+// Ländernamen für die Geo-Clash-Karte (Deutsch/Türkisch) mit Beschriftungspunkt und Fläche in km².
+// Quelle: mledoze/countries (world-countries 5.1.0), Lizenz ODbL 1.0, https://github.com/mledoze/countries
+// Zeile: [ISO-Code, Breite, Länge, Fläche, Name DE, Name TR]
+window.GEO_CTRY = [
+  ["AD", 42.5, 1.5, 468, "Andorra", "Andorra"],
+  ["AE", 24, 54, 83600, "Vereinigte Arabische Emirate", "Birleşik Arap Emirlikleri"],
+  ["AF", 33, 65, 652230, "Afghanistan", "Afganistan"],
+  ["AG", 17.05, -61.8, 442, "Antigua und Barbuda", "Antigua ve Barbuda"],
+  ["AL", 41, 20, 28748, "Albanien", "Arnavutluk"],
+  ["AM", 40, 45, 29743, "Armenien", "Ermenistan"],
+  ["AO", -12.5, 18.5, 1246700, "Angola", "Angola"],
+  ["AR", -34, -64, 2780400, "Argentinien", "Arjantin"],
+  ["AT", 47.33, 13.33, 83871, "Österreich", "Avusturya"],
+  ["AU", -27, 133, 7692024, "Australien", "Avustralya"],
+  ["AZ", 40.5, 47.5, 86600, "Aserbaidschan", "Azerbaycan"],
+  ["BA", 44, 18, 51209, "Bosnien und Herzegowina", "Bosna-Hersek"],
+  ["BB", 13.17, -59.53, 430, "Barbados", "Barbados"],
+  ["BD", 24, 90, 147570, "Bangladesch", "Bangladeş"],
+  ["BE", 50.83, 4, 30528, "Belgien", "Belçika"],
+  ["BF", 13, -2, 272967, "Burkina Faso", "Burkina Faso"],
+  ["BG", 43, 25, 110879, "Bulgarien", "Bulgaristan"],
+  ["BH", 26, 50.55, 765, "Bahrain", "Bahreyn"],
+  ["BI", -3.5, 30, 27834, "Burundi", "Burundi"],
+  ["BJ", 9.5, 2.25, 112622, "Benin", "Benin"],
+  ["BN", 4.5, 114.67, 5765, "Brunei", "Brunei"],
+  ["BO", -17, -65, 1098581, "Bolivien", "Bolivya"],
+  ["BR", -10, -55, 8515767, "Brasilien", "Brezilya"],
+  ["BS", 24.25, -76, 13943, "Bahamas", "Bahamalar"],
+  ["BT", 27.5, 90.5, 38394, "Bhutan", "Butan"],
+  ["BW", -22, 24, 582000, "Botswana", "Botsvana"],
+  ["BY", 53, 28, 207600, "Belarus", "Belarus"],
+  ["BZ", 17.25, -88.75, 22966, "Belize", "Belize"],
+  ["CA", 60, -95, 9984670, "Kanada", "Kanada"],
+  ["CD", 0, 25, 2344858, "Kongo (Dem. Rep.)", "Kongo Demokratik Cumhuriyeti"],
+  ["CF", 7, 21, 622984, "Zentralafrikanische Republik", "Orta Afrika Cumhuriyeti"],
+  ["CG", -1, 15, 342000, "Kongo", "Kongo Cumhuriyeti"],
+  ["CH", 47, 8, 41284, "Schweiz", "İsviçre"],
+  ["CI", 8, -5, 322463, "Côte d'Ivoire", "Fildişi Sahili"],
+  ["CL", -30, -71, 756102, "Chile", "Şili"],
+  ["CM", 6, 12, 475442, "Kamerun", "Kamerun"],
+  ["CN", 35, 105, 9706961, "China", "Çin"],
+  ["CO", 4, -72, 1141748, "Kolumbien", "Kolombiya"],
+  ["CR", 10, -84, 51100, "Costa Rica", "Kosta Rika"],
+  ["CU", 21.5, -80, 109884, "Kuba", "Küba"],
+  ["CV", 16, -24, 4033, "Kap Verde", "Yeşil Burun"],
+  ["CY", 35, 33, 9251, "Zypern", "Kıbrıs"],
+  ["CZ", 49.75, 15.5, 78865, "Tschechien", "Çekya"],
+  ["DE", 51, 9, 357114, "Deutschland", "Almanya"],
+  ["DJ", 11.5, 43, 23200, "Dschibuti", "Cibuti"],
+  ["DK", 56, 10, 43094, "Dänemark", "Danimarka"],
+  ["DM", 15.42, -61.33, 751, "Dominica", "Dominika"],
+  ["DO", 19, -70.67, 48671, "Dominikanische Republik", "Dominik Cumhuriyeti"],
+  ["DZ", 28, 3, 2381741, "Algerien", "Cezayir"],
+  ["EC", -2, -77.5, 276841, "Ecuador", "Ekvador"],
+  ["EE", 59, 26, 45227, "Estland", "Estonya"],
+  ["EG", 27, 30, 1002450, "Ägypten", "Mısır"],
+  ["EH", 24.5, -13, 266000, "Westsahara", "Sahra Demokratik Arap Cumhuriyeti"],
+  ["ER", 15, 39, 117600, "Eritrea", "Eritre"],
+  ["ES", 40, -4, 505992, "Spanien", "İspanya"],
+  ["ET", 8, 38, 1104300, "Äthiopien", "Etiyopya"],
+  ["FI", 64, 26, 338424, "Finnland", "Finlandiya"],
+  ["FJ", -18, 175, 18272, "Fidschi", "Fiji"],
+  ["FM", 6.92, 158.25, 702, "Mikronesien", "Mikronezya"],
+  ["FR", 46, 2, 551695, "Frankreich", "Fransa"],
+  ["GA", -1, 11.75, 267668, "Gabun", "Gabon"],
+  ["GB", 54, -2, 242900, "Großbritannien", "Birleşik Krallık"],
+  ["GD", 12.12, -61.67, 344, "Grenada", "Grenada"],
+  ["GE", 42, 43.5, 69700, "Georgien", "Gürcistan"],
+  ["GH", 8, -2, 238533, "Ghana", "Gana"],
+  ["GL", 72, -40, 2166086, "Grönland", "Grönland"],
+  ["GM", 13.47, -16.57, 10689, "Gambia", "Gambiya"],
+  ["GN", 11, -10, 245857, "Guinea", "Gine"],
+  ["GQ", 2, 10, 28051, "Äquatorialguinea", "Ekvator Ginesi"],
+  ["GR", 39, 22, 131990, "Griechenland", "Yunanistan"],
+  ["GT", 15.5, -90.25, 108889, "Guatemala", "Guatemala"],
+  ["GW", 12, -15, 36125, "Guinea-Bissau", "Gine-Bissau"],
+  ["GY", 5, -59, 214969, "Guyana", "Guyana"],
+  ["HN", 15, -86.5, 112492, "Honduras", "Honduras"],
+  ["HR", 45.17, 15.5, 56594, "Kroatien", "Hırvatistan"],
+  ["HT", 19, -72.42, 27750, "Haiti", "Haiti"],
+  ["HU", 47, 20, 93028, "Ungarn", "Macaristan"],
+  ["ID", -5, 120, 1904569, "Indonesien", "Endonezya"],
+  ["IE", 53, -8, 70273, "Irland", "İrlanda"],
+  ["IL", 31.47, 35.13, 20770, "Israel", "İsrail"],
+  ["IN", 20, 77, 3287590, "Indien", "Hindistan"],
+  ["IQ", 33, 44, 438317, "Irak", "Irak"],
+  ["IR", 32, 53, 1648195, "Iran", "İran"],
+  ["IS", 65, -18, 103000, "Island", "İzlanda"],
+  ["IT", 42.83, 12.83, 301336, "Italien", "İtalya"],
+  ["JM", 18.25, -77.5, 10991, "Jamaika", "Jamaika"],
+  ["JO", 31, 36, 89342, "Jordanien", "Ürdün"],
+  ["JP", 36, 138, 377930, "Japan", "Japonya"],
+  ["KE", 1, 38, 580367, "Kenia", "Kenya"],
+  ["KG", 41, 75, 199951, "Kirgisistan", "Kırgızistan"],
+  ["KH", 13, 105, 181035, "Kambodscha", "Kamboçya"],
+  ["KI", 1.42, 173, 811, "Kiribati", "Kiribati"],
+  ["KM", -12.17, 44.25, 1862, "Komoren", "Komorlar"],
+  ["KN", 17.33, -62.75, 261, "St. Kitts und Nevis", "Saint Kitts ve Nevis"],
+  ["KP", 40, 127, 120538, "Nordkorea", "Kuzey Kore"],
+  ["KR", 37, 127.5, 100210, "Südkorea", "Güney Kore"],
+  ["KW", 29.5, 45.75, 17818, "Kuwait", "Kuveyt"],
+  ["KZ", 48, 68, 2724900, "Kasachstan", "Kazakistan"],
+  ["LA", 18, 105, 236800, "Laos", "Laos"],
+  ["LB", 33.83, 35.83, 10452, "Libanon", "Lübnan"],
+  ["LC", 13.88, -60.97, 616, "St. Lucia", "Saint Lucia"],
+  ["LI", 47.27, 9.53, 160, "Liechtenstein", "Lihtenştayn"],
+  ["LK", 7, 81, 65610, "Sri Lanka", "Sri Lanka"],
+  ["LR", 6.5, -9.5, 111369, "Liberia", "Liberya"],
+  ["LS", -29.5, 28.5, 30355, "Lesotho", "Lesotho"],
+  ["LT", 56, 24, 65300, "Litauen", "Litvanya"],
+  ["LU", 49.75, 6.17, 2586, "Luxemburg", "Lüksemburg"],
+  ["LV", 57, 25, 64559, "Lettland", "Letonya"],
+  ["LY", 25, 17, 1759540, "Libyen", "Libya"],
+  ["MA", 32, -5, 446550, "Marokko", "Fas"],
+  ["MC", 43.73, 7.4, 2, "Monaco", "Monako"],
+  ["MD", 47, 29, 33846, "Moldawien", "Moldova"],
+  ["ME", 42.5, 19.3, 13812, "Montenegro", "Karadağ"],
+  ["MG", -20, 47, 587041, "Madagaskar", "Madagaskar"],
+  ["MH", 9, 168, 181, "Marshallinseln", "Marshall Adaları"],
+  ["MK", 41.83, 22, 25713, "Nordmazedonien", "Kuzey Makedonya"],
+  ["ML", 17, -4, 1240192, "Mali", "Mali"],
+  ["MM", 22, 98, 676578, "Myanmar", "Myanmar"],
+  ["MN", 46, 105, 1564110, "Mongolei", "Moğolistan"],
+  ["MR", 20, -12, 1030700, "Mauretanien", "Moritanya"],
+  ["MT", 35.83, 14.58, 316, "Malta", "Malta"],
+  ["MU", -20.28, 57.55, 2040, "Mauritius", "Mauritius"],
+  ["MV", 3.25, 73, 300, "Malediven", "Maldivler"],
+  ["MW", -13.5, 34, 118484, "Malawi", "Malavi"],
+  ["MX", 23, -102, 1964375, "Mexiko", "Meksika"],
+  ["MY", 2.5, 112.5, 330803, "Malaysia", "Malezya"],
+  ["MZ", -18.25, 35, 801590, "Mosambik", "Mozambik"],
+  ["NA", -22, 17, 825615, "Namibia", "Namibya"],
+  ["NE", 16, 8, 1267000, "Niger", "Nijer"],
+  ["NG", 10, 8, 923768, "Nigeria", "Nijerya"],
+  ["NI", 13, -85, 130373, "Nicaragua", "Nikaragua"],
+  ["NL", 52.5, 5.75, 41850, "Niederlande", "Hollanda"],
+  ["NO", 62, 10, 323802, "Norwegen", "Norveç"],
+  ["NP", 28, 84, 147181, "Nepal", "Nepal"],
+  ["NR", -0.53, 166.92, 21, "Nauru", "Nauru"],
+  ["NZ", -41, 174, 270467, "Neuseeland", "Yeni Zelanda"],
+  ["OM", 21, 57, 309500, "Oman", "Umman"],
+  ["PA", 9, -80, 75417, "Panama", "Panama"],
+  ["PE", -10, -76, 1285216, "Peru", "Peru"],
+  ["PG", -6, 147, 462840, "Papua-Neuguinea", "Papua Yeni Gine"],
+  ["PH", 13, 122, 342353, "Philippinen", "Filipinler"],
+  ["PK", 30, 70, 881912, "Pakistan", "Pakistan"],
+  ["PL", 52, 20, 312679, "Polen", "Polonya"],
+  ["PS", 31.9, 35.2, 6220, "Palästina", "Filistin"],
+  ["PT", 39.5, -8, 92090, "Portugal", "Portekiz"],
+  ["PW", 7.5, 134.5, 459, "Palau", "Palau"],
+  ["PY", -23, -58, 406752, "Paraguay", "Paraguay"],
+  ["QA", 25.5, 51.25, 11586, "Katar", "Katar"],
+  ["RO", 46, 25, 238391, "Rumänien", "Romanya"],
+  ["RS", 44, 21, 88361, "Serbien", "Sırbistan"],
+  ["RU", 60, 100, 17098242, "Russland", "Rusya"],
+  ["RW", -2, 30, 26338, "Ruanda", "Ruanda"],
+  ["SA", 25, 45, 2149690, "Saudi-Arabien", "Suudi Arabistan"],
+  ["SB", -8, 159, 28896, "Salomonen", "Solomon Adaları"],
+  ["SC", -4.58, 55.67, 452, "Seychellen", "Seyşeller"],
+  ["SD", 15, 30, 1886068, "Sudan", "Sudan"],
+  ["SE", 62, 15, 450295, "Schweden", "İsveç"],
+  ["SG", 1.37, 103.8, 710, "Singapur", "Singapur"],
+  ["SI", 46.12, 14.82, 20273, "Slowenien", "Slovenya"],
+  ["SK", 48.67, 19.5, 49037, "Slowakei", "Slovakya"],
+  ["SL", 8.5, -11.5, 71740, "Sierra Leone", "Sierra Leone"],
+  ["SM", 43.77, 12.42, 61, "San Marino", "San Marino"],
+  ["SN", 14, -14, 196722, "Senegal", "Senegal"],
+  ["SO", 10, 49, 637657, "Somalia", "Somali"],
+  ["SR", 4, -56, 163820, "Suriname", "Surinam"],
+  ["SS", 7, 30, 619745, "Südsudan", "Güney Sudan"],
+  ["ST", 1, 7, 964, "São Tomé und Príncipe", "São Tomé ve Príncipe"],
+  ["SV", 13.83, -88.92, 21041, "El Salvador", "El Salvador"],
+  ["SY", 35, 38, 185180, "Syrien", "Suriye"],
+  ["SZ", -26.5, 31.5, 17364, "Swasiland", "Esvatini"],
+  ["TD", 15, 19, 1284000, "Tschad", "Çad"],
+  ["TG", 8, 1.17, 56785, "Togo", "Togo"],
+  ["TH", 15, 100, 513120, "Thailand", "Tayland"],
+  ["TJ", 39, 71, 143100, "Tadschikistan", "Tacikistan"],
+  ["TL", -8.83, 125.92, 14874, "Osttimor", "Doğu Timor"],
+  ["TM", 40, 60, 488100, "Turkmenistan", "Türkmenistan"],
+  ["TN", 34, 9, 163610, "Tunesien", "Tunus"],
+  ["TO", -20, -175, 747, "Tonga", "Tonga"],
+  ["TR", 39, 35, 783562, "Türkei", "Türkiye"],
+  ["TT", 11, -61, 5130, "Trinidad und Tobago", "Trinidad ve Tobago"],
+  ["TV", -8, 178, 26, "Tuvalu", "Tuvalu"],
+  ["TW", 23.5, 121, 36193, "Taiwan", "Tayvan"],
+  ["TZ", -6, 35, 945087, "Tansania", "Tanzanya"],
+  ["UA", 49, 32, 603500, "Ukraine", "Ukrayna"],
+  ["UG", 1, 32, 241550, "Uganda", "Uganda"],
+  ["US", 38, -97, 9372610, "USA", "ABD"],
+  ["UY", -33, -56, 181034, "Uruguay", "Uruguay"],
+  ["UZ", 41, 64, 447400, "Usbekistan", "Özbekistan"],
+  ["VA", 41.9, 12.45, 0, "Vatikanstadt", "Vatikan"],
+  ["VC", 13.25, -61.2, 389, "St. Vincent und die Grenadinen", "Saint Vincent ve Grenadinler"],
+  ["VE", 8, -66, 916445, "Venezuela", "Venezuela"],
+  ["VN", 16.17, 107.83, 331212, "Vietnam", "Vietnam"],
+  ["VU", -16, 167, 12189, "Vanuatu", "Vanuatu"],
+  ["WS", -13.58, -172.33, 2842, "Samoa", "Bağımsız Samoa Devleti"],
+  ["XK", 42.67, 21.17, 10908, "Kosovo", "Kosova"],
+  ["YE", 15, 48, 527968, "Jemen", "Yemen"],
+  ["ZA", -29, 24, 1221037, "Südafrika", "Güney Afrika"],
+  ["ZM", -15, 30, 752612, "Sambia", "Zambiya"],
+  ["ZW", -20, 30, 390757, "Simbabwe", "Zimbabve"],
+];
+
+</script>
+<script>
 /*
 MIT License
 
@@ -13671,7 +13888,7 @@ window.__launchGate = (() => {
   const PREFIX = 'sizeclash-v1-';
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = '43d3fb6ad5';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = '2f829e83e6';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -15975,22 +16192,40 @@ window.__launchGate = (() => {
     geoMap = revMap = geoMarker = null; teamMarkers = {};
   }
   // Kartenkacheln: OpenStreetMap; fällt der Server aus, automatisch auf Esri ausweichen
-  const TILE_SRC = [
-    ['https://tile.openstreetmap.org/{z}/{x}/{y}.png', '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>-Mitwirkende'],
-    ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', 'Kacheln © Esri, HERE, Garmin, © OpenStreetMap-Mitwirkende'],
-  ];
-  let tileSrc = 0;
+  // Kartenkacheln in der Sprache des Spielers (Sprachknopf oben rechts):
+  // Deutsch: deutsche OSM-Karte (alle Namen deutsch). Türkisch: Karte ohne Schrift plus eigene türkische Ländernamen.
+  // Fällt eine Quelle aus, wird automatisch auf die andere gewechselt.
+  const OSM_ATTR = '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
+  const TILES = {
+    osmde: { url: 'https://tile.openstreetmap.de/{z}/{x}/{y}.png', max: 18, attr: OSM_ATTR + ' · openstreetmap.de' },
+    gray: { url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', max: 16, attr: 'Kacheln © Esri, HERE, Garmin, ' + OSM_ATTR, labels: true,
+      ref: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}' },
+  };
+  const tileOrder = () => (window.I18N.lang === 'tr' ? ['gray', 'osmde'] : ['osmde', 'gray']);
+  const tileFailed = new Set();
+  function countryLabels(map) {
+    const tr = window.I18N.lang === 'tr';
+    const tier = a => (a > 2.5e6 ? 0 : a > 1e6 ? 1 : a > 2e5 ? 2 : a > 3e4 ? 3 : 4); // je kleiner das Land, desto später erscheint der Name
+    const grp = L.layerGroup((window.GEO_CTRY || []).map(([, lat, lng, area, de, trn]) =>
+      L.marker([lat, lng], { interactive: false, keyboard: false, icon: L.divIcon({ className: `cl t${tier(area)}`, html: `<span>${esc(tr ? trn : de)}</span>`, iconSize: [0, 0] }) })));
+    grp.addTo(map);
+    const z = () => { map.getContainer().dataset.z = Math.round(map.getZoom()); };
+    map.on('zoomend', z); z();
+    return grp;
+  }
   function geoTiles(map) {
-    const add = i => {
-      const [url, attribution] = TILE_SRC[i];
-      const layer = L.tileLayer(url, { maxZoom: 19, minZoom: 1, attribution, crossOrigin: false }).addTo(map);
-      let errs = 0;
-      layer.on('tileerror', () => {
-        if (++errs < 4 || i + 1 >= TILE_SRC.length || tileSrc > i) return;
-        tileSrc = i + 1; map.removeLayer(layer); add(tileSrc);
-      });
-    };
-    add(tileSrc);
+    const order = tileOrder().filter(k => !tileFailed.has(k));
+    const key = order[0] || tileOrder()[0], src = TILES[key];
+    const layers = [L.tileLayer(src.url, { maxZoom: 19, maxNativeZoom: src.max, minZoom: 1, attribution: src.attr }).addTo(map)];
+    if (src.ref) layers.push(L.tileLayer(src.ref, { maxZoom: 19, maxNativeZoom: src.max, minZoom: 7 }).addTo(map));
+    const labels = src.labels ? countryLabels(map) : null;
+    let errs = 0;
+    layers[0].on('tileerror', () => {
+      if (++errs < 4 || order.length < 2 || tileFailed.has(key)) return;
+      tileFailed.add(key);
+      layers.forEach(l => map.removeLayer(l)); if (labels) map.removeLayer(labels);
+      geoTiles(map);
+    });
   }
   const pinIcon = (color, label, me, mate) => L.divIcon({ className: 'gpin' + (me ? ' me' : '') + (mate ? ' mate' : ''), html: `<div style="--pc:${color}"><span>${label}</span></div>`, iconSize: [36, 46], iconAnchor: [18, 44] });
   const goalIcon = () => L.divIcon({ className: 'gpin goal', html: '<div><span>🏁</span></div>', iconSize: [42, 52], iconAnchor: [21, 50] });
