@@ -1240,6 +1240,9 @@ body.geo-app .bg i:nth-child(2) { background: #1c7ed6; }
 .gpin > div { position: relative; width: 36px; height: 36px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--pc, #fff); border: 3px solid #fff; box-shadow: 0 6px 14px rgba(0, 0, 0, .45); display: grid; place-items: center; animation: pinDrop .45s cubic-bezier(.3, 1.6, .5, 1) both; }
 .gpin > div span { transform: rotate(45deg); font-size: 17px; line-height: 1; }
 .gpin.me > div { border-color: #ffe066; }
+.gpin.mate > div { opacity: .78; border-style: dashed; cursor: pointer; animation: pinDrop .45s cubic-bezier(.3, 1.6, .5, 1) both, matePulse 1.6s .5s ease-in-out infinite; }
+@keyframes matePulse { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--pc) 35%, transparent), 0 6px 14px rgba(0, 0, 0, .45); } }
+.geoteam { padding: 6px 12px; font-size: 12px; color: var(--muted, #b9b3d9); background: rgba(0, 0, 0, .35); border-top: 1px solid rgba(255, 255, 255, .08); }
 .gpin.goal > div { width: 42px; height: 42px; background: #10142e; border-color: #ffd43b; box-shadow: 0 0 0 6px rgba(255, 212, 59, .25), 0 8px 20px rgba(0, 0, 0, .5); animation: pinDrop .5s cubic-bezier(.3, 1.6, .5, 1) both, goalPulse 1.8s 0.6s ease-in-out infinite; }
 .gpin.goal > div span { font-size: 20px; }
 @keyframes pinDrop { from { transform: translateY(-26px) rotate(-45deg) scale(.6); opacity: 0; } }
@@ -1353,7 +1356,8 @@ body.reflex-app .bg i:nth-child(2) { background: #ffb700; }
 .rxbig:active { transform: scale(.995); }
 .rxtarget { font-weight: 800; letter-spacing: .06em; color: var(--acc2); font-size: 20px; }
 .rxclock { font-family: var(--head); font-size: clamp(64px, 14vw, 140px); font-weight: 800; font-variant-numeric: tabular-nums; transition: filter .6s, opacity .6s; }
-.rxclock.blind { filter: blur(18px); opacity: .25; }
+.rxclock.blind { opacity: .55; animation: blindIn .5s ease; }
+@keyframes blindIn { from { opacity: 1; transform: scale(1.08); } }
 .rxhint { color: var(--muted); font-size: 15px; }
 .rxbig.light .rxlamp { width: 140px; height: 140px; border-radius: 50%; background: #b51f1f; box-shadow: 0 0 60px rgba(255, 40, 40, .55), inset 0 -10px 30px rgba(0, 0, 0, .35); transition: background .05s; }
 .rxbig.light.go { background: radial-gradient(circle at 50% 40%, rgba(60, 255, 120, .28), transparent 65%); }
@@ -1582,7 +1586,7 @@ window.I18N = (() => {
       rxTagline: 'Sieben Party-Minispiele für Reflexe und Zeitgefühl: Blind-Stopp, Ampel, Zielscheiben, Farbfalle und mehr.<br><b>Wer schneller ist, gewinnt. 2 bis 10 Spieler.</b>',
       rxPick: 'Minispiele', rxAll: 'Alle gemischt',
       rxGames: { stop: ['Blind-Stopp'], light: ['Ampel-Reflex'], aim: ['Zielscheiben'], stroop: ['Farbfalle'], odd: ['Such den Unterschied'], math: ['Kopfrechnen-Blitz'], mash: ['Tipp-Marathon'] },
-      rxHelp_stop: 'Die Uhr startet bei 0 und wird nach 3 Sekunden unsichtbar. Zähl im Kopf mit und tippe genau bei <b>{t},00 Sekunden</b>!',
+      rxHelp_stop: 'Die Uhr startet bei 0 und verschwindet nach 2 Sekunden komplett. Zähl im Kopf mit und tippe genau bei <b>{t},00 Sekunden</b>!',
       rxHelp_light: 'Warte, bis die Ampel <b>grün</b> wird, dann so schnell wie möglich tippen. 3 Versuche, zu früh = Fehlstart!',
       rxHelp_aim: 'Triff die <b>10 Zielscheiben</b> so schnell du kannst. Daneben tippen kostet Zeit.',
       rxHelp_stroop: 'Tippe die <b>Farbe der Schrift</b>, nicht das Wort! 10 Wörter, jeder Fehler +1,5 s.',
@@ -1622,7 +1626,7 @@ window.I18N = (() => {
       ],
       geoNoSpots: 'Für diese Auswahl gibt es keine Orte.',
       geoWhere: 'Wo bist du?', geoReset: 'Zurück zum Startpunkt', geoAlt: 'Panorama neu laden (andere Quelle)',
-      geoMapTitle: 'Karte', geoPinMap: 'Karte groß lassen', geoPinFirst: 'Pin auf die Karte setzen', geoLock: 'Raten ✓', geoLocked: 'Getippt',
+      geoTeamHint: 'Pins deines Teams sind sichtbar. Antippen übernimmt den Ort.', geoTeamTake: 'antippen zum Übernehmen', geoTeamTook: 'Pin von {n} übernommen', geoMapTitle: 'Karte', geoPinMap: 'Karte groß lassen', geoPinFirst: 'Pin auf die Karte setzen', geoLock: 'Raten ✓', geoLocked: 'Getippt',
       geoWait: 'Getippt! Warte auf die anderen …', geoClosest: '👑 am nächsten', geoBull: '🎯 Volltreffer', geoNone: 'kein Tipp',
       geoWas: 'Du warst in', geoOpenMaps: 'In Google Maps ansehen', geoDist: 'Entfernung',
       geoBestT: 'Präzisionslandung', geoBestX: 'lag nur {d} daneben ({p}).',
@@ -1735,7 +1739,7 @@ window.I18N = (() => {
       rxTagline: 'Refleks ve zaman hissi için yedi parti mini oyunu: Kör kronometre, trafik ışığı, hedef tahtası, renk tuzağı ve fazlası.<br><b>Hızlı olan kazanır. 2 ila 10 oyuncu.</b>',
       rxPick: 'Mini oyunlar', rxAll: 'Hepsi karışık',
       rxGames: { stop: ['Kör kronometre'], light: ['Trafik ışığı'], aim: ['Hedef tahtası'], stroop: ['Renk tuzağı'], odd: ['Farkı bul'], math: ['Hızlı hesap'], mash: ['Dokunma maratonu'] },
-      rxHelp_stop: 'Saat 0’dan başlar ve 3 saniye sonra görünmez olur. İçinden say ve tam <b>{t},00 saniyede</b> dokun!',
+      rxHelp_stop: 'Saat 0’dan başlar ve 2 saniye sonra tamamen kaybolur. İçinden say ve tam <b>{t},00 saniyede</b> dokun!',
       rxHelp_light: 'Işık <b>yeşil</b> olana kadar bekle, sonra olabildiğince hızlı dokun. 3 deneme, erken = hatalı çıkış!',
       rxHelp_aim: '<b>10 hedefi</b> olabildiğince hızlı vur. Iskalamak zaman kaybettirir.',
       rxHelp_stroop: 'Kelimeyi değil <b>yazının rengini</b> seç! 10 kelime, her hata +1,5 sn.',
@@ -1775,7 +1779,7 @@ window.I18N = (() => {
       ],
       geoNoSpots: 'Bu seçim için yer yok.',
       geoWhere: 'Neredesin?', geoReset: 'Başlangıç noktasına dön', geoAlt: 'Panoramayı yeniden yükle (başka kaynak)',
-      geoMapTitle: 'Harita', geoPinMap: 'Haritayı büyük tut', geoPinFirst: 'Haritaya iğne koy', geoLock: 'Tahmin et ✓', geoLocked: 'Tahmin verildi',
+      geoTeamHint: 'Takımının iğneleri görünür. Dokunursan o yeri alırsın.', geoTeamTake: 'almak için dokun', geoTeamTook: '{n} adlı oyuncunun iğnesi alındı', geoMapTitle: 'Harita', geoPinMap: 'Haritayı büyük tut', geoPinFirst: 'Haritaya iğne koy', geoLock: 'Tahmin et ✓', geoLocked: 'Tahmin verildi',
       geoWait: 'Tahmin verildi! Diğerleri bekleniyor …', geoClosest: '👑 en yakın', geoBull: '🎯 tam isabet', geoNone: 'tahmin yok',
       geoWas: 'Buradaydın', geoOpenMaps: 'Google Haritalar’da aç', geoDist: 'Mesafe',
       geoBestT: 'Hassas iniş', geoBestX: 'sadece {d} uzağa işaret koydu ({p}).',
@@ -11522,7 +11526,7 @@ window.__launchGate = (() => {
   const PREFIX = 'sizeclash-v1-';
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = '5e3dc3649c';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = 'be11548c66';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -12540,6 +12544,7 @@ window.__launchGate = (() => {
       case 'chat': addChat(d.pid, d.text); break;
       case 'chatNo': chatNotice(T(d.code)); break;
       case 'banned': onBanned(d.by, d.target); break;
+      case 'tpins': geoTeamIn(d); break;
       case 'reject': joinFailed(d.code ? T(d.code, { n: d.n }) : (d.reason || T('rejected'))); break;
       case 'kicked': leaving = true; teardown(true); S = null; mounted = ''; render(); overlay(T('kickedTitle'), T('kickedText'), [{ t: 'OK', primary: true }]); break;
       case 'bye': leaving = true; teardown(true); S = null; mounted = ''; render(); overlay(T('byeTitle'), T('byeText'), [{ t: 'OK', primary: true }]); break;
@@ -13599,7 +13604,40 @@ window.__launchGate = (() => {
     const lat = +d.lat, lng = +d.lng;
     if (!(isFinite(lat) && isFinite(lng) && Math.abs(lat) <= 90)) return;
     H.guesses[pid] = { lat, lng: wrapLng(lng), locked: !!d.lock };
+    geoTeamShare(pid);
     if (d.lock) { publish(); checkAllLocked(); }
+  }
+  // Teammodus: Pins nur an das eigene Team schicken, damit man sich vor dem Raten absprechen kann
+  function geoTeamShare(pid) {
+    const p = H.players.find(x => x.pid === pid);
+    if (!H.settings.teams || !p || p.team == null) return;
+    const mates = H.players.filter(x => x.team === p.team);
+    const pins = mates.filter(x => H.guesses[x.pid]).map(x => ({ pid: x.pid, lat: H.guesses[x.pid].lat, lng: H.guesses[x.pid].lng, locked: !!H.guesses[x.pid].locked }));
+    const msg = { t: 'tpins', r: H.round, pins };
+    for (const m of mates) {
+      if (m.pid === me.pid) geoTeamIn(msg);
+      else { const c = conns.get(m.pid); try { if (c && c.open) c.send(msg); } catch { /* ignore */ } }
+    }
+  }
+  let teamMarkers = {};
+  function geoTeamIn(d) {
+    if (!S || S.phase !== 'question' || S.q?.type !== 'geo' || d.r !== S.round) return;
+    G.tpins = (d.pins || []).filter(x => x.pid !== me.pid);
+    drawTeamPins();
+  }
+  function drawTeamPins() {
+    if (!geoMap) return;
+    for (const m of Object.values(teamMarkers)) { try { m.remove(); } catch { /* ignore */ } }
+    teamMarkers = {};
+    for (const t of G.tpins || []) {
+      const p = pById(t.pid); if (!p) continue;
+      const m = L.marker([t.lat, t.lng], { icon: pinIcon(p.color, p.avatar, false, true), zIndexOffset: -100 }).addTo(geoMap);
+      m.bindTooltip(`${esc(p.name)}${t.locked ? ' ✓' : ''} · ${T('geoTeamTake')}`, { direction: 'top', offset: [0, -40] });
+      m.on('click', () => { if (!G.locked) { geoSetPin(t.lat, t.lng, true); toast(T('geoTeamTook', { n: p.name })); } });
+      teamMarkers[t.pid] = m;
+    }
+    const h = $('#geoTeamHint');
+    if (h) h.hidden = !(G.tpins || []).length;
   }
   function endGeoRound() {
     const before = rankOf(H.players);
@@ -13640,7 +13678,7 @@ window.__launchGate = (() => {
   let geoMap = null, geoMarker = null, revMap = null;
   function killMaps() {
     for (const m of [geoMap, revMap]) { try { if (m) m.remove(); } catch { /* ignore */ } }
-    geoMap = revMap = geoMarker = null;
+    geoMap = revMap = geoMarker = null; teamMarkers = {};
   }
   // Kartenkacheln: OpenStreetMap; fällt der Server aus, automatisch auf Esri ausweichen
   const TILE_SRC = [
@@ -13660,7 +13698,7 @@ window.__launchGate = (() => {
     };
     add(tileSrc);
   }
-  const pinIcon = (color, label, me) => L.divIcon({ className: 'gpin' + (me ? ' me' : ''), html: `<div style="--pc:${color}"><span>${label}</span></div>`, iconSize: [36, 46], iconAnchor: [18, 44] });
+  const pinIcon = (color, label, me, mate) => L.divIcon({ className: 'gpin' + (me ? ' me' : '') + (mate ? ' mate' : ''), html: `<div style="--pc:${color}"><span>${label}</span></div>`, iconSize: [36, 46], iconAnchor: [18, 44] });
   const goalIcon = () => L.divIcon({ className: 'gpin goal', html: '<div><span>🏁</span></div>', iconSize: [42, 52], iconAnchor: [21, 50] });
   // Street View ohne API-Schlüssel: mit Panorama-ID per Embed-Link, sonst über die Koordinaten
   function svUrl(s, alt) {
@@ -13692,6 +13730,7 @@ window.__launchGate = (() => {
           <div class="geomap" id="geoBox">
             <div class="geomap-head"><b>🗺️ ${T('geoMapTitle')}</b><button class="gtool sm" id="geoPinMap" title="${T('geoPinMap')}">📌</button><button class="gtool sm" id="geoClose">✕</button></div>
             <div id="geoMap"></div>
+            <div class="geoteam" id="geoTeamHint" hidden>👥 ${T('geoTeamHint')}</div>
             <button class="btn primary geolock" id="geoLock" disabled>${T('geoPinFirst')}</button>
           </div>
           <button class="btn primary geomap-open" id="geoOpen">🗺️ ${T('geoMapTitle')}</button>
@@ -13705,6 +13744,7 @@ window.__launchGate = (() => {
     geoTiles(geoMap);
     geoMap.on('click', e => geoSetPin(e.latlng.lat, e.latlng.lng, true));
     if (G.lat != null) geoSetPin(G.lat, G.lng, false);
+    drawTeamPins();
     // Karte wächst beim Darüberfahren (Desktop); auf dem Handy als Vollbild-Ebene
     const box = $('#geoBox');
     const fit = () => setTimeout(() => { try { geoMap && geoMap.invalidateSize(); } catch { /* ignore */ } }, 260);
@@ -13847,7 +13887,7 @@ window.__launchGate = (() => {
   // Spielparameter aus dem gemeinsamen Zufallswert
   function rxSetup(g, seed) {
     const r = mulberry(seed), R = (a, b) => a + r() * (b - a);
-    if (g === 'stop') return { target: [7, 10, 10, 12, 15][Math.floor(r() * 5)], show: 3000 };
+    if (g === 'stop') return { target: [7, 10, 10, 12, 15][Math.floor(r() * 5)], show: 2000 };
     if (g === 'light') return { waits: [R(1800, 5200), R(1500, 4500), R(1800, 5500)] };
     if (g === 'aim') return { pts: Array.from({ length: 10 }, () => [R(8, 92), R(10, 88), R(0.75, 1.15)]) };
     if (g === 'stroop') return { items: Array.from({ length: 10 }, () => { const w = Math.floor(r() * 4); let c; do c = Math.floor(r() * 4); while (c === w && r() < 0.85); return [w, c]; }) };
@@ -13963,7 +14003,10 @@ window.__launchGate = (() => {
     if (R.state !== 'play') return;
     if (t > RX[g].ms) { if (g === 'mash') return rxDone(R.taps); return rxDone(t, true); }
     if (g === 'stop') {
-      const el = $('#rxClock'); if (el) { el.textContent = (t / 1000).toFixed(2).replace('.', T('locale').startsWith('de') || T('locale').startsWith('tr') ? ',' : '.'); el.classList.toggle('blind', t > R.s.show); }
+      // Nur am Anfang sichtbar, danach komplett blind: keine Ziffern mehr im Bild, auch nicht verschwommen
+      const el = $('#rxClock');
+      if (el && t <= R.s.show) el.textContent = (t / 1000).toFixed(2).replace('.', T('locale').startsWith('de') || T('locale').startsWith('tr') ? ',' : '.');
+      else if (el && !el.classList.contains('blind')) { el.classList.add('blind'); el.textContent = '🙈 ?,??'; }
     } else if (g === 'light') {
       const w = R.s.waits[R.step];
       if (R.phase === 'wait' && Date.now() - R.since >= w) { R.phase = 'go'; R.goAt = Date.now(); rxRender(); Sound.beep(880, 0.08, 'square', 0.08); }
