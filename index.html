@@ -1508,16 +1508,77 @@ body.spy-app .bg i:nth-child(3) { background: #08d9d6; opacity: .25; }
 }
 
 /* Serien & Filme: Szenenbild */
-.qscene { position: relative; margin: 0 auto 14px; max-width: 860px; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #0b0d22; box-shadow: 0 18px 44px rgba(0, 0, 0, .5); animation: sceneIn .7s ease; }
+.qscene { position: relative; width: 100%; margin: 0 auto 14px; max-width: 860px; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #0b0d22; box-shadow: 0 18px 44px rgba(0, 0, 0, .5); animation: sceneIn .7s ease; }
 .qscene img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .qscene::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 80px rgba(0, 0, 0, .55); pointer-events: none; }
-.qscene.fail { display: none; }
+.qscene-ph { display: none; }
+.qscene.ph img, .qscene.ph .qscene-src { display: none; }
+.qscene.ph .qscene-ph { position: absolute; inset: 0; display: grid; place-items: center; background: repeating-linear-gradient(90deg, #0d0f26 0 26px, #171a3a 26px 30px), linear-gradient(160deg, #1d1440, #0a0c20); }
+.qscene.ph .qscene-ph::before, .qscene.ph .qscene-ph::after { content: ''; position: absolute; left: 0; right: 0; height: 18px; background: repeating-linear-gradient(90deg, transparent 0 14px, rgba(255, 255, 255, .85) 14px 26px, transparent 26px 40px); opacity: .25; }
+.qscene.ph .qscene-ph::before { top: 10px; } .qscene.ph .qscene-ph::after { bottom: 10px; }
+.qscene-ph span { font-size: clamp(64px, 12vw, 110px); filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .6)); animation: popin .6s cubic-bezier(.3, 1.6, .5, 1); }
+.qscene-ph i { position: absolute; right: 16px; bottom: 34px; font-style: normal; font-size: 30px; opacity: .6; }
+.qscene.portrait { background: radial-gradient(circle at 50% 30%, #2a2050, #0b0d22); }
+.qscene.portrait img { object-fit: contain; }
+.qscene-src { position: absolute; right: 8px; bottom: 8px; z-index: 1; padding: 2px 8px; border-radius: 99px; background: rgba(0, 0, 0, .6); color: #fff; font-size: 11px; }
 .qscene.small { max-width: 560px; margin-bottom: 12px; }
 @keyframes sceneIn { from { opacity: 0; transform: scale(1.04); filter: blur(8px); } }
 .tmdbin { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--card-b); background: rgba(0, 0, 0, .25); color: var(--text); font: inherit; font-size: 16px; }
 .tmdbrow .hint { display: block; margin-top: 6px; }
 @media (max-width: 560px) { .qscene { border-radius: 14px; margin-bottom: 10px; } }
 .scene-clues { margin-top: 14px; }
+.sc-hint { display: inline-block; padding: 6px 14px; border-radius: 12px; background: rgba(255, 255, 255, .1); font-size: 15px; }
+.sc-hint b { color: #ffd43b; font-size: 18px; }
+.spyguessform { margin: 0; }
+.rxjack { display: flex; align-items: center; gap: 16px; padding: 18px 22px; border-color: #ffd43b; background: radial-gradient(500px 160px at 0 50%, rgba(255, 212, 59, .35), transparent 70%), var(--card); box-shadow: 0 0 0 4px rgba(255, 212, 59, .18), 0 18px 44px rgba(0, 0, 0, .45); animation: popin .6s cubic-bezier(.3, 1.6, .5, 1), dblPulse 1.6s .6s ease-in-out infinite; }
+.rxjack .rj-e { font-size: 54px; animation: banShake .8s .3s; }
+.rxjack b { display: block; font-family: var(--head); font-size: clamp(26px, 4vw, 38px); letter-spacing: .08em; color: #ffd43b; text-shadow: 0 0 22px rgba(255, 212, 59, .6); }
+.rxjack span { font-size: 17px; font-weight: 600; }
+
+/* ===== Jackpot-Show ===== */
+.jackshow { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; overflow: hidden; cursor: pointer; background: radial-gradient(circle at 50% 40%, rgba(60, 20, 90, .92), rgba(5, 4, 15, .97)); animation: jkIn .4s ease; }
+.jackshow.out { animation: jkOut .6s ease forwards; }
+@keyframes jkIn { from { opacity: 0; } } @keyframes jkOut { to { opacity: 0; transform: scale(1.08); } }
+.jk-fw { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.jk-beams i { position: absolute; left: 50%; top: -20%; width: 34vmax; height: 140vmax; transform-origin: 50% 0; background: linear-gradient(180deg, rgba(255, 230, 120, .28), transparent 70%); filter: blur(6px); animation: jkBeam 3.4s ease-in-out infinite alternate; }
+.jk-beams i:nth-child(2) { animation-delay: -1.1s; background: linear-gradient(180deg, rgba(255, 61, 127, .22), transparent 70%); }
+.jk-beams i:nth-child(3) { animation-delay: -2.2s; background: linear-gradient(180deg, rgba(52, 211, 255, .2), transparent 70%); }
+@keyframes jkBeam { from { transform: translateX(-50%) rotate(-38deg); } to { transform: translateX(-50%) rotate(38deg); } }
+.jk-stage { position: relative; display: grid; justify-items: center; gap: 10px; padding: 16px; text-align: center; }
+.jk-machine { --rh: clamp(54px, 11vw, 92px); position: relative; padding: 14px 18px; border-radius: 22px; background: linear-gradient(180deg, #ffcf3f, #e08a00); box-shadow: 0 0 0 6px #7a3d00, 0 0 60px rgba(255, 196, 0, .6), inset 0 4px 0 rgba(255, 255, 255, .5); }
+.jk-lights { position: absolute; inset: -9px; border-radius: 28px; border: 7px dotted #fff7c2; filter: drop-shadow(0 0 6px #ffd43b); animation: jkBlink .5s steps(2) infinite; }
+@keyframes jkBlink { 50% { border-color: #ff3d7f; filter: drop-shadow(0 0 8px #ff3d7f); } }
+@keyframes jkSpin { to { transform: rotate(360deg); } }
+.jk-reels { position: relative; display: flex; gap: 6px; align-items: center; }
+.jk-reel { width: calc(var(--rh) * .78); height: var(--rh); overflow: hidden; border-radius: 10px; background: linear-gradient(180deg, #ddd, #fff 30%, #fff 70%, #ccc); box-shadow: inset 0 6px 10px rgba(0, 0, 0, .35); }
+.jk-strip { display: flex; flex-direction: column; animation: jkRoll .18s linear infinite; transition: transform .45s cubic-bezier(.2, 1.6, .4, 1); }
+.jk-strip i { height: var(--rh); display: grid; place-items: center; font: 900 calc(var(--rh) * .78)/1 var(--head); font-style: normal; color: #1a1030; }
+@keyframes jkRoll { from { transform: translateY(0); } to { transform: translateY(calc(-10 * var(--rh))); } }
+.jk-reel.stop { animation: jkPop .3s ease; } @keyframes jkPop { 50% { transform: scale(1.12); } }
+.jk-sep { font: 900 calc(var(--rh) * .7)/1 var(--head); color: #4a2400; } .jk-sep.s { margin-left: 4px; font-size: calc(var(--rh) * .45); }
+.jk-title, .jk-hero, .jk-name, .jk-sub, .jk-line, .jk-losers, .jk-close { opacity: 0; }
+.landed .jk-title { opacity: 1; font: 900 clamp(56px, 13vw, 140px)/1 var(--head); letter-spacing: .04em; background: linear-gradient(180deg, #fff6c8, #ffd43b 45%, #ff8a00); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 6px 0 #7a3d00) drop-shadow(0 0 30px rgba(255, 196, 0, .8)); animation: jkSlam .7s cubic-bezier(.2, 1.8, .4, 1), jkWobble 1.4s .7s ease-in-out infinite; }
+@keyframes jkSlam { from { transform: scale(4) rotate(-12deg); opacity: 0; } }
+@keyframes jkWobble { 50% { transform: rotate(-3deg) scale(1.05); } }
+.landed .jk-hero { opacity: 1; position: relative; display: grid; place-items: center; width: clamp(110px, 22vw, 170px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--pc) 60%, #fff), var(--pc)); box-shadow: 0 0 0 6px #ffd43b, 0 0 50px var(--pc); animation: jkBounce 1s .3s cubic-bezier(.3, 1.8, .5, 1) both, jkFloat 2.2s 1.3s ease-in-out infinite; }
+.jk-av { font-size: clamp(64px, 13vw, 100px); line-height: 1; }
+.jk-crown { position: absolute; top: -48%; font-size: clamp(54px, 11vw, 84px); opacity: 0; }
+.landed .jk-crown { animation: jkCrown .8s 1.1s cubic-bezier(.3, 1.6, .5, 1) forwards; }
+@keyframes jkCrown { from { opacity: 0; transform: translateY(-160px) rotate(-30deg); } to { opacity: 1; transform: translateY(0) rotate(-8deg); } }
+@keyframes jkBounce { from { transform: scale(0); } }
+@keyframes jkFloat { 50% { transform: translateY(-10px); } }
+.landed .jk-name { opacity: 1; font: 900 clamp(30px, 6vw, 52px)/1.1 var(--head); color: #fff; text-shadow: 0 0 20px var(--acc1, #ff3d7f); animation: popin .5s 1.4s both; }
+.landed .jk-sub { opacity: 1; font-size: clamp(16px, 2.8vw, 22px); font-weight: 700; color: #ffe08a; animation: popin .5s 1.7s both; }
+.landed .jk-line { opacity: 1; max-width: 520px; padding: 8px 16px; border-radius: 99px; background: rgba(255, 255, 255, .12); font-size: clamp(14px, 2.4vw, 18px); animation: popin .5s 2.2s both; }
+.landed .jk-losers { opacity: 1; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+.jk-losers span { position: relative; font-size: 34px; animation: popin .4s backwards; filter: grayscale(.4); }
+.jk-losers b { position: absolute; right: -14px; top: -12px; font-size: 22px; animation: jkCry 1s ease-in-out infinite; }
+@keyframes jkCry { 50% { transform: translateY(4px) rotate(10deg); } }
+.landed .jk-close { opacity: 1; margin-top: 8px; animation: popin .4s 3s both; }
+.jk-coins { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.jk-coins i { position: absolute; top: -60px; font-style: normal; animation: jkFall linear infinite; }
+@keyframes jkFall { to { transform: translateY(115vh) rotate(720deg); } }
+@media (prefers-reduced-motion: reduce) { .jackshow * { animation-duration: .01s !important; animation-iteration-count: 1 !important; } }
 </style>
 </head>
 <body>
@@ -1709,15 +1770,17 @@ window.I18N = (() => {
       quizHint: 'Tippe die Antwort ein, auf Deutsch oder Türkisch. Kleine Tippfehler sind ok, Versuche unbegrenzt.',
       quizInput: 'Antwort eintippen …', quizSend: 'Raten', quizHintLbl: 'Tipp', thTime: 'Zeit',
       quizFoundOther: '{who} hat es!', quizClose: '🔥 nah dran', chatTitle: '💬 Chat', quizCloseOther: 'ganz nah dran …', rejVersion: 'Du hast eine andere Spielversion als der Host. Bitte lade die Seite neu (ggf. Browser-Cache leeren) und tritt erneut bei.', noRounds: 'Für diese Auswahl gibt es keine Runden.',
+      rxJackShowSub: 'auf die Hundertstel genau: {t} Sekunden!', rxJackClose: 'Weiter 🏆', rxJackLines: ['Hundertstel-genau. Der Rest kann nach Hause gehen. 🏠', 'Diese Präzision ist nicht von dieser Welt. 👽', 'Schweizer Uhrwerk? Nein, {name}! ⌚', 'Alle anderen gerade: 😐😐😐', 'Ab heute heißt die Stoppuhr {name}. ⏱️', 'Bitte Doping-Test machen. 🧪'],
+      rxJackTitle: 'JACKPOT!', rxJackText: '{name} hat genau {t} gestoppt und gewinnt das ganze Spiel!', rxJackWin: '{name} gewinnt per Jackpot!', rxJackAward: 'Jackpot', rxJackAwardX: 'stoppte auf die Hundertstel genau: {t}',
       sceneLoading: '🎬 Szenenbilder werden geladen …', sceneHint: 'Schau dir die Szene und die Hinweise an und tippe die richtige Antwort. Nur ein Versuch, je schneller desto mehr Punkte.',
       tmdbLabel: 'Szenenbilder für Filme', tmdbOpt: '(optional, nur für dich als Host)', tmdbPh: 'TMDB-API-Schlüssel einfügen', tmdbOn: 'TMDB aktiv: Szenen für Serien und Filme', tmdbOff: 'TMDB-Schlüssel entfernt', tmdbHelp: 'Ohne Schlüssel gibt es Szenen nur für Serien (TVmaze). Mit einem kostenlosen Schlüssel von themoviedb.org auch für alle Filme.',
       banLate: 'Zu spät, die Bann-Zeit war schon vorbei.', banTaken: 'Den hat schon jemand gebannt. Such dir ein anderes Ziel.', banFail: 'Bann nicht möglich.',
       spyTagline: 'Alle kennen das geheime Wort, nur einer nicht: der Spion. Gebt reihum Hinweise, findet den Spion, bevor er das Wort errät.<br><b>Bluffen, verdächtigen, entlarven. 3 bis 10 Spieler.</b>',
       spyRules: [
-        '🕵️ Alle bekommen dasselbe <b>geheime Wort</b>, nur <b>einer ist der Spion</b> und kennt nur die Kategorie.',
+        '🕵️ Alle bekommen dasselbe <b>geheime Wort</b>, nur <b>einer ist der Spion</b>. Er kennt weder Wort noch Kategorie, sondern bekommt nur <b>einen einzigen vagen Hinweis</b>.',
         '💬 Reihum gibt jeder einen <b>Hinweis</b>. Zu deutlich hilft dem Spion, zu vage macht dich verdächtig. Das Wort selbst wird gesperrt.',
         '🗳️ Danach stimmt ihr ab: <b>Wer ist der Spion?</b> Diskutiert ruhig im Chat.',
-        '🎯 Der Spion darf jederzeit das Wort raten. Richtig: Sieg. Falsch: verloren. Wird er enttarnt, bekommt er noch eine letzte Chance.',
+        '🎯 Der Spion darf jederzeit das Wort <b>eintippen</b>. Richtig: Sieg. Falsch: verloren. Wird er enttarnt, bekommt er noch eine letzte Chance.',
         '🏆 Spion entkommt: +1000 · Spion erwischt: jeder Agent +500 · richtig abgestimmt: +250 extra.',
       ],
       spyCats: { essen: 'Essen & Trinken', orte: 'Orte', alltag: 'Alltag & Dinge', berufe: 'Berufe', kultur: 'Feste & Leben', freizeit: 'Freizeit & Sport' },
@@ -1727,13 +1790,13 @@ window.I18N = (() => {
       spyWaitRole: 'Rollen werden verteilt …', spyWatch: 'Du schaust diese Runde zu, ab der nächsten bist du dabei.', topSecret: 'Streng geheim',
       spyCover: 'Deine Geheimakte', spyTapOpen: 'Antippen zum Aufdecken, niemand darf mitlesen!', spyTapHide: 'Antippen zum Verdecken',
       spyYourWord: 'Dein geheimes Wort', spyRoleK: 'Deine Rolle', spyYouAre: 'Du bist der Spion!',
-      spyAgentTip: 'Beschreibe es, ohne es zu verraten. Finde den Spion!', spySpyTip: 'Du kennst das Wort nicht. Hör genau hin, bluffe mit und errate es.',
+      spyAgentTip: 'Beschreibe es, ohne es zu verraten. Finde den Spion!', spySpyTip: 'Mehr Hilfe gibt es nicht. Hör genau hin, bluffe mit und tippe das Wort, sobald du es weißt.', spyHintIs: 'Dein einziger Hinweis:', spyGuessPh: 'Das geheime Wort …',
       spyRoom: 'Verhörraum', spyRoomSub: 'Reihenfolge der Hinweise', spyRolesText: 'Schau dir deine Akte an und merk dir deine Rolle. Gleich gibt jeder reihum einen Hinweis.',
       spyReady: 'Bereit ✓', spyReadyN: '{n}/{m} bereit', spyYourTurn: 'Du bist dran! Ein Wort oder ein kurzer Satz.', spyCluePh: 'Dein Hinweis …', spySend: 'Senden',
       spyTurnOf: '{name} überlegt sich einen Hinweis …', spyAgentHint: 'Nicht zu deutlich, sonst errät der Spion das Wort!',
       spyVoteQ: 'Wer ist der Spion?', spyVotedWait: 'Stimme abgegeben. {n}/{m} haben gewählt …',
-      spyKnow: '🎯 Ich kenne das Wort!', spyGuessWarn: 'Nur ein Versuch: richtig = Sieg, falsch = verloren.', spyTake: '✓ „{w}“ nehmen', spyCancel: 'Abbrechen',
-      spyLastSpy: 'Du wurdest enttarnt! Letzte Chance: Welches Wort ist es?', spyLastOther: '{name} wurde enttarnt! Errät der Spion jetzt noch das Wort?',
+      spyKnow: '🎯 Ich kenne das Wort!', spyGuessWarn: 'Nur ein Versuch: richtig = Sieg, falsch = verloren.', spyTake: 'Raten ✓', spyCancel: 'Abbrechen',
+      spyLastSpy: 'Du wurdest enttarnt! Letzte Chance: Tippe das geheime Wort.', spyLastOther: '{name} wurde enttarnt! Errät der Spion jetzt noch das Wort?',
       spyLeak: 'Das verrät das Wort! Versuch es anders.', spyNoClue: 'keine Zeit',
       spyOut: { steal: 'Dreist! {spy} hat das Wort mitten im Spiel erraten.', escape: 'Falsche Spur! Ihr habt {acc} verdächtigt, der Spion entkommt.', tie: 'Unentschieden bei der Abstimmung, der Spion entkommt.',
         comeback: 'Enttarnt, aber {spy} hat in letzter Sekunde das Wort erraten!', caught: 'Erwischt! {spy} war der Spion.', blunder: '{spy} hat falsch geraten und sich selbst verraten!' },
@@ -1743,7 +1806,7 @@ window.I18N = (() => {
       rxTagline: 'Sieben Party-Minispiele für Reflexe und Zeitgefühl: Blind-Stopp, Ampel, Zielscheiben, Farbfalle und mehr.<br><b>Wer schneller ist, gewinnt. 2 bis 10 Spieler.</b>',
       rxPick: 'Minispiele', rxAll: 'Alle gemischt',
       rxGames: { stop: ['Blind-Stopp'], light: ['Ampel-Reflex'], aim: ['Zielscheiben'], stroop: ['Farbfalle'], odd: ['Such den Unterschied'], math: ['Kopfrechnen-Blitz'], mash: ['Tipp-Marathon'] },
-      rxHelp_stop: 'Die Uhr startet bei 0 und verschwindet nach 2 Sekunden komplett. Zähl im Kopf mit und tippe genau bei <b>{t},00 Sekunden</b>!',
+      rxHelp_stop: 'Die Uhr startet bei 0 und verschwindet nach 2 Sekunden komplett. Zähl im Kopf mit und tippe genau bei <b>{t},00 Sekunden</b>! Wer es auf die Hundertstel genau trifft, <b>gewinnt sofort das ganze Spiel</b>.',
       rxHelp_light: 'Warte, bis die Ampel <b>grün</b> wird, dann so schnell wie möglich tippen. 3 Versuche, zu früh = Fehlstart!',
       rxHelp_aim: 'Triff die <b>10 Zielscheiben</b> so schnell du kannst. Daneben tippen kostet Zeit.',
       rxHelp_stroop: 'Tippe die <b>Farbe der Schrift</b>, nicht das Wort! 10 Wörter, jeder Fehler +1,5 s.',
@@ -1752,11 +1815,11 @@ window.I18N = (() => {
       rxHelp_mash: '<b>6 Sekunden</b>: Tippe so oft du kannst!',
       rxStopAt: 'Stopp bei {t},00 s', rxTapAnywhere: 'Tippen, Leertaste oder Enter', rxNow: 'JETZT!', rxWaitGreen: 'Warte …', rxTry: 'Versuch {n} von 3',
       rxFindOdd: 'Finde den Unterschied', rxInk: 'Welche FARBE hat die Schrift?', rxColors: ['ROT', 'BLAU', 'GRÜN', 'GELB'],
-      rxWait: 'Fertig! Warte auf die anderen …', rxFalse: 'Fehlstart!', rxFail: 'zu spät', rxTaps: '{n} Taps', rxTop: 'Top', rxResult: 'Ergebnis',
+      rxWait: 'Fertig! Warte auf die anderen …', rxStopSecret: 'Gestoppt!', rxStopSecretSub: 'Deine Zeit bleibt geheim. Alle Ergebnisse kommen gleichzeitig, sobald jeder gestoppt hat.', rxFalse: 'Fehlstart!', rxFail: 'zu spät', rxTaps: '{n} Taps', rxTop: 'Top', rxResult: 'Ergebnis',
       rxAward: { light: 'Blitzreflex', stop: 'Zeitgefühl', aim: 'Scharfschütze', mash: 'Daumen aus Stahl', stroop: 'Farbprofi', odd: 'Adlerauge', math: 'Rechenkünstler' },
       rxRules: [
         '⚡ Jede Runde ist ein anderes Minispiel. Vorher gibt es eine kurze Anleitung und einen Countdown.',
-        '⏱️ <b>Blind-Stopp</b>: Uhr wird unsichtbar, stoppe genau bei der Zielzeit. 🚦 <b>Ampel</b>: tippen, sobald es grün wird.',
+        '⏱️ <b>Blind-Stopp</b>: Uhr wird unsichtbar, stoppe genau bei der Zielzeit. Exakt getroffen (z. B. 10,00) = <b>sofortiger Gesamtsieg</b>. 🚦 <b>Ampel</b>: tippen, sobald es grün wird.',
         '🎯 Zielscheiben, 🎨 Farbfalle, 🔍 Unterschied finden, 🧮 Kopfrechnen: so schnell wie möglich, Fehler kosten Zeit.',
         '👆 <b>Tipp-Marathon</b>: 6 Sekunden lang so oft tippen wie möglich.',
         '🏆 Bis 1000 Punkte pro Runde, der Beste der Runde +100. Die Zeit misst jedes Handy selbst, also fair auch bei schlechtem Netz.',
@@ -1893,15 +1956,17 @@ window.I18N = (() => {
       quizHint: 'Cevabı Türkçe ya da Almanca yaz. Küçük yazım hataları sorun değil, deneme hakkı sınırsız.',
       quizInput: 'Cevabını yaz …', quizSend: 'Tahmin et', quizHintLbl: 'İpucu', thTime: 'Süre',
       quizFoundOther: '{who} buldu!', quizClose: '🔥 çok yakın', chatTitle: '💬 Sohbet', quizCloseOther: 'çok yakın …', rejVersion: 'Oyun sürümün oda sahibininkinden farklı. Lütfen sayfayı yenile (gerekirse önbelleği temizle) ve tekrar katıl.', noRounds: 'Bu seçim için tur yok.',
+      rxJackShowSub: 'salisesine kadar: {t} saniye!', rxJackClose: 'Devam 🏆', rxJackLines: ['Salisesine kadar! Diğerleri eve gidebilir. 🏠', 'Bu hassasiyet bu dünyadan değil. 👽', 'İsviçre saati mi? Hayır, {name}! ⌚', 'Diğerlerinin şu anki hâli: 😐😐😐', 'Bugünden itibaren kronometrenin adı {name}. ⏱️', 'Doping testi lazım. 🧪'],
+      rxJackTitle: 'JACKPOT!', rxJackText: '{name} tam {t} durdurdu ve oyunun tamamını kazandı!', rxJackWin: '{name} jackpot ile kazandı!', rxJackAward: 'Jackpot', rxJackAwardX: 'salisesine kadar tutturdu: {t}',
       sceneLoading: '🎬 Sahneler yükleniyor …', sceneHint: 'Sahneye ve ipuçlarına bak, doğru cevaba dokun. Tek hakkın var, ne kadar hızlıysan o kadar puan.',
       tmdbLabel: 'Filmler için sahne görselleri', tmdbOpt: '(isteğe bağlı, sadece oda sahibi için)', tmdbPh: 'TMDB API anahtarını yapıştır', tmdbOn: 'TMDB aktif: diziler ve filmler için sahneler', tmdbOff: 'TMDB anahtarı kaldırıldı', tmdbHelp: 'Anahtar olmadan sadece diziler için sahne gelir (TVmaze). themoviedb.org’dan ücretsiz bir anahtarla tüm filmler için de.',
       banLate: 'Geç kaldın, yasaklama süresi doldu.', banTaken: 'Onu zaten biri yasakladı. Başka birini seç.', banFail: 'Yasaklama mümkün değil.',
       spyTagline: 'Herkes gizli kelimeyi biliyor, biri hariç: casus. Sırayla ipucu verin, casus kelimeyi bulmadan onu yakalayın.<br><b>Blöf yap, şüphelen, ifşa et. 3 ila 10 oyuncu.</b>',
       spyRules: [
-        '🕵️ Herkes aynı <b>gizli kelimeyi</b> alır, sadece <b>biri casustur</b> ve yalnızca kategoriyi bilir.',
+        '🕵️ Herkes aynı <b>gizli kelimeyi</b> alır, sadece <b>biri casustur</b>. Ne kelimeyi ne kategoriyi bilir, sadece <b>tek bir belirsiz ipucu</b> alır.',
         '💬 Sırayla herkes bir <b>ipucu</b> verir. Çok açık olursan casusa yardım edersin, çok belirsiz olursan şüphe çekersin. Kelimenin kendisi engellenir.',
         '🗳️ Sonra oylama: <b>Casus kim?</b> Sohbette tartışabilirsiniz.',
-        '🎯 Casus istediği an kelimeyi tahmin edebilir. Doğruysa kazanır, yanlışsa kaybeder. Yakalanırsa son bir şansı daha olur.',
+        '🎯 Casus istediği an kelimeyi <b>yazarak</b> tahmin edebilir. Doğruysa kazanır, yanlışsa kaybeder. Yakalanırsa son bir şansı daha olur.',
         '🏆 Casus kaçarsa: +1000 · Casus yakalanırsa: her ajan +500 · doğru oy: +250 ekstra.',
       ],
       spyCats: { essen: 'Yiyecek & İçecek', orte: 'Mekânlar', alltag: 'Günlük Eşyalar', berufe: 'Meslekler', kultur: 'Kutlamalar & Hayat', freizeit: 'Hobi & Spor' },
@@ -1911,13 +1976,13 @@ window.I18N = (() => {
       spyWaitRole: 'Roller dağıtılıyor …', spyWatch: 'Bu turu izliyorsun, bir sonrakinde sen de varsın.', topSecret: 'Çok gizli',
       spyCover: 'Gizli dosyan', spyTapOpen: 'Açmak için dokun, kimse görmesin!', spyTapHide: 'Kapatmak için dokun',
       spyYourWord: 'Gizli kelimen', spyRoleK: 'Rolün', spyYouAre: 'Casus sensin!',
-      spyAgentTip: 'Kelimeyi söylemeden anlat. Casusu bul!', spySpyTip: 'Kelimeyi bilmiyorsun. İyi dinle, blöf yap ve kelimeyi tahmin et.',
+      spyAgentTip: 'Kelimeyi söylemeden anlat. Casusu bul!', spySpyTip: 'Başka yardım yok. İyi dinle, blöf yap ve bildiğin an kelimeyi yaz.', spyHintIs: 'Tek ipucun:', spyGuessPh: 'Gizli kelime …',
       spyRoom: 'Sorgu odası', spyRoomSub: 'İpucu sırası', spyRolesText: 'Dosyana bak ve rolünü aklında tut. Birazdan herkes sırayla ipucu verecek.',
       spyReady: 'Hazırım ✓', spyReadyN: '{n}/{m} hazır', spyYourTurn: 'Sıra sende! Bir kelime ya da kısa bir cümle.', spyCluePh: 'İpucun …', spySend: 'Gönder',
       spyTurnOf: '{name} bir ipucu düşünüyor …', spyAgentHint: 'Çok açık olma, yoksa casus kelimeyi bulur!',
       spyVoteQ: 'Casus kim?', spyVotedWait: 'Oyun verildi. {n}/{m} oy kullandı …',
-      spyKnow: '🎯 Kelimeyi biliyorum!', spyGuessWarn: 'Tek hak: doğruysa kazanırsın, yanlışsa kaybedersin.', spyTake: '✓ „{w}“ seç', spyCancel: 'Vazgeç',
-      spyLastSpy: 'Yakalandın! Son şans: Kelime hangisi?', spyLastOther: '{name} ifşa oldu! Casus kelimeyi yine de bulabilecek mi?',
+      spyKnow: '🎯 Kelimeyi biliyorum!', spyGuessWarn: 'Tek hak: doğruysa kazanırsın, yanlışsa kaybedersin.', spyTake: 'Tahmin et ✓', spyCancel: 'Vazgeç',
+      spyLastSpy: 'Yakalandın! Son şans: Gizli kelimeyi yaz.', spyLastOther: '{name} ifşa oldu! Casus kelimeyi yine de bulabilecek mi?',
       spyLeak: 'Bu kelimeyi ele veriyor! Başka türlü dene.', spyNoClue: 'süre bitti',
       spyOut: { steal: 'Cüretkâr! {spy} kelimeyi oyunun ortasında buldu.', escape: 'Yanlış iz! {acc} kişisinden şüphelendiniz, casus kaçtı.', tie: 'Oylamada beraberlik, casus kaçtı.',
         comeback: 'Yakalandı ama {spy} son saniyede kelimeyi buldu!', caught: 'Yakalandı! Casus {spy} idi.', blunder: '{spy} yanlış tahmin etti ve kendini ele verdi!' },
@@ -1927,7 +1992,7 @@ window.I18N = (() => {
       rxTagline: 'Refleks ve zaman hissi için yedi parti mini oyunu: Kör kronometre, trafik ışığı, hedef tahtası, renk tuzağı ve fazlası.<br><b>Hızlı olan kazanır. 2 ila 10 oyuncu.</b>',
       rxPick: 'Mini oyunlar', rxAll: 'Hepsi karışık',
       rxGames: { stop: ['Kör kronometre'], light: ['Trafik ışığı'], aim: ['Hedef tahtası'], stroop: ['Renk tuzağı'], odd: ['Farkı bul'], math: ['Hızlı hesap'], mash: ['Dokunma maratonu'] },
-      rxHelp_stop: 'Saat 0’dan başlar ve 2 saniye sonra tamamen kaybolur. İçinden say ve tam <b>{t},00 saniyede</b> dokun!',
+      rxHelp_stop: 'Saat 0’dan başlar ve 2 saniye sonra tamamen kaybolur. İçinden say ve tam <b>{t},00 saniyede</b> dokun! Salisesine kadar tutturan <b>oyunu anında kazanır</b>.',
       rxHelp_light: 'Işık <b>yeşil</b> olana kadar bekle, sonra olabildiğince hızlı dokun. 3 deneme, erken = hatalı çıkış!',
       rxHelp_aim: '<b>10 hedefi</b> olabildiğince hızlı vur. Iskalamak zaman kaybettirir.',
       rxHelp_stroop: 'Kelimeyi değil <b>yazının rengini</b> seç! 10 kelime, her hata +1,5 sn.',
@@ -1936,11 +2001,11 @@ window.I18N = (() => {
       rxHelp_mash: '<b>6 saniye</b>: olabildiğince çok dokun!',
       rxStopAt: '{t},00 sn’de durdur', rxTapAnywhere: 'Dokun, boşluk ya da Enter', rxNow: 'ŞİMDİ!', rxWaitGreen: 'Bekle …', rxTry: 'Deneme {n} / 3',
       rxFindOdd: 'Farkı bul', rxInk: 'Yazının RENGİ ne?', rxColors: ['KIRMIZI', 'MAVİ', 'YEŞİL', 'SARI'],
-      rxWait: 'Bitti! Diğerleri bekleniyor …', rxFalse: 'Hatalı çıkış!', rxFail: 'çok geç', rxTaps: '{n} dokunuş', rxTop: 'Süper', rxResult: 'Sonuç',
+      rxWait: 'Bitti! Diğerleri bekleniyor …', rxStopSecret: 'Durdurdun!', rxStopSecretSub: 'Süren gizli kalıyor. Herkes durdurunca tüm sonuçlar aynı anda gelecek.', rxFalse: 'Hatalı çıkış!', rxFail: 'çok geç', rxTaps: '{n} dokunuş', rxTop: 'Süper', rxResult: 'Sonuç',
       rxAward: { light: 'Şimşek refleks', stop: 'Zaman hissi', aim: 'Keskin nişancı', mash: 'Çelik başparmak', stroop: 'Renk ustası', odd: 'Kartal göz', math: 'Hesap ustası' },
       rxRules: [
         '⚡ Her tur başka bir mini oyun. Önce kısa bir açıklama ve geri sayım var.',
-        '⏱️ <b>Kör kronometre</b>: saat görünmez olur, tam hedef sürede durdur. 🚦 <b>Trafik ışığı</b>: yeşil olunca dokun.',
+        '⏱️ <b>Kör kronometre</b>: saat görünmez olur, tam hedef sürede durdur. Salisesine kadar tutturursan (ör. 10,00) <b>oyunu anında kazanırsın</b>. 🚦 <b>Trafik ışığı</b>: yeşil olunca dokun.',
         '🎯 Hedef tahtası, 🎨 Renk tuzağı, 🔍 Farkı bul, 🧮 Hızlı hesap: olabildiğince hızlı, hatalar zaman kaybettirir.',
         '👆 <b>Dokunma maratonu</b>: 6 saniye boyunca olabildiğince çok dokun.',
         '🏆 Tur başına en fazla 1000 puan, turun en iyisi +100. Süreyi her telefon kendisi ölçer, kötü internette de adil.',
@@ -13077,72 +13142,233 @@ window.GEO_SPOTS = [
 
 </script>
 <script>
-// Spy Clash: geheime Wörter. Pro Kategorie: [Deutsch, Türkisch, weitere Schreibweisen (für die Hinweis-Sperre)]
-// Nur Begriffe, die jeder kennt und gut umschreiben kann. Keine Marken, keine Personen.
+// Spy Clash: geheime Wörter. Pro Wort: [Deutsch, Türkisch, [weitere Schreibweisen für die Hinweis-Sperre], [Spion-Hinweis DE, Spion-Hinweis TR]]
+// Der Spion sieht nur den einen vagen Hinweis, weder Wort noch Kategorie. Nur Begriffe, die jeder kennt. Keine Marken, keine Personen.
 window.SPYW = {
   essen: { e: '🥙', w: [
-    ['Döner', 'Döner', ['doner', 'kebab']], ['Baklava', 'Baklava'], ['Lahmacun', 'Lahmacun'], ['Simit', 'Simit'], ['Çay', 'Çay', ['tee', 'cay']],
-    ['Ayran', 'Ayran'], ['Mantı', 'Mantı', ['manti']], ['Künefe', 'Künefe', ['kunefe']], ['Menemen', 'Menemen'], ['Börek', 'Börek', ['borek']],
-    ['Köfte', 'Köfte', ['kofte', 'frikadelle']], ['Kumpir', 'Kumpir'], ['Currywurst', 'Körili sosis', ['curry']], ['Brezel', 'Pretzel', ['bretzel']],
-    ['Schnitzel', 'Şinitzel', ['snitzel']], ['Spätzle', 'Spätzle', ['spatzle']], ['Pommes', 'Patates kızartması', ['pommes frites', 'patates']],
-    ['Pizza', 'Pizza'], ['Sushi', 'Suşi'], ['Popcorn', 'Patlamış mısır', ['patlamis']], ['Wassermelone', 'Karpuz'], ['Granatapfel', 'Nar'],
-    ['Honig', 'Bal'], ['Schokolade', 'Çikolata', ['schoko']], ['Eis', 'Dondurma', ['eiscreme', 'maras']], ['Kaffee', 'Türk kahvesi', ['kahve']],
-    ['Linsensuppe', 'Mercimek çorbası', ['mercimek']], ['Sucuk', 'Sucuk', ['sucuklu']], ['Gözleme', 'Gözleme', ['gozleme']], ['Pide', 'Pide'],
-    ['Lokum', 'Lokum', ['turkish delight']], ['Dolma', 'Dolma', ['sarma']], ['Hähnchen', 'Tavuk', ['haehnchen', 'huhn']], ['Pfannkuchen', 'Krep', ['crepe']],
-    ['Käse', 'Peynir', ['kase']], ['Oliven', 'Zeytin', ['olive']], ['Sonnenblumenkerne', 'Çekirdek', ['kerne']],
+    ['Döner', 'Döner', ['doner', 'kebab'], ['Spieß', 'şiş']],
+    ['Baklava', 'Baklava', [], ['Sirup', 'şerbet']],
+    ['Lahmacun', 'Lahmacun', [], ['dünn', 'ince']],
+    ['Simit', 'Simit', [], ['Sesam', 'susam']],
+    ['Çay', 'Çay', ['tee', 'cay'], ['heiß', 'sıcak']],
+    ['Ayran', 'Ayran', [], ['weiß', 'beyaz']],
+    ['Mantı', 'Mantı', ['manti'], ['klein', 'küçük']],
+    ['Künefe', 'Künefe', ['kunefe'], ['Faden', 'tel']],
+    ['Menemen', 'Menemen', [], ['Pfanne', 'tava']],
+    ['Börek', 'Börek', ['borek'], ['Schichten', 'kat']],
+    ['Köfte', 'Köfte', ['kofte', 'frikadelle'], ['rund', 'yuvarlak']],
+    ['Kumpir', 'Kumpir', [], ['Füllung', 'dolgu']],
+    ['Currywurst', 'Körili sosis', ['curry'], ['Imbiss', 'büfe']],
+    ['Brezel', 'Pretzel', ['bretzel'], ['Knoten', 'düğüm']],
+    ['Schnitzel', 'Şinitzel', ['snitzel'], ['paniert', 'pane']],
+    ['Spätzle', 'Spätzle', ['spatzle'], ['Schwaben', 'Almanya']],
+    ['Pommes', 'Patates kızartması', ['pommes frites', 'patates'], ['Ketchup', 'ketçap']],
+    ['Pizza', 'Pizza', [], ['Ofen', 'fırın']],
+    ['Sushi', 'Suşi', [], ['Stäbchen', 'çubuk']],
+    ['Popcorn', 'Patlamış mısır', ['patlamis'], ['Film', 'film']],
+    ['Wassermelone', 'Karpuz', [], ['Sommer', 'yaz']],
+    ['Granatapfel', 'Nar', [], ['rot', 'kırmızı']],
+    ['Honig', 'Bal', [], ['klebrig', 'yapışkan']],
+    ['Schokolade', 'Çikolata', ['schoko'], ['braun', 'kahverengi']],
+    ['Eis', 'Dondurma', ['eiscreme', 'maras'], ['kalt', 'soğuk']],
+    ['Kaffee', 'Türk kahvesi', ['kahve'], ['Bohne', 'çekirdek']],
+    ['Linsensuppe', 'Mercimek çorbası', ['mercimek'], ['Löffel', 'kaşık']],
+    ['Sucuk', 'Sucuk', ['sucuklu'], ['würzig', 'baharatlı']],
+    ['Gözleme', 'Gözleme', ['gozleme'], ['Teig', 'hamur']],
+    ['Pide', 'Pide', [], ['Boot', 'kayık']],
+    ['Lokum', 'Lokum', ['turkish delight'], ['Puder', 'pudra']],
+    ['Dolma', 'Dolma', ['sarma'], ['gefüllt', 'dolu']],
+    ['Hähnchen', 'Tavuk', ['haehnchen', 'huhn'], ['Flügel', 'kanat']],
+    ['Pfannkuchen', 'Krep', ['crepe'], ['flach', 'yassı']],
+    ['Käse', 'Peynir', ['kase'], ['Kuh', 'inek']],
+    ['Oliven', 'Zeytin', ['olive'], ['grün', 'yeşil']],
+    ['Sonnenblumenkerne', 'Çekirdek', ['kerne'], ['knacken', 'çitlemek']],
   ] },
   orte: { e: '📍', w: [
-    ['Flughafen', 'Havalimanı', ['havaalani', 'airport']], ['Krankenhaus', 'Hastane', ['klinik']], ['Schule', 'Okul'], ['Moschee', 'Cami', ['camii']],
-    ['Hamam', 'Hamam'], ['Strand', 'Plaj', ['sahil']], ['Kino', 'Sinema'], ['Fitnessstudio', 'Spor salonu', ['gym', 'fitness']], ['Friseursalon', 'Kuaför', ['friseur', 'berber']],
-    ['Basar', 'Kapalıçarşı', ['bazar', 'carsi']], ['Hochzeitssaal', 'Düğün salonu', ['dugun salonu']], ['Zahnarztpraxis', 'Diş kliniği', ['zahnarzt', 'disci']],
-    ['Supermarkt', 'Süpermarket', ['market']], ['Bahnhof', 'Tren istasyonu', ['istasyon']], ['Fußballstadion', 'Futbol stadyumu', ['stadion', 'stadyum']],
-    ['Polizeiwache', 'Karakol', ['polizei']], ['Bibliothek', 'Kütüphane', ['bucherei']], ['Zoo', 'Hayvanat bahçesi', ['tierpark']], ['Freizeitpark', 'Lunapark', ['luna park']],
-    ['Bäckerei', 'Fırın', ['backerei', 'firin']], ['Tankstelle', 'Benzin istasyonu', ['benzinlik']], ['Disco', 'Gece kulübü', ['club', 'diskothek']],
-    ['Campingplatz', 'Kamp alanı', ['camping']], ['Kreuzfahrtschiff', 'Yolcu gemisi', ['kreuzfahrt']], ['Gefängnis', 'Hapishane', ['knast', 'cezaevi']],
-    ['Bank', 'Banka'], ['Shisha-Bar', 'Nargile kafe', ['shisha', 'nargile', 'shishabar']], ['Spielplatz', 'Oyun parkı'], ['Hotel', 'Otel'],
-    ['Skigebiet', 'Kayak merkezi', ['kayak']], ['Baustelle', 'İnşaat alanı', ['insaat']], ['Fähre', 'Vapur', ['faehre', 'feribot']], ['Autobahn', 'Otoyol'],
-    ['Teegarten', 'Çay bahçesi', ['cay bahcesi']], ['Wochenmarkt', 'Pazar', ['semt pazari']], ['Dönerbude', 'Dönerci', ['imbiss']],
+    ['Flughafen', 'Havalimanı', ['havaalani', 'airport'], ['Reise', 'yolculuk']],
+    ['Krankenhaus', 'Hastane', ['klinik'], ['weiß', 'beyaz']],
+    ['Schule', 'Okul', [], ['Glocke', 'zil']],
+    ['Moschee', 'Cami', ['camii'], ['Kuppel', 'kubbe']],
+    ['Hamam', 'Hamam', [], ['Dampf', 'buhar']],
+    ['Strand', 'Plaj', ['sahil'], ['Sand', 'kum']],
+    ['Kino', 'Sinema', [], ['dunkel', 'karanlık']],
+    ['Fitnessstudio', 'Spor salonu', ['gym', 'fitness'], ['Schweiß', 'ter']],
+    ['Friseursalon', 'Kuaför', ['friseur', 'berber'], ['Stuhl', 'sandalye']],
+    ['Basar', 'Kapalıçarşı', ['bazar', 'carsi'], ['Handeln', 'pazarlık']],
+    ['Hochzeitssaal', 'Düğün salonu', ['dugun salonu'], ['Tanz', 'dans']],
+    ['Zahnarztpraxis', 'Diş kliniği', ['zahnarzt', 'disci'], ['Angst', 'korku']],
+    ['Supermarkt', 'Süpermarket', ['market'], ['Kasse', 'kasa']],
+    ['Bahnhof', 'Tren istasyonu', ['istasyon'], ['Gleis', 'peron']],
+    ['Fußballstadion', 'Futbol stadyumu', ['stadion', 'stadyum'], ['Lärm', 'gürültü']],
+    ['Polizeiwache', 'Karakol', ['polizei'], ['Akte', 'dosya']],
+    ['Bibliothek', 'Kütüphane', ['bucherei'], ['leise', 'sessiz']],
+    ['Zoo', 'Hayvanat bahçesi', ['tierpark'], ['Gehege', 'kafes']],
+    ['Freizeitpark', 'Lunapark', ['luna park'], ['Schlange', 'kuyruk']],
+    ['Bäckerei', 'Fırın', ['backerei', 'firin'], ['früh', 'sabah']],
+    ['Tankstelle', 'Benzin istasyonu', ['benzinlik'], ['Geruch', 'koku']],
+    ['Disco', 'Gece kulübü', ['club', 'diskothek'], ['Nacht', 'gece']],
+    ['Campingplatz', 'Kamp alanı', ['camping'], ['Natur', 'doğa']],
+    ['Kreuzfahrtschiff', 'Yolcu gemisi', ['kreuzfahrt'], ['Meer', 'deniz']],
+    ['Gefängnis', 'Hapishane', ['knast', 'cezaevi'], ['Gitter', 'parmaklık']],
+    ['Bank', 'Banka', [], ['Geld', 'para']],
+    ['Shisha-Bar', 'Nargile kafe', ['shisha', 'nargile', 'shishabar'], ['Rauch', 'duman']],
+    ['Spielplatz', 'Oyun parkı', [], ['Kinder', 'çocuk']],
+    ['Hotel', 'Otel', [], ['Zimmer', 'oda']],
+    ['Skigebiet', 'Kayak merkezi', ['kayak'], ['Schnee', 'kar']],
+    ['Baustelle', 'İnşaat alanı', ['insaat'], ['Helm', 'kask']],
+    ['Fähre', 'Vapur', ['faehre', 'feribot'], ['Möwe', 'martı']],
+    ['Autobahn', 'Otoyol', [], ['schnell', 'hızlı']],
+    ['Teegarten', 'Çay bahçesi', ['cay bahcesi'], ['Glas', 'bardak']],
+    ['Wochenmarkt', 'Pazar', ['semt pazari'], ['frisch', 'taze']],
+    ['Dönerbude', 'Dönerci', ['imbiss'], ['Soße', 'sos']],
   ] },
   alltag: { e: '🏠', w: [
-    ['Handy', 'Cep telefonu', ['smartphone', 'telefon']], ['Staubsauger', 'Elektrikli süpürge', ['supurge']], ['Regenschirm', 'Şemsiye', ['schirm', 'semsiye']],
-    ['Zahnbürste', 'Diş fırçası', ['zahnburste']], ['Kühlschrank', 'Buzdolabı', ['kuhlschrank']], ['Fernbedienung', 'Kumanda'], ['Spiegel', 'Ayna'],
-    ['Waschmaschine', 'Çamaşır makinesi', ['camasir']], ['Teekanne', 'Çaydanlık', ['caydanlik']], ['Kissen', 'Yastık', ['yastik']], ['Schlüssel', 'Anahtar', ['schlussel']],
-    ['Brille', 'Gözlük', ['gozluk']], ['Kopfhörer', 'Kulaklık', ['kopfhorer', 'kulaklik']], ['Rucksack', 'Sırt çantası', ['canta']], ['Ladekabel', 'Şarj kablosu', ['sarj']],
-    ['Kerze', 'Mum'], ['Sofa', 'Kanepe', ['couch']], ['Teppich', 'Halı', ['hali']], ['Bügeleisen', 'Ütü', ['bugeleisen', 'utu']], ['Föhn', 'Saç kurutma makinesi', ['fohn', 'fon']],
-    ['Mikrowelle', 'Mikrodalga'], ['Laptop', 'Dizüstü bilgisayar', ['notebook', 'bilgisayar']], ['Fahrrad', 'Bisiklet', ['rad']], ['Koffer', 'Valiz', ['bavul']],
-    ['Nazar-Amulett', 'Nazar boncuğu', ['nazar']], ['Wecker', 'Çalar saat', ['alarm']], ['Gebetsteppich', 'Seccade'], ['Hausschuhe', 'Terlik', ['latschen']],
-    ['Feuerzeug', 'Çakmak', ['cakmak']], ['Sonnenbrille', 'Güneş gözlüğü'], ['Geldbeutel', 'Cüzdan', ['portemonnaie', 'cuzdan']], ['Klopapier', 'Tuvalet kâğıdı', ['toilettenpapier']],
-    ['Mülleimer', 'Çöp kovası', ['mulleimer', 'cop']], ['Bettdecke', 'Yorgan'], ['Kalender', 'Takvim'], ['Fernseher', 'Televizyon', ['tv']],
+    ['Handy', 'Cep telefonu', ['smartphone', 'telefon'], ['Akku', 'pil']],
+    ['Staubsauger', 'Elektrikli süpürge', ['supurge'], ['laut', 'gürültülü']],
+    ['Regenschirm', 'Şemsiye', ['schirm', 'semsiye'], ['nass', 'ıslak']],
+    ['Zahnbürste', 'Diş fırçası', ['zahnburste'], ['morgens', 'sabah']],
+    ['Kühlschrank', 'Buzdolabı', ['kuhlschrank'], ['kalt', 'soğuk']],
+    ['Fernbedienung', 'Kumanda', [], ['Sofa', 'kanepe']],
+    ['Spiegel', 'Ayna', [], ['Gesicht', 'yüz']],
+    ['Waschmaschine', 'Çamaşır makinesi', ['camasir'], ['drehen', 'dönmek']],
+    ['Teekanne', 'Çaydanlık', ['caydanlik'], ['Herd', 'ocak']],
+    ['Kissen', 'Yastık', ['yastik'], ['weich', 'yumuşak']],
+    ['Schlüssel', 'Anahtar', ['schlussel'], ['Tür', 'kapı']],
+    ['Brille', 'Gözlük', ['gozluk'], ['Augen', 'göz']],
+    ['Kopfhörer', 'Kulaklık', ['kopfhorer', 'kulaklik'], ['Musik', 'müzik']],
+    ['Rucksack', 'Sırt çantası', ['canta'], ['Rücken', 'sırt']],
+    ['Ladekabel', 'Şarj kablosu', ['sarj'], ['Steckdose', 'priz']],
+    ['Kerze', 'Mum', [], ['Licht', 'ışık']],
+    ['Sofa', 'Kanepe', ['couch'], ['Wohnzimmer', 'salon']],
+    ['Teppich', 'Halı', ['hali'], ['Boden', 'zemin']],
+    ['Bügeleisen', 'Ütü', ['bugeleisen', 'utu'], ['Falten', 'kırışık']],
+    ['Föhn', 'Saç kurutma makinesi', ['fohn', 'fon'], ['Haare', 'saç']],
+    ['Mikrowelle', 'Mikrodalga', [], ['warm', 'ılık']],
+    ['Laptop', 'Dizüstü bilgisayar', ['notebook', 'bilgisayar'], ['Tasten', 'tuş']],
+    ['Fahrrad', 'Bisiklet', ['rad'], ['Pedal', 'pedal']],
+    ['Koffer', 'Valiz', ['bavul'], ['Urlaub', 'tatil']],
+    ['Nazar-Amulett', 'Nazar boncuğu', ['nazar'], ['blau', 'mavi']],
+    ['Wecker', 'Çalar saat', ['alarm'], ['Morgen', 'sabah']],
+    ['Gebetsteppich', 'Seccade', [], ['Richtung', 'yön']],
+    ['Hausschuhe', 'Terlik', ['latschen'], ['Füße', 'ayak']],
+    ['Feuerzeug', 'Çakmak', ['cakmak'], ['Flamme', 'alev']],
+    ['Sonnenbrille', 'Güneş gözlüğü', [], ['Sommer', 'yaz']],
+    ['Geldbeutel', 'Cüzdan', ['portemonnaie', 'cuzdan'], ['Tasche', 'cep']],
+    ['Klopapier', 'Tuvalet kâğıdı', ['toilettenpapier'], ['Rolle', 'rulo']],
+    ['Mülleimer', 'Çöp kovası', ['mulleimer', 'cop'], ['Deckel', 'kapak']],
+    ['Bettdecke', 'Yorgan', [], ['Schlaf', 'uyku']],
+    ['Kalender', 'Takvim', [], ['Datum', 'tarih']],
+    ['Fernseher', 'Televizyon', ['tv'], ['Bildschirm', 'ekran']],
   ] },
   berufe: { e: '👷', w: [
-    ['Arzt', 'Doktor', ['arztin', 'doktor']], ['Lehrer', 'Öğretmen', ['lehrerin', 'ogretmen']], ['Polizist', 'Polis'], ['Feuerwehrmann', 'İtfaiyeci', ['feuerwehr']],
-    ['Pilot', 'Pilot'], ['Koch', 'Aşçı', ['asci']], ['Friseur', 'Berber', ['kuafor']], ['Taxifahrer', 'Taksici', ['taxi', 'taksi']], ['Imam', 'İmam'],
-    ['Fußballprofi', 'Futbolcu', ['fussballer']], ['Influencer', 'Fenomen'], ['Bäcker', 'Fırıncı', ['backer']], ['Zahnarzt', 'Diş hekimi', ['zahnarztin']],
-    ['Anwalt', 'Avukat'], ['Mechaniker', 'Tamirci', ['kfz']], ['DJ', 'DJ', ['discjockey']], ['Postbote', 'Postacı', ['postacı', 'paketbote']], ['Kellner', 'Garson'],
-    ['Gärtner', 'Bahçıvan', ['gartner']], ['Fotograf', 'Fotoğrafçı', ['fotografci']], ['Sänger', 'Şarkıcı', ['sanger', 'sarkici']], ['Schauspieler', 'Oyuncu', ['aktor']],
-    ['Krankenpfleger', 'Hemşire', ['krankenschwester', 'pfleger']], ['Bauarbeiter', 'İnşaat işçisi', ['insaat']], ['Programmierer', 'Yazılımcı', ['entwickler']],
-    ['Busfahrer', 'Otobüs şoförü', ['sofor']], ['Metzger', 'Kasap', ['fleischer']], ['Tierarzt', 'Veteriner'], ['Astronaut', 'Astronot'], ['Hochzeitsfotograf', 'Düğün fotoğrafçısı'],
-    ['Bürgermeister', 'Belediye başkanı', ['burgermeister']], ['Schiedsrichter', 'Hakem'], ['Juwelier', 'Kuyumcu'], ['Dönermann', 'Dönerci ustası', ['donermann']],
+    ['Arzt', 'Doktor', ['arztin', 'doktor'], ['Kittel', 'önlük']],
+    ['Lehrer', 'Öğretmen', ['lehrerin', 'ogretmen'], ['Tafel', 'tahta']],
+    ['Polizist', 'Polis', [], ['Uniform', 'üniforma']],
+    ['Feuerwehrmann', 'İtfaiyeci', ['feuerwehr'], ['Leiter', 'merdiven']],
+    ['Pilot', 'Pilot', [], ['Wolken', 'bulut']],
+    ['Koch', 'Aşçı', ['asci'], ['Küche', 'mutfak']],
+    ['Friseur', 'Berber', ['kuafor'], ['Schere', 'makas']],
+    ['Taxifahrer', 'Taksici', ['taxi', 'taksi'], ['Fahrgast', 'yolcu']],
+    ['Imam', 'İmam', [], ['Stimme', 'ses']],
+    ['Fußballprofi', 'Futbolcu', ['fussballer'], ['Rasen', 'çim']],
+    ['Influencer', 'Fenomen', [], ['Follower', 'takipçi']],
+    ['Bäcker', 'Fırıncı', ['backer'], ['Mehl', 'un']],
+    ['Zahnarzt', 'Diş hekimi', ['zahnarztin'], ['Bohrer', 'matkap']],
+    ['Anwalt', 'Avukat', [], ['Gericht', 'mahkeme']],
+    ['Mechaniker', 'Tamirci', ['kfz'], ['Öl', 'yağ']],
+    ['DJ', 'DJ', ['discjockey'], ['Party', 'parti']],
+    ['Postbote', 'Postacı', ['postacı', 'paketbote'], ['Briefe', 'mektup']],
+    ['Kellner', 'Garson', [], ['Tablett', 'tepsi']],
+    ['Gärtner', 'Bahçıvan', ['gartner'], ['Pflanzen', 'bitki']],
+    ['Fotograf', 'Fotoğrafçı', ['fotografci'], ['Kamera', 'kamera']],
+    ['Sänger', 'Şarkıcı', ['sanger', 'sarkici'], ['Bühne', 'sahne']],
+    ['Schauspieler', 'Oyuncu', ['aktor'], ['Rolle', 'rol']],
+    ['Krankenpfleger', 'Hemşire', ['krankenschwester', 'pfleger'], ['Nachtschicht', 'gece nöbeti']],
+    ['Bauarbeiter', 'İnşaat işçisi', ['insaat'], ['Beton', 'beton']],
+    ['Programmierer', 'Yazılımcı', ['entwickler'], ['Computer', 'bilgisayar']],
+    ['Busfahrer', 'Otobüs şoförü', ['sofor'], ['Haltestelle', 'durak']],
+    ['Metzger', 'Kasap', ['fleischer'], ['Messer', 'bıçak']],
+    ['Tierarzt', 'Veteriner', [], ['Hund', 'köpek']],
+    ['Astronaut', 'Astronot', [], ['Weltall', 'uzay']],
+    ['Hochzeitsfotograf', 'Düğün fotoğrafçısı', [], ['Brautpaar', 'gelin damat']],
+    ['Bürgermeister', 'Belediye başkanı', ['burgermeister'], ['Rathaus', 'belediye']],
+    ['Schiedsrichter', 'Hakem', [], ['Pfeife', 'düdük']],
+    ['Juwelier', 'Kuyumcu', [], ['Gold', 'altın']],
+    ['Dönermann', 'Dönerci ustası', ['donermann'], ['Messer', 'bıçak']],
   ] },
   kultur: { e: '🎊', w: [
-    ['Hochzeit', 'Düğün', ['dugun']], ['Henna-Abend', 'Kına gecesi', ['kina', 'henna']], ['Zuckerfest', 'Şeker Bayramı', ['bayram']], ['Opferfest', 'Kurban Bayramı', ['kurban']],
-    ['Ramadan', 'Ramazan'], ['Iftar', 'İftar'], ['Silvester', 'Yılbaşı', ['neujahr']], ['Weihnachtsmarkt', 'Noel pazarı', ['weihnachten']], ['Karneval', 'Karnaval', ['fasching']],
-    ['Oktoberfest', 'Ekim Festivali', ['wiesn']], ['Beschneidungsfest', 'Sünnet düğünü', ['sunnet']], ['Grillen', 'Mangal', ['grill']], ['Heimaturlaub', 'Memleket tatili', ['memleket']],
-    ['Zeugnis', 'Karne'], ['Führerscheinprüfung', 'Ehliyet sınavı', ['fuhrerschein', 'ehliyet']], ['Umzug', 'Taşınma', ['tasinma']], ['Abschlussball', 'Mezuniyet balosu', ['abiball', 'mezuniyet']],
-    ['Geburtstag', 'Doğum günü', ['dogum gunu']], ['Verlobung', 'Nişan', ['nisan']], ['Brautgeld', 'Başlık parası', ['baslik']], ['Kaffeesatz lesen', 'Kahve falı', ['fal']],
-    ['Halay', 'Halay'], ['Hochzeitsgold', 'Düğün takısı', ['taki']], ['Teestunde', 'Çay saati'], ['Elternabend', 'Veli toplantısı', ['veli']], ['Ostern', 'Paskalya'],
-    ['Muttertag', 'Anneler Günü'], ['Fastenbrechen', 'Oruç açma', ['oruc']], ['Flohmarkt', 'Bit pazarı', ['bitpazari']], ['Polterabend', 'Bekarlığa veda partisi', ['junggesellenabschied']],
-    ['Kirmes', 'Panayır', ['jahrmarkt']], ['Schützenfest', 'Atıcılık şenliği'], ['Sprachkurs', 'Dil kursu'], ['Ausländerbehörde', 'Yabancılar dairesi', ['auslanderbehorde']],
+    ['Hochzeit', 'Düğün', ['dugun'], ['Kleid', 'gelinlik']],
+    ['Henna-Abend', 'Kına gecesi', ['kina', 'henna'], ['rot', 'kırmızı']],
+    ['Zuckerfest', 'Şeker Bayramı', ['bayram'], ['Süßigkeiten', 'şeker']],
+    ['Opferfest', 'Kurban Bayramı', ['kurban'], ['Fleisch', 'et']],
+    ['Ramadan', 'Ramazan', [], ['Monat', 'ay']],
+    ['Iftar', 'İftar', [], ['Abend', 'akşam']],
+    ['Silvester', 'Yılbaşı', ['neujahr'], ['Feuerwerk', 'havai fişek']],
+    ['Weihnachtsmarkt', 'Noel pazarı', ['weihnachten'], ['Glühwein', 'sıcak şarap']],
+    ['Karneval', 'Karnaval', ['fasching'], ['Kostüm', 'kostüm']],
+    ['Oktoberfest', 'Ekim Festivali', ['wiesn'], ['Bier', 'bira']],
+    ['Beschneidungsfest', 'Sünnet düğünü', ['sunnet'], ['Junge', 'oğlan']],
+    ['Grillen', 'Mangal', ['grill'], ['Kohle', 'kömür']],
+    ['Heimaturlaub', 'Memleket tatili', ['memleket'], ['Verwandte', 'akraba']],
+    ['Zeugnis', 'Karne', [], ['Noten', 'not']],
+    ['Führerscheinprüfung', 'Ehliyet sınavı', ['fuhrerschein', 'ehliyet'], ['Prüfer', 'sınav']],
+    ['Umzug', 'Taşınma', ['tasinma'], ['Kartons', 'koli']],
+    ['Abschlussball', 'Mezuniyet balosu', ['abiball', 'mezuniyet'], ['Anzug', 'takım elbise']],
+    ['Geburtstag', 'Doğum günü', ['dogum gunu'], ['Kerzen', 'mum']],
+    ['Verlobung', 'Nişan', ['nisan'], ['Ring', 'yüzük']],
+    ['Brautgeld', 'Başlık parası', ['baslik'], ['Verhandlung', 'pazarlık']],
+    ['Kaffeesatz lesen', 'Kahve falı', ['fal'], ['Zukunft', 'gelecek']],
+    ['Halay', 'Halay', [], ['Kreis', 'halka']],
+    ['Hochzeitsgold', 'Düğün takısı', ['taki'], ['Geschenk', 'hediye']],
+    ['Teestunde', 'Çay saati', [], ['Nachmittag', 'öğleden sonra']],
+    ['Elternabend', 'Veli toplantısı', ['veli'], ['Schule', 'okul']],
+    ['Ostern', 'Paskalya', [], ['Eier', 'yumurta']],
+    ['Muttertag', 'Anneler Günü', [], ['Blumen', 'çiçek']],
+    ['Fastenbrechen', 'Oruç açma', ['oruc'], ['Dattel', 'hurma']],
+    ['Flohmarkt', 'Bit pazarı', ['bitpazari'], ['gebraucht', 'ikinci el']],
+    ['Polterabend', 'Bekarlığa veda partisi', ['junggesellenabschied'], ['Freunde', 'arkadaş']],
+    ['Kirmes', 'Panayır', ['jahrmarkt'], ['Karussell', 'atlıkarınca']],
+    ['Schützenfest', 'Atıcılık şenliği', [], ['Verein', 'dernek']],
+    ['Sprachkurs', 'Dil kursu', [], ['Grammatik', 'dilbilgisi']],
+    ['Ausländerbehörde', 'Yabancılar dairesi', ['auslanderbehorde'], ['Termin', 'randevu']],
   ] },
   freizeit: { e: '🎉', w: [
-    ['Fußball', 'Futbol', ['fussball']], ['Tavla', 'Tavla', ['backgammon']], ['Okey', 'Okey', ['rummikub']], ['Schach', 'Satranç', ['satranc']], ['Karaoke', 'Karaoke'],
-    ['Schwimmen', 'Yüzme', ['yuzme']], ['Bowling', 'Bowling'], ['Boxen', 'Boks'], ['Basketball', 'Basketbol'], ['Angeln', 'Balık tutmak', ['balik']],
-    ['Wandern', 'Doğa yürüyüşü', ['trekking']], ['Skifahren', 'Kayak'], ['Playstation', 'PlayStation', ['konsole', 'zocken']], ['Kartenspiel', 'Kâğıt oyunu', ['karten', 'iskambil']],
-    ['Tennis', 'Tenis'], ['Yoga', 'Yoga'], ['Joggen', 'Koşu', ['laufen', 'kosu']], ['Paintball', 'Paintball'], ['Escape Room', 'Kaçış odası', ['escape']],
-    ['Konzert', 'Konser'], ['Tanzen', 'Dans etmek', ['dans']], ['Kochen', 'Yemek yapmak'], ['Zelten', 'Kamp yapmak', ['camping']], ['Picknick', 'Piknik'],
-    ['Achterbahn', 'Hız treni', ['rollercoaster']], ['Fallschirmspringen', 'Paraşüt', ['parasut', 'skydiving']], ['Tauchen', 'Dalış', ['dalis']], ['Reiten', 'Ata binmek', ['pferd']],
-    ['Volleyball', 'Voleybol'], ['Billard', 'Bilardo'], ['Darts', 'Dart'], ['Gaming-Turnier', 'Oyun turnuvası', ['turnier', 'esport']], ['Wasserpark', 'Su parkı', ['aquapark']],
-    ['Kartfahren', 'Go-kart', ['kart']], ['Puzzle', 'Yapboz'], ['Serien-Marathon', 'Dizi maratonu', ['binge']],
+    ['Fußball', 'Futbol', ['fussball'], ['Tor', 'gol']],
+    ['Tavla', 'Tavla', ['backgammon'], ['Würfel', 'zar']],
+    ['Okey', 'Okey', ['rummikub'], ['Steine', 'taş']],
+    ['Schach', 'Satranç', ['satranc'], ['König', 'şah']],
+    ['Karaoke', 'Karaoke', [], ['Mikrofon', 'mikrofon']],
+    ['Schwimmen', 'Yüzme', ['yuzme'], ['Wasser', 'su']],
+    ['Bowling', 'Bowling', [], ['Kugel', 'top']],
+    ['Boxen', 'Boks', [], ['Handschuhe', 'eldiven']],
+    ['Basketball', 'Basketbol', [], ['Korb', 'pota']],
+    ['Angeln', 'Balık tutmak', ['balik'], ['Geduld', 'sabır']],
+    ['Wandern', 'Doğa yürüyüşü', ['trekking'], ['Berg', 'dağ']],
+    ['Skifahren', 'Kayak', [], ['Piste', 'pist']],
+    ['Playstation', 'PlayStation', ['konsole', 'zocken'], ['Controller', 'kol']],
+    ['Kartenspiel', 'Kâğıt oyunu', ['karten', 'iskambil'], ['mischen', 'karıştırmak']],
+    ['Tennis', 'Tenis', [], ['Netz', 'file']],
+    ['Yoga', 'Yoga', [], ['Matte', 'mat']],
+    ['Joggen', 'Koşu', ['laufen', 'kosu'], ['Park', 'park']],
+    ['Paintball', 'Paintball', [], ['Farbe', 'boya']],
+    ['Escape Room', 'Kaçış odası', ['escape'], ['Rätsel', 'bulmaca']],
+    ['Konzert', 'Konser', [], ['Ticket', 'bilet']],
+    ['Tanzen', 'Dans etmek', ['dans'], ['Rhythmus', 'ritim']],
+    ['Kochen', 'Yemek yapmak', [], ['Rezept', 'tarif']],
+    ['Zelten', 'Kamp yapmak', ['camping'], ['Schlafsack', 'uyku tulumu']],
+    ['Picknick', 'Piknik', [], ['Decke', 'örtü']],
+    ['Achterbahn', 'Hız treni', ['rollercoaster'], ['Schreien', 'çığlık']],
+    ['Fallschirmspringen', 'Paraşüt', ['parasut', 'skydiving'], ['Flugzeug', 'uçak']],
+    ['Tauchen', 'Dalış', ['dalis'], ['Fische', 'balık']],
+    ['Reiten', 'Ata binmek', ['pferd'], ['Sattel', 'eyer']],
+    ['Volleyball', 'Voleybol', [], ['Sand', 'kum']],
+    ['Billard', 'Bilardo', [], ['Queue', 'ıstaka']],
+    ['Darts', 'Dart', [], ['Pfeile', 'ok']],
+    ['Gaming-Turnier', 'Oyun turnuvası', ['turnier', 'esport'], ['Team', 'takım']],
+    ['Wasserpark', 'Su parkı', ['aquapark'], ['Rutsche', 'kaydırak']],
+    ['Kartfahren', 'Go-kart', ['kart'], ['Helm', 'kask']],
+    ['Puzzle', 'Yapboz', [], ['Teile', 'parça']],
+    ['Serien-Marathon', 'Dizi maratonu', ['binge'], ['Couch', 'koltuk']],
   ] },
 };
 
@@ -13445,7 +13671,7 @@ window.__launchGate = (() => {
   const PREFIX = 'sizeclash-v1-';
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = 'cca2047d7e';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = '43d3fb6ad5';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -14197,7 +14423,8 @@ window.__launchGate = (() => {
   }
 
   // ---------- Szenenbilder für Serien und Filme ----------
-  // Ohne Schlüssel: TVmaze (nur Serien, Hintergrundbilder ohne Schrift). Mit eigenem TMDB-Schlüssel des Hosts: Serien und Filme.
+  // Nur Bilder ohne Titel-Schriftzug: 1. TMDB-Szenen ohne Sprache (mit eigenem Schlüssel des Hosts),
+  // 2. Episodenbilder von TVmaze (Serien, echte Szenen), 3. Foto eines Hauptdarstellers von Wikimedia Commons (über Wikidata).
   const sceneCache = {};
   const tmdbKey = () => String(store.get('tmdb') || '').trim();
   async function getJSON(url, ms = 6000) {
@@ -14211,24 +14438,40 @@ window.__launchGate = (() => {
     let s = await getJSON(`${base}/search/${type}?api_key=${k}&query=${encodeURIComponent(q)}${yp}`);
     if (!s?.results?.length && yr) s = await getJSON(`${base}/search/${type}?api_key=${k}&query=${encodeURIComponent(q)}`);
     const hit = s?.results?.[0]; if (!hit) return '';
+    // include_image_language=null: nur Bilder ohne Schrift (keine Titel, keine Logos)
     const im = await getJSON(`${base}/${type}/${hit.id}/images?api_key=${k}&include_image_language=null`);
-    const bd = (im?.backdrops || []).slice(0, 10);
-    const path = bd.length ? pickOne(bd).file_path : hit.backdrop_path;
-    return path ? 'https://image.tmdb.org/t/p/w1280' + path : '';
+    const bd = (im?.backdrops || []).filter(b => !b.iso_639_1).slice(0, 12);
+    return bd.length ? 'https://image.tmdb.org/t/p/w1280' + pickOne(bd).file_path : '';
   }
-  async function tvmazeScene(q) {
+  async function tvmazeStill(q) {
     const s = await getJSON(`https://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(q)}`);
     if (!s?.id || !(qnorm(s.name).includes(qnorm(q)) || qnorm(q).includes(qnorm(s.name)))) return '';
-    const imgs = await getJSON(`https://api.tvmaze.com/shows/${s.id}/images`);
-    const bg = (imgs || []).filter(i => i.type === 'background' && i.resolutions?.original?.url);
-    return bg.length ? pickOne(bg).resolutions.original.url : '';
+    // Episodenbilder sind Standbilder aus den Folgen, also echte Szenen ohne Titel
+    const eps = await getJSON(`https://api.tvmaze.com/shows/${s.id}/episodes`, 8000);
+    const imgs = (eps || []).map(e => e.image?.original || e.image?.medium).filter(Boolean);
+    return imgs.length ? pickOne(imgs) : '';
+  }
+  async function wikidataCast(q, type, yr) {
+    const W = 'https://www.wikidata.org/w/api.php?format=json&origin=*';
+    const s = await getJSON(`${W}&action=wbsearchentities&type=item&limit=12&language=en&uselang=en&search=${encodeURIComponent(q)}`);
+    const re = type === 'tv' ? /series|serial|sitcom|soap|telenovela|programme|dizi/i : /\bfilm\b|movie/i;
+    const cand = (s?.search || []).filter(x => re.test(x.description || ''));
+    const hit = (yr && cand.find(x => (x.description || '').includes(String(yr)))) || cand[0];
+    if (!hit) return '';
+    const e = await getJSON(`${W}&action=wbgetentities&props=claims&ids=${hit.id}`);
+    const cast = (e?.entities?.[hit.id]?.claims?.P161 || []).map(c => c.mainsnak?.datavalue?.value?.id).filter(Boolean).slice(0, 8);
+    if (!cast.length) return '';
+    const pe = await getJSON(`${W}&action=wbgetentities&props=claims&ids=${cast.join('|')}`);
+    const files = cast.map(id => pe?.entities?.[id]?.claims?.P18?.[0]?.mainsnak?.datavalue?.value).filter(Boolean).slice(0, 3);
+    return files.length ? `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(pickOne(files))}?width=960` : '';
   }
   async function findScene(it) {
     if (sceneCache[it.id]) return sceneCache[it.id];
-    const m = it.m || {}, type = m.t || 'tv', q = m.q || it.a[0], yr = m.yr || parseInt(String(it.y).match(/\d{4}/)?.[0], 10) || 0;
+    const m = it.m || {}, type = m.t || 'tv', q = m.q || it.al?.find(a => /[a-z]/i.test(a) && it.cat === 'yabanci') || it.a[0], yr = m.yr || parseInt(String(it.y).match(/\d{4}/)?.[0], 10) || 0;
     const key = tmdbKey();
     let url = key ? await tmdbScene(key, type, q, yr) : '';
-    if (!url && type === 'tv') url = await tvmazeScene(q);
+    if (!url && type === 'tv') url = await tvmazeStill(q);
+    if (!url) url = await wikidataCast(q, type, yr);
     if (url) sceneCache[it.id] = url;
     return url;
   }
@@ -14257,7 +14500,7 @@ window.__launchGate = (() => {
       try { await prepareScenes(); } finally { starting = false; unbusy(); }
     }
     H.gid = (H.gid || 0) + 1;
-    H.total = H.order.length; H.round = 0; H.best = null; H.worst = null; H.final = null; H.geoBest = null; H.geoWorst = null; H.rxBest = null; H.spyStats = {}; H.spyBag = [];
+    H.total = H.order.length; H.round = 0; H.best = null; H.worst = null; H.final = null; H.geoBest = null; H.geoWorst = null; H.rxBest = null; H.jackpot = null; H.spyStats = {}; H.spyBag = [];
     H.players = H.players.filter(p => p.online);
     H.players.forEach(p => Object.assign(p, { score: 0, joker: true, wins: 0, hits: 0 }));
     resetExtras();
@@ -14437,7 +14680,7 @@ window.__launchGate = (() => {
     clearTimeout(H.timer);
     H.phase = 'final'; H.deadlineAt = 0;
     const victim = H.players.slice().sort((a, b) => (b.bannedN || 0) - (a.bannedN || 0))[0];
-    H.final = { best: H.best, worst: H.worst, fast: H.fast, geoBest: H.geoBest, geoWorst: H.geoWorst, rxBest: H.rxBest, spy: H.spyStats, streak: H.maxStreak,
+    H.final = { best: H.best, worst: H.worst, fast: H.fast, geoBest: H.geoBest, geoWorst: H.geoWorst, rxBest: H.rxBest, jackpot: H.jackpot || null, spy: H.spyStats, streak: H.maxStreak,
       victim: victim && victim.bannedN ? { pid: victim.pid, n: victim.bannedN } : null };
     publish();
   }
@@ -14466,7 +14709,8 @@ window.__launchGate = (() => {
         ? { type: 'cmp', id: H.q.id, d: H.q.d, cat: H.q.cat, e: H.q.e, n: H.q.n, lo: H.range.lo, hi: H.range.hi,
           ref: { id: H.q.ref.id, e: H.q.ref.e, n: H.q.ref.n }, tgt: { id: H.q.tgt.id, e: H.q.tgt.e, n: H.q.tgt.n } }
         : { type: 'guess', id: H.q.id, e: H.q.e, n: H.q.n, p: H.q.p, cat: H.q.cat, lo: H.range.lo, hi: H.range.hi }) : null,
-      locked: H.phase === 'question' ? Object.keys(H.guesses).filter(k => H.guesses[k].locked) : [],
+      // Reflex Clash: wer schon fertig ist, bleibt bis zur Auflösung geheim (kein Häkchen, kein Ton)
+      locked: H.phase === 'question' && H.q?.type !== 'rx' ? Object.keys(H.guesses).filter(k => H.guesses[k].locked) : [],
       feed: H.q && H.q.type === 'quiz' && (H.phase === 'question' || H.phase === 'reveal') ? H.feed : null,
       reveal: H.phase === 'reveal' || H.phase === 'final' ? H.reveal : null,
       final: H.phase === 'final' ? H.final : null,
@@ -15027,13 +15271,18 @@ window.__launchGate = (() => {
   }
   // Serien und Filme: Szenenbild, Hinweise nach und nach, 4 Antworten
   const optLabel = (q, i) => (q.mc ? quizAnswer(QZBYID[q.opts[i]] || { a: ['?', '?'] }) : q.opts[i]);
-  function sceneHtml(img, small) {
-    return img ? `<div class="qscene ${small ? 'small' : ''}"><img src="${esc(img)}" alt="" draggable="false" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('fail')"></div>` : '';
+  // Jede Frage bekommt ein Bild: Szene bzw. Foto, sonst (oder wenn es nicht lädt) eine Filmstreifen-Grafik
+  function sceneHtml(img, small, cat) {
+    const ph = `<div class="qscene-ph"><span>${QCATS[cat]?.e || '🎬'}</span><i>🎬</i></div>`;
+    if (!img) return `<div class="qscene ph ${small ? 'small' : ''}">${ph}</div>`;
+    const commons = img.includes('commons.wikimedia.org');
+    return `<div class="qscene ${small ? 'small' : ''}"><img src="${esc(img)}" alt="" draggable="false" referrerpolicy="no-referrer"
+      onload="if (this.naturalHeight > this.naturalWidth * 0.9) this.parentNode.classList.add('portrait')" onerror="this.parentNode.classList.add('ph')">${ph}${commons ? '<small class="qscene-src">📷 Wikimedia Commons</small>' : ''}</div>`;
   }
   function mountScene(q, it, keep) {
     const opts = q.opts || [];
     app().innerHTML = questionShell(q, `
-            ${sceneHtml(q.img)}
+            ${sceneHtml(q.img, false, q.cat)}
             <div class="mopts" id="mOpts">${opts.map((o, i) => `<button class="mopt" data-i="${i}"><kbd>${i + 1}</kbd><span>${esc(optLabel(q, i))}</span></button>`).join('')}</div>
             <div class="qmedia clues scene-clues">${quizMedia(it)}</div>
             <div class="qfeed" id="qFeed"></div>
@@ -15413,7 +15662,7 @@ window.__launchGate = (() => {
           <div class="qmini">${QCATS[q.cat].e} ${esc(quizPrompt(it))}</div>
           ${timerHtml()}
         </div>
-        ${q.mc && R.img ? sceneHtml(R.img, true) : ''}
+        ${q.mc ? sceneHtml(R.img, true, q.cat) : ''}
         <div class="answer card">
           ${it.kind === 'music' ? `<div class="qmedia small">${R.art ? `<img class="mart" src="${esc(R.art)}" alt="" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;qimg emo&quot;>🎵</div>'">` : '<div class="qimg emo">🎵</div>'}</div>` : it.kind === 'clue' ? (it.photo ? `<div class="qmedia small"><a class="qthumb" href="${photoPage(it)}" target="_blank" rel="noopener"><img src="${photoUrl(it, 400)}" alt="" referrerpolicy="no-referrer" onerror="this.closest('.qmedia').innerHTML='<div class=&quot;qimg emo&quot;>${QCATS[it.cat].e}</div>'"><small>📷 Wikimedia Commons</small></a></div>` : `<div class="qmedia small"><div class="qimg emo">${QCATS[it.cat].e}</div></div>`) : `<div class="qmedia small">${quizMedia(it)}</div>`}
           <div>
@@ -15572,7 +15821,7 @@ window.__launchGate = (() => {
     ].join('');
     app().innerHTML = `
       <section class="screen final ${S.settings.app === 'geo' ? 'geofinal' : ''}">
-        <h1 class="final-title">${S.settings.teams && teamStand().length ? `${TEAMS[teamStand()[0].i].e} ${T('teamWins', { name: esc(teamName(teamStand()[0].i)) })}` : T('wins', { name: esc(ranked[0]?.name || '') })}</h1>
+        <h1 class="final-title">${S.final?.jackpot && pById(S.final.jackpot.pid) ? `🎯 ${T('rxJackWin', { name: esc(pById(S.final.jackpot.pid).name) })}` : S.settings.teams && teamStand().length ? `${TEAMS[teamStand()[0].i].e} ${T('teamWins', { name: esc(teamName(teamStand()[0].i)) })}` : T('wins', { name: esc(ranked[0]?.name || '') })}</h1>
         <div class="podium">${podium}</div>
         ${S.settings.teams ? `<div class="card teamfinal"><h3>${T('teamsTitle')}</h3>${teamStand().map((t, k) => `
           <div class="tfrow" style="--tc:${TEAMS[t.i].c}"><span class="rk">${k + 1}.</span><span class="te">${TEAMS[t.i].e}</span><b>${esc(teamName(t.i))}</b>
@@ -15969,7 +16218,8 @@ window.__launchGate = (() => {
     const res = +d.res;
     if (!isFinite(res) || res < 0) return;
     H.guesses[pid] = { res, fail: !!d.fail, locked: true, t: Date.now() };
-    publish(); checkAllLocked();
+    // Nicht veröffentlichen: sonst sähen und hörten die anderen, wann jemand gestoppt hat, und könnten sich danach richten
+    checkAllLocked();
   }
   function endRxRound() {
     const before = rankOf(H.players), s = rxSetup(H.q.g, H.q.seed), res = [];
@@ -15987,14 +16237,35 @@ window.__launchGate = (() => {
       if (r.pts >= 900) p.hits++;
       if (r.pts > 0) { H.rxBest = H.rxBest || {}; const b = H.rxBest[H.q.g]; if (!b || r.pts > b.pts) H.rxBest[H.q.g] = { pid: r.pid, pts: r.pts, res: r.res, g: H.q.g, target: s.target }; }
     }
+    // Jackpot im Blind-Stopp: genau auf die Hundertstel getroffen (z. B. 10,00) gewinnt sofort das ganze Spiel
+    const jack = H.q.g === 'stop' ? rxJackpot(res, s.target) : null;
     const after = rankOf(H.players);
     for (const r of res) { r.total = findP(r.pid).score; r.move = before[r.pid] - after[r.pid]; }
     res.sort((x, y) => y.pts - x.pts);
-    H.reveal = { g: H.q.g, seed: H.q.seed, res };
+    H.reveal = { g: H.q.g, seed: H.q.seed, res, jackpot: jack ? jack.pid : null };
+    if (jack) { H.total = H.round; H.jackpot = { pid: jack.pid, res: jack.res }; } // nach dieser Auflösung direkt zum Endstand
     H.phase = 'reveal';
     H.deadlineAt = Date.now() + REVEAL_MS;
     H.timer = setTimeout(advance, REVEAL_MS);
     publish();
+  }
+
+  function rxJackpot(res, target) {
+    const exact = res.filter(r => r.res != null && !r.fail && Math.round(r.res * 100) === Math.round(target * 100));
+    if (!exact.length) return null;
+    exact.sort((a, b) => (H.guesses[a.pid]?.t || 0) - (H.guesses[b.pid]?.t || 0)); // gleichzeitig genau: wer zuerst gestoppt hat
+    const jr = exact[0], p = findP(jr.pid);
+    // So viele Punkte dazu, dass er sicher vorne liegt (im Teammodus auch sein Team)
+    const others = H.players.filter(x => x !== p);
+    let bonus = Math.max(0, Math.max(0, ...others.map(x => x.score)) - p.score) + 1000;
+    if (H.settings.teams && p.team != null) {
+      const avg = t => { const m = H.players.filter(x => x.team === t); return m.length ? m.reduce((a, x) => a + x.score, 0) / m.length : 0; };
+      const mine = H.players.filter(x => x.team === p.team), otherTeams = [...new Set(H.players.map(x => x.team).filter(t => t != null && t !== p.team))];
+      const need = Math.max(0, ...otherTeams.map(avg)) + 1000;
+      bonus = Math.max(bonus, Math.ceil(need * mine.length - mine.reduce((a, x) => a + x.score, 0)));
+    }
+    p.score += bonus; jr.pts += bonus; jr.jackpot = true; p.wins++;
+    return jr;
   }
 
   // ---------- Client ----------
@@ -16034,7 +16305,9 @@ window.__launchGate = (() => {
     if (!G.rx || G.rx.state === 'done') return;
     G.rx.state = 'done'; G.rx.res = res; G.rx.fail = !!fail; G.locked = true;
     send({ t: 'guess', res, fail: !!fail });
-    Sound.lock(); rxRender();
+    // Blind-Stopp lautlos: am selben Tisch würden die anderen den Ton hören und mitdrücken
+    if (S?.q?.g !== 'stop') Sound.lock();
+    rxRender();
   }
   function rxLoop() {
     const R = G.rx, a = $('#rxArena');
@@ -16090,7 +16363,10 @@ window.__launchGate = (() => {
       return;
     }
     if (R.state === 'done') {
-      a.innerHTML = `<div class="rxprep"><div class="rxe">${R.fail ? '😬' : '✅'}</div><h2>${esc(rxFmt(g, R.res, s, R.fail))}</h2><p>${T('rxWait')}</p></div>`;
+      // Blind-Stopp: auch das eigene Ergebnis bleibt verdeckt, alle sehen ihre Zeiten erst gemeinsam in der Auflösung
+      a.innerHTML = g === 'stop'
+        ? `<div class="rxprep"><div class="rxe">🤫</div><h2>${T('rxStopSecret')}</h2><p>${T('rxStopSecretSub')}</p></div>`
+        : `<div class="rxprep"><div class="rxe">${R.fail ? '😬' : '✅'}</div><h2>${esc(rxFmt(g, R.res, s, R.fail))}</h2><p>${T('rxWait')}</p></div>`;
       return;
     }
     if (g === 'stop') {
@@ -16155,6 +16431,7 @@ window.__launchGate = (() => {
     app().innerHTML = `
       <section class="screen reveal rxrev">
         <div class="gamebar"><div class="pill">${T('round')} <b>${S.round}</b> / ${S.total}</div><div class="qmini">${RX[R.g].e} ${esc(rxName(R.g))}</div>${timerHtml()}</div>
+        ${R.jackpot ? `<div class="card rxjack"><div class="rj-e">🎯</div><div><b>${T('rxJackTitle')}</b><span>${T('rxJackText', { name: esc(pById(R.jackpot)?.name || '?'), t: esc(rxFmt('stop', R.res.find(r => r.pid === R.jackpot)?.res, s).split(' (')[0]) })}</span></div></div>` : ''}
         ${viz}
         ${teamStrip()}
         <div class="card results">
@@ -16164,11 +16441,104 @@ window.__launchGate = (() => {
         <div class="reveal-foot" id="revealFoot"></div>
       </section>`;
     renderRevealFooter();
+    if (R.jackpot) jackpotShow(R, s);
+  }
+
+  // ---------- Jackpot-Show: Slot-Maschine, Tröte, Feuerwerk, Münzregen, Krone, weinende Verlierer ----------
+  const jackShown = new Set();
+  function jackpotShow(R, s) {
+    const key = `${S.gid}|${S.round}`;
+    if (jackShown.has(key)) return;
+    jackShown.add(key);
+    const win = pById(R.jackpot); if (!win) return;
+    const time = rxFmt('stop', R.res.find(r => r.pid === R.jackpot)?.res, s).split(' (')[0].replace(/\s*s$/, '');
+    const losers = S.players.filter(p => p.pid !== R.jackpot);
+    const lines = T('rxJackLines');
+    const line = lines[Math.floor(Math.random() * lines.length)].replace('{name}', esc(win.name));
+    const reel = ch => /\d/.test(ch)
+      ? `<div class="jk-reel" data-d="${ch}"><div class="jk-strip">${'0123456789'.repeat(4).split('').map(n => `<i>${n}</i>`).join('')}</div></div>`
+      : `<div class="jk-sep">${esc(ch)}</div>`;
+    const ov = document.createElement('div');
+    ov.className = 'jackshow';
+    ov.innerHTML = `
+      <canvas class="jk-fw"></canvas>
+      <div class="jk-beams"><i></i><i></i><i></i></div>
+      <div class="jk-coins"></div>
+      <div class="jk-stage">
+        <div class="jk-machine"><div class="jk-lights"></div><div class="jk-reels">${[...time].map(reel).join('')}<div class="jk-sep s">s</div></div></div>
+        <div class="jk-title">JACKPOT!</div>
+        <div class="jk-hero" style="--pc:${win.color}"><span class="jk-crown">👑</span><span class="jk-av">${win.avatar}</span></div>
+        <div class="jk-name">${esc(win.name)}</div>
+        <div class="jk-sub">${T('rxJackShowSub', { t: time })}</div>
+        <div class="jk-line">${line}</div>
+        <div class="jk-losers">${losers.map((p, i) => `<span style="animation-delay:${3.6 + i * 0.15}s">${p.avatar}<b>${['😭', '😱', '🤯', '😩', '🥲'][i % 5]}</b></span>`).join('')}</div>
+        <button class="btn primary jk-close">${T('rxJackClose')}</button>
+      </div>`;
+    document.body.appendChild(ov);
+    const close = () => { if (!ov.isConnected) return; ov.classList.add('out'); stopFw(); setTimeout(() => ov.remove(), 600); };
+    ov.querySelector('.jk-close').onclick = close;
+    ov.addEventListener('click', e => { if (ov.classList.contains('landed') && !e.target.closest('.jk-close')) close(); });
+    // 1) Trommelwirbel, während die Walzen drehen
+    for (let i = 0; i < 22; i++) Sound.noise(0.05, 0.05 + i * 0.004, i * 0.1, 'bandpass', 180, 120);
+    // 2) Walzen halten nacheinander an
+    const reels = [...ov.querySelectorAll('.jk-reel')];
+    reels.forEach((r, i) => setTimeout(() => {
+      const d = +r.dataset.d, strip = r.querySelector('.jk-strip');
+      strip.style.animation = 'none';
+      strip.style.transform = `translateY(calc(-${30 + d} * var(--rh)))`;
+      r.classList.add('stop');
+      Sound.beep(880 + i * 120, 0.12, 'square', 0.08);
+    }, 1500 + i * 420));
+    // 3) Knall: Blitz, Tröte, Fanfare, Feuerwerk, Münzen
+    const boom = 1500 + reels.length * 420 + 250;
+    setTimeout(() => {
+      ov.classList.add('landed');
+      [[233, 466], [277, 554], [311, 622]].forEach(([a, b], i) => { Sound.sweep(a, b, 0.5, 'sawtooth', 0.09, i * 0.04, 6); });
+      Sound.win(); confetti();
+      startFw(); coinRain();
+    }, boom);
+    const auto = setTimeout(close, boom + 9000);
+    ov.addEventListener('remove', () => clearTimeout(auto));
+
+    // Feuerwerk auf Canvas
+    let raf = 0, rockets = [], sparks = [];
+    const cv = ov.querySelector('.jk-fw'), ctx = cv.getContext('2d'), dpr = devicePixelRatio || 1;
+    const size = () => { cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; };
+    size();
+    const cols = ['#ffd43b', '#ff3d7f', '#34d3ff', '#8b5cff', '#3ddc97', '#ffffff', '#ff9f1c'];
+    function launch() {
+      rockets.push({ x: (0.15 + Math.random() * 0.7) * cv.width, y: cv.height, vx: (Math.random() - 0.5) * 2 * dpr, vy: -(11 + Math.random() * 5) * dpr, c: cols[Math.floor(Math.random() * cols.length)] });
+    }
+    function explode(r) {
+      const n = 70 + Math.floor(Math.random() * 40), heart = Math.random() < 0.25;
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2, sp = (2 + Math.random() * 4) * dpr;
+        const vx = heart ? 16 * Math.sin(a) ** 3 * 0.32 * dpr : Math.cos(a) * sp, vy = heart ? -(13 * Math.cos(a) - 5 * Math.cos(2 * a) - 2 * Math.cos(3 * a) - Math.cos(4 * a)) * 0.32 * dpr : Math.sin(a) * sp;
+        sparks.push({ x: r.x, y: r.y, vx, vy, life: 1, c: Math.random() < 0.2 ? '#fff' : r.c });
+      }
+      Sound.noise(0.35, 0.12, 0, 'lowpass', 600, 120);
+    }
+    function frame() {
+      ctx.globalCompositeOperation = 'destination-out'; ctx.fillStyle = 'rgba(0,0,0,0.22)'; ctx.fillRect(0, 0, cv.width, cv.height);
+      ctx.globalCompositeOperation = 'lighter';
+      if (Math.random() < 0.06) launch();
+      rockets = rockets.filter(r => { r.x += r.vx; r.y += r.vy; r.vy += 0.18 * dpr; ctx.fillStyle = r.c; ctx.beginPath(); ctx.arc(r.x, r.y, 3 * dpr, 0, 6.28); ctx.fill(); if (r.vy >= -1 * dpr) { explode(r); return false; } return true; });
+      sparks = sparks.filter(p => { p.x += p.vx; p.y += p.vy; p.vy += 0.06 * dpr; p.vx *= 0.985; p.life -= 0.012; ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, 2.2 * dpr, 0, 6.28); ctx.fill(); return p.life > 0; });
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(frame);
+    }
+    function startFw() { for (let i = 0; i < 4; i++) setTimeout(launch, i * 180); raf = requestAnimationFrame(frame); }
+    function stopFw() { cancelAnimationFrame(raf); }
+    function coinRain() {
+      const box = ov.querySelector('.jk-coins');
+      box.innerHTML = Array.from({ length: 36 }, (_, i) => `<i style="left:${Math.random() * 100}%;animation-delay:${(Math.random() * 2.5).toFixed(2)}s;animation-duration:${(2.2 + Math.random() * 2).toFixed(2)}s;font-size:${18 + Math.floor(Math.random() * 22)}px">${['🪙', '💰', '⭐', '🎉', '💎'][i % 5]}</i>`).join('');
+    }
   }
   function rxAwards(F, award, mostWins) {
     const B = F.rxBest || {};
     const pick = ['light', 'stop', 'aim', 'mash', 'stroop', 'odd', 'math'].filter(g => B[g]).slice(0, 4);
-    return [...pick.map(g => award(RX[g].e, T('rxAward')[g] || rxName(g), B[g], esc(rxFmt(g, B[g].res, { target: B[g].target })))),
+    const jp = F.jackpot ? award('🎯', T('rxJackAward'), F.jackpot, T('rxJackAwardX', { t: esc(rxFmt('stop', F.jackpot.res, { target: Math.round(F.jackpot.res) }).split(' (')[0]) })) : '';
+    return jp + [...pick.map(g => award(RX[g].e, T('rxAward')[g] || rxName(g), B[g], esc(rxFmt(g, B[g].res, { target: B[g].target })))),
       mostWins && mostWins.wins ? award('👑', T('king'), { pid: mostWins.pid }, T('kingText', { n: mostWins.wins })) : ''].join('');
   }
 
@@ -16181,7 +16551,7 @@ window.__launchGate = (() => {
   // =====================================================================
   const SPYW = window.SPYW || {};
   const SPYCATS = Object.assign({ all: { e: '🎲' } }, Object.fromEntries(Object.entries(SPYW).map(([k, v]) => [k, { e: v.e }])));
-  const SPY_ROLES_MS = 12000, SPY_VOTE_MS = 45000, SPY_LAST_MS = 25000, SPY_OPTS = 12, SPY_MIN = 3;
+  const SPY_ROLES_MS = 12000, SPY_VOTE_MS = 45000, SPY_LAST_MS = 30000, SPY_MIN = 3;
   const SPY_PTS = { steal: 1200, escape: 1000, tie: 1000, comeback: 700, agents: 500, vote: 250 };
   const spyCatName = k => (T('spyCats') || {})[k] || k;
   const spyWord = (cat, i) => { const w = SPYW[cat]?.w[i]; return w ? (window.I18N.lang === 'tr' ? w[1] : w[0]) : '?'; };
@@ -16216,9 +16586,8 @@ window.__launchGate = (() => {
     const spy = H.spyBag.shift();
     const order = shuffle(on.slice());
     if (order[0] === spy && order.length > 1) order.push(order.shift()); // der Spion fängt nie an
-    const others = shuffle(SPYW[spec.cat].w.map((_, k) => k).filter(k => k !== spec.i)).slice(0, SPY_OPTS - 1);
     H.q = { type: 'spy', id: `spy-${H.gid || 0}-${H.round}`, cat: spec.cat, w: spec.i, spy, order, step: 'roles', turn: 0, pass: 1,
-      clues: [], votes: {}, ready: [], opts: shuffle([spec.i, ...others]), accused: null, guess: null, double: false };
+      clues: [], votes: {}, ready: [], accused: null, guess: null, guessOk: false, double: false };
     H.used.add(`spyw-${spec.cat}-${spec.i}`);
     H.range = null; H.banned = {}; H.guesses = {}; H.reveal = null; H.phase = 'question';
     spyStep('roles', SPY_ROLES_MS + INTRO_MS);
@@ -16236,7 +16605,11 @@ window.__launchGate = (() => {
     for (const p of H.players) {
       if (only && p.pid !== only) continue;
       const isSpy = p.pid === q.spy, inRound = q.order.includes(p.pid);
-      spyReply(p.pid, { t: 'spyrole', gid: H.gid || 0, r: H.round, spy: isSpy, cat: q.cat, w: inRound && !isSpy ? q.w : null, watch: !inRound });
+      // Der Spion bekommt weder Wort noch Kategorie, nur einen einzigen vagen Hinweis
+      const hint = SPYW[q.cat].w[q.w][3] || ['?', '?'];
+      spyReply(p.pid, isSpy
+        ? { t: 'spyrole', gid: H.gid || 0, r: H.round, spy: true, hint, watch: !inRound }
+        : { t: 'spyrole', gid: H.gid || 0, r: H.round, spy: false, cat: q.cat, w: inRound ? q.w : null, watch: !inRound });
     }
   }
   const spyReply = (pid, msg) => sendTo(pid, msg);
@@ -16290,11 +16663,13 @@ window.__launchGate = (() => {
       return publish();
     }
     if (d.a === 'guess' && pid === q.spy && q.guess == null && ['clue', 'vote', 'last'].includes(q.step)) {
-      const i = Math.floor(+d.i);
-      if (!q.opts.includes(i)) return;
-      q.guess = i;
-      if (q.step === 'last') return endSpyRound(i === q.w ? 'comeback' : 'caught');
-      return endSpyRound(i === q.w ? 'steal' : 'blunder');
+      // Der Spion tippt das Wort selbst; kleine Tippfehler zählen, andere Wörter nicht
+      const txt = String(d.txt || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+      if (!txt) return;
+      const g = qnorm(txt), ok = spyForms(q.cat, q.w).some(f => f === g || (f.length >= 5 && lev(f, g) <= 1));
+      q.guess = txt; q.guessOk = ok;
+      if (q.step === 'last') return endSpyRound(ok ? 'comeback' : 'caught');
+      return endSpyRound(ok ? 'steal' : 'blunder');
     }
   }
   function spyTally() {
@@ -16329,14 +16704,15 @@ window.__launchGate = (() => {
     const after = rankOf(H.players);
     for (const r of res) { r.total = findP(r.pid).score; r.move = before[r.pid] - after[r.pid]; }
     res.sort((a, b) => b.pts - a.pts || b.total - a.total);
-    H.reveal = { outcome, spyWins, spy: q.spy, cat: q.cat, w: q.w, guess: q.guess, accused: q.accused, clues: q.clues, order: q.order, res };
+    H.reveal = { outcome, spyWins, spy: q.spy, cat: q.cat, w: q.w, guess: q.guess, guessOk: q.guessOk, accused: q.accused, clues: q.clues, order: q.order, res };
     H.phase = 'reveal'; H.ttot = 0;
     H.deadlineAt = Date.now() + REVEAL_MS;
     H.timer = setTimeout(advance, REVEAL_MS);
     publish();
   }
-  const spyPublic = q => ({ type: 'spy', id: q.id, cat: q.cat, step: q.step, order: q.order, turn: q.turn, pass: q.pass, passes: H.settings.spypass || 1,
-    clues: q.clues, voted: Object.keys(q.votes), ready: q.ready, opts: q.step === 'roles' ? [] : q.opts, accused: q.step === 'last' ? q.accused : null });
+  // Öffentlich ohne Wort und ohne Kategorie, damit der Spion auch im Zustand nichts findet
+  const spyPublic = q => ({ type: 'spy', id: q.id, step: q.step, order: q.order, turn: q.turn, pass: q.pass, passes: H.settings.spypass || 1,
+    clues: q.clues, voted: Object.keys(q.votes), ready: q.ready, accused: q.step === 'last' ? q.accused : null });
 
   // ---------- Client ----------
   let spyRole = null;
@@ -16347,7 +16723,7 @@ window.__launchGate = (() => {
     G.spySent = false; const inp = $('#spyIn'); if (inp) { inp.disabled = false; inp.focus(); shake(inp); } const b = $('#spySend'); if (b) b.disabled = false;
   }
   function mountSpy(q, keep) {
-    if (!keep) Object.assign(G, { peek: false, spyOpen: false, spyPick: null, spySent: false, draft: '' });
+    if (!keep) Object.assign(G, { peek: false, spyOpen: false, spySent: false, draft: '', guessDraft: '' });
     app().innerHTML = `
       <section class="screen spy">
         <div class="gamebar">
@@ -16379,7 +16755,7 @@ window.__launchGate = (() => {
     if (force || sig.card !== cardSig) { sig.card = cardSig; $('#spyCard').innerHTML = spyCardHtml(role); $('#spyCard').onclick = () => { if (role && !role.watch) { G.peek = !G.peek; Sound.pop(); spyRender(); } }; }
     const roomSig = JSON.stringify([q.order, q.turn, q.step, q.clues, q.voted, q.ready, q.accused, S.players.map(p => p.online)]);
     if (force || sig.room !== roomSig) { sig.room = roomSig; $('#spyRoom').innerHTML = spyRoomHtml(q); }
-    const actSig = JSON.stringify([q.step, q.turn, q.pass, q.voted.includes(me.pid), q.ready.includes(me.pid), q.voted.length, q.ready.length, q.accused, role, G.spyOpen, G.spyPick, window.I18N.lang]);
+    const actSig = JSON.stringify([q.step, q.turn, q.pass, q.voted.includes(me.pid), q.ready.includes(me.pid), q.voted.length, q.ready.length, q.accused, role, G.spyOpen, window.I18N.lang]);
     if (force || sig.act !== actSig) {
       const was = sig.act ? JSON.parse(sig.act) : null;
       sig.act = actSig; spyActRender(q, role);
@@ -16393,9 +16769,9 @@ window.__launchGate = (() => {
     if (!role) return `<div class="sc-face wait"><div class="sc-e">📁</div><b>${T('spyWaitRole')}</b></div>`;
     if (role.watch) return `<div class="sc-face wait"><div class="sc-e">👀</div><b>${T('spyWatch')}</b></div>`;
     if (!G.peek) return `<div class="sc-face cover"><div class="sc-stamp">${T('topSecret')}</div><div class="sc-e">🗂️</div><b>${T('spyCover')}</b><small>${T('spyTapOpen')}</small></div>`;
-    const cat = `<span class="sc-cat">${SPYW[role.cat]?.e || ''} ${esc(spyCatName(role.cat))}</span>`;
+    const cat = role.spy ? '' : `<span class="sc-cat">${SPYW[role.cat]?.e || ''} ${esc(spyCatName(role.cat))}</span>`;
     return role.spy
-      ? `<div class="sc-face open spy"><div class="sc-e">🕵️</div><small class="sc-k">${T('spyRoleK')}</small><b class="sc-w">${T('spyYouAre')}</b>${cat}<p>${T('spySpyTip')}</p><small class="sc-hide">${T('spyTapHide')}</small></div>`
+      ? `<div class="sc-face open spy"><div class="sc-e">🕵️</div><small class="sc-k">${T('spyRoleK')}</small><b class="sc-w">${T('spyYouAre')}</b><span class="sc-hint">${T('spyHintIs')} <b>„${esc(role.hint[LI()])}“</b></span><p>${T('spySpyTip')}</p><small class="sc-hide">${T('spyTapHide')}</small></div>`
       : `<div class="sc-face open agent"><div class="sc-e">🔐</div><small class="sc-k">${T('spyYourWord')}</small><b class="sc-w">${esc(spyWord(role.cat, role.w))}</b>${cat}<p>${T('spyAgentTip')}</p><small class="sc-hide">${T('spyTapHide')}</small></div>`;
   }
   function spyRoomHtml(q) {
@@ -16410,12 +16786,15 @@ window.__launchGate = (() => {
         <div class="sr-st">${st}</div></div>`;
     }).join('');
   }
-  function spyOptsHtml(q, role) {
-    return `<div class="spyopts">${q.opts.map(i => `<button class="spyopt ${G.spyPick === i ? 'sel' : ''}" data-opt="${i}">${esc(spyWord(role.cat, i))}</button>`).join('')}</div>
-      ${G.spyPick != null ? `<div class="spyconfirm"><button class="btn primary" id="spyTake">${T('spyTake', { w: esc(spyWord(role.cat, G.spyPick)) })}</button></div>` : ''}`;
-  }
+  // Der Spion tippt sein Wort frei ein, keine Auswahl
+  const spyGuessForm = () => `<form class="qinput spyguessform" id="spyGuessForm" autocomplete="off"><input id="spyGuessIn" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${T('spyGuessPh')}" value="${esc(G.guessDraft || '')}"><button class="btn primary" id="spyTake">${T('spyTake')}</button></form>`;
   function spyActRender(q, role) {
     const a = $('#spyAct'), inRound = q.order.includes(me.pid), isSpy = !!role?.spy;
+    // Beim Neuzeichnen Fokus und Cursor behalten (sonst springt beim Tippen die Tastatur weg)
+    const ae = document.activeElement, focusId = ae && a.contains(ae) ? ae.id : '', caret = focusId ? ae.selectionStart : null;
+    // Neuer Zug: alte Sende-Sperre aufheben (sonst ließ sich der Hinweis in der 2. Runde nicht senden)
+    const turnKey = `${S.round}|${q.step}|${q.pass}|${q.turn}`;
+    if (G.turnKey !== turnKey) { G.turnKey = turnKey; G.spySent = false; G.draft = ''; clearTimeout(G.spySentT); }
     const name = pid => esc(pById(pid)?.name || '?');
     let h = '';
     if (!inRound) h = `<p class="sa-wait">👀 ${T('spyWatch')}</p>`;
@@ -16433,32 +16812,44 @@ window.__launchGate = (() => {
       h = mine ? `<p class="sa-wait">🗳️ ${T('spyVotedWait', { n: q.voted.length, m: q.order.length })}</p>`
         : `<b class="sa-q">🗳️ ${T('spyVoteQ')}</b><div class="spyvote">${q.order.filter(pid => pid !== me.pid).map(pid => { const p = pById(pid); return p ? `<button class="spyvbtn" data-vote="${pid}" style="--pc:${p.color}"><span>${p.avatar}</span>${esc(p.name)}</button>` : ''; }).join('')}</div>`;
     } else if (q.step === 'last') {
-      h = isSpy ? `<b class="sa-q red">🚨 ${T('spyLastSpy')}</b>${spyOptsHtml(q, role)}` : `<p class="sa-last">🚨 ${T('spyLastOther', { name: name(q.accused) })}</p>`;
+      h = isSpy ? `<b class="sa-q red">🚨 ${T('spyLastSpy')}</b>${spyGuessForm()}` : `<p class="sa-last">🚨 ${T('spyLastOther', { name: name(q.accused) })}</p>`;
     }
     // Der Spion darf während Hinweisen und Abstimmung jederzeit raten
     if (isSpy && inRound && (q.step === 'clue' || q.step === 'vote')) {
-      h += G.spyOpen ? `<div class="spyguess"><b>🎯 ${T('spyGuessWarn')}</b>${spyOptsHtml(q, role)}<button class="btn ghost" id="spyCancel">${T('spyCancel')}</button></div>`
+      h += G.spyOpen ? `<div class="spyguess"><b>🎯 ${T('spyGuessWarn')}</b>${spyGuessForm()}<button class="btn ghost" id="spyCancel">${T('spyCancel')}</button></div>`
         : `<button class="btn spyknow" id="spyKnow">${T('spyKnow')}</button>`;
     }
     a.innerHTML = h;
     const inp = $('#spyIn');
     if (inp) {
       inp.oninput = () => { G.draft = inp.value; };
-      setTimeout(() => inp.focus(), 50);
+      if (!focusId && !G.spyOpen) setTimeout(() => { if (document.activeElement?.id !== 'spyGuessIn') inp.focus(); }, 50);
       $('#spyForm').onsubmit = e => {
         e.preventDefault();
         const txt = inp.value.trim(); if (!txt || G.spySent) return;
         G.spySent = true; inp.disabled = true; $('#spySend').disabled = true;
-        send({ t: 'guess', a: 'clue', txt }); G.draft = '';
-        setTimeout(() => { if (G.spySent && $('#spyIn')) { G.spySent = false; const i = $('#spyIn'); i.disabled = false; $('#spySend').disabled = false; } }, 3000);
+        send({ t: 'guess', a: 'clue', txt });
+        // Kommt keine Antwort (Verbindung gewackelt), nach 2,5 s wieder freigeben, Text bleibt stehen
+        clearTimeout(G.spySentT);
+        G.spySentT = setTimeout(() => { G.spySent = false; const i = $('#spyIn'), b = $('#spySend'); if (i) i.disabled = false; if (b) b.disabled = false; }, 2500);
       };
     }
+    if (focusId) { const el = document.getElementById(focusId); if (el && !el.disabled) { el.focus(); try { if (caret != null) el.setSelectionRange(caret, caret); } catch { /* ignore */ } } }
     const r = $('#spyReady'); if (r) r.onclick = () => { r.disabled = true; send({ t: 'guess', a: 'ready' }); Sound.pop(); };
     $$('[data-vote]').forEach(b => b.onclick = () => { send({ t: 'guess', a: 'vote', target: b.dataset.vote }); Sound.lock(); $$('[data-vote]').forEach(x => { x.disabled = true; }); b.classList.add('sel'); });
-    const k = $('#spyKnow'); if (k) k.onclick = () => { G.spyOpen = true; G.spyPick = null; Sound.pop(); spyRender(); };
-    const c = $('#spyCancel'); if (c) c.onclick = () => { G.spyOpen = false; G.spyPick = null; spyRender(); };
-    $$('[data-opt]').forEach(b => b.onclick = () => { G.spyPick = +b.dataset.opt; Sound.pop(); spyRender(); });
-    const tk = $('#spyTake'); if (tk) tk.onclick = () => { tk.disabled = true; send({ t: 'guess', a: 'guess', i: G.spyPick }); Sound.lock(); };
+    const k = $('#spyKnow'); if (k) k.onclick = () => { G.spyOpen = true; Sound.pop(); spyRender(); setTimeout(() => $('#spyGuessIn')?.focus(), 60); };
+    const c = $('#spyCancel'); if (c) c.onclick = () => { G.spyOpen = false; spyRender(); };
+    const gi = $('#spyGuessIn');
+    if (gi) {
+      gi.oninput = () => { G.guessDraft = gi.value; };
+      if (q.step === 'last') setTimeout(() => gi.focus(), 60);
+      $('#spyGuessForm').onsubmit = e => {
+        e.preventDefault();
+        const txt = gi.value.trim(); if (!txt) return;
+        gi.disabled = true; $('#spyTake').disabled = true;
+        send({ t: 'guess', a: 'guess', txt }); Sound.lock();
+      };
+    }
   }
 
   function renderSpyReveal() {
@@ -16483,7 +16874,7 @@ window.__launchGate = (() => {
           <h2>${title}</h2>
           <div class="so-row">
             <div class="so-box"><small>${T('spyWordWas')}</small><b class="so-word">${word}</b><span class="sc-cat">${SPYW[R.cat]?.e || ''} ${esc(spyCatName(R.cat))}</span></div>
-            <div class="so-box spy" style="--pc:${spy?.color || '#fff'}"><small>${T('spyWasSpy')}</small><b>${spy?.avatar || '🕵️'} ${name(R.spy)}</b>${R.guess != null ? `<span class="so-guess ${R.guess === R.w ? 'ok' : 'no'}">${T('spyGuessWas', { w: esc(spyWord(R.cat, R.guess)) })} ${R.guess === R.w ? '✓' : '✗'}</span>` : ''}</div>
+            <div class="so-box spy" style="--pc:${spy?.color || '#fff'}"><small>${T('spyWasSpy')}</small><b>${spy?.avatar || '🕵️'} ${name(R.spy)}</b>${R.guess != null ? `<span class="so-guess ${R.guessOk ? 'ok' : 'no'}">${T('spyGuessWas', { w: esc(R.guess) })} ${R.guessOk ? '✓' : '✗'}</span>` : ''}</div>
           </div>
         </div>
         <div class="spygrid rev">
