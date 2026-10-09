@@ -13005,11 +13005,23 @@ window.GEO_SPOTS = [
     for (const m of [geoMap, revMap]) { try { if (m) m.remove(); } catch { /* ignore */ } }
     geoMap = revMap = geoMarker = null;
   }
+  // Kartenkacheln: OpenStreetMap; fällt der Server aus, automatisch auf Esri ausweichen
+  const TILE_SRC = [
+    ['https://tile.openstreetmap.org/{z}/{x}/{y}.png', '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>-Mitwirkende'],
+    ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', 'Kacheln © Esri, HERE, Garmin, © OpenStreetMap-Mitwirkende'],
+  ];
+  let tileSrc = 0;
   function geoTiles(map) {
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      subdomains: 'abcd', maxZoom: 19, minZoom: 1,
-      attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>',
-    }).addTo(map);
+    const add = i => {
+      const [url, attribution] = TILE_SRC[i];
+      const layer = L.tileLayer(url, { maxZoom: 19, minZoom: 1, attribution, crossOrigin: false }).addTo(map);
+      let errs = 0;
+      layer.on('tileerror', () => {
+        if (++errs < 4 || i + 1 >= TILE_SRC.length || tileSrc > i) return;
+        tileSrc = i + 1; map.removeLayer(layer); add(tileSrc);
+      });
+    };
+    add(tileSrc);
   }
   const pinIcon = (color, label, me) => L.divIcon({ className: 'gpin' + (me ? ' me' : ''), html: `<div style="--pc:${color}"><span>${label}</span></div>`, iconSize: [36, 46], iconAnchor: [18, 44] });
   const goalIcon = () => L.divIcon({ className: 'gpin goal', html: '<div><span>🏁</span></div>', iconSize: [42, 52], iconAnchor: [21, 50] });
