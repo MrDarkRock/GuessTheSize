@@ -765,7 +765,7 @@ select option { background: var(--bg2); }
 /* Startseite */
 .home { display: flex; flex-direction: column; align-items: center; gap: 28px; padding-top: 3vh; }
 .hero { text-align: center; }
-.logo-big { font-family: var(--head); font-weight: 800; font-size: clamp(56px, 11vw, 128px); line-height: .9; letter-spacing: -.02em; display: flex; justify-content: center; gap: .18em; }
+.logo-big { font-family: var(--head); font-weight: 800; font-size: clamp(40px, 11.5vw, 128px); line-height: .9; letter-spacing: -.02em; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 .18em; max-width: 100%; }
 .logo-big .l1 { color: var(--text); }
 .logo-big .l2 { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; display: inline-block; transform-origin: left bottom; animation: grow 3.2s ease-in-out infinite; }
 @keyframes grow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08, 1.12); } }
@@ -1589,6 +1589,64 @@ body.spy-app .bg i:nth-child(3) { background: #08d9d6; opacity: .25; }
 [data-z="1"] .cl span { font-size: 10px; }
 [data-z="5"] .cl span, [data-z="6"] .cl span { font-size: 14px; }
 [data-z="7"] .cl, [data-z="8"] .cl, [data-z="9"] .cl, [data-z="10"] .cl, [data-z="11"] .cl, [data-z="12"] .cl, [data-z="13"] .cl, [data-z="14"] .cl, [data-z="15"] .cl, [data-z="16"] .cl, [data-z="17"] .cl, [data-z="18"] .cl, [data-z="19"] .cl { display: none; }
+
+/* ===== Feinschliff für Handy, Tablet und PC ===== */
+/* Spielleiste: nichts bricht um, Timer bleibt rund und rechts */
+.gamebar { flex-wrap: nowrap; min-width: 0; }
+.gamebar .pill { white-space: nowrap; flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.gamebar .timer { flex: 0 0 auto; margin-left: auto; }
+@media (max-width: 560px) {
+  .gamebar { gap: 6px; }
+  .gamebar .pill { padding: 7px 11px; font-size: 13px; }
+  /* Die Spielmarke steht schon im Logo oben links */
+  .gamebar .spybrand, .gamebar .rxbrand, .gamebar .geobrand { display: none; }
+}
+/* Geo-Karte im Vollbild auf dem Handy: deckend, nichts scheint durch */
+@media (max-width: 760px) {
+  .geomap.open { background: #0b0e24; }
+  .geomap.open .geomap-head { background: #0b0e24; border-bottom: 1px solid rgba(255, 255, 255, .1); }
+  .geomap.open .geolock:disabled { opacity: 1; filter: none; background: #2a2f52; color: #c9cbe6; }
+}
+.gmlink { display: inline-block; padding: 8px 0; }
+.reveal-foot .hint { white-space: nowrap; }
+
+/* Touch-Geräte (Tablets, Handys quer): kein Drüberfahren mit der Maus, also immer die große Vollbild-Karte zum Tippen */
+@media (hover: none) and (pointer: coarse) {
+  .geomap { display: none; }
+  .geomap.open { display: flex; position: fixed; inset: 0; width: auto; height: auto; border-radius: 0; opacity: 1; z-index: 60; background: #0b0e24; }
+  .geomap.open .geomap-head { padding: calc(8px + env(safe-area-inset-top)) 10px 8px 16px; font-size: 15px; background: #0b0e24; border-bottom: 1px solid rgba(255, 255, 255, .1); }
+  .geomap.open #geoClose { display: block; }
+  #geoPinMap { display: none; }
+  .geomap.open .geolock { padding: 16px calc(16px + env(safe-area-inset-bottom)); font-size: 17px; }
+  .geomap.open .geolock:disabled { opacity: 1; filter: none; background: #2a2f52; color: #c9cbe6; }
+  .geomap-open { display: block; position: absolute; right: 12px; bottom: 12px; z-index: 4; padding: 13px 18px; font-size: 16px; box-shadow: 0 10px 26px rgba(0, 0, 0, .5); }
+  .geomap-open.done { opacity: .6; }
+  .geolocked { top: auto; bottom: 74px; right: 12px; font-size: 13px; }
+}
+/* Bann-Leiste kompakt in einer Zeile: verdeckt so wenig wie möglich von Frage und Eingabe */
+.banbar { display: flex; align-items: center; gap: 12px; padding: 8px 12px 10px; width: auto; max-width: min(760px, calc(100vw - 20px)); }
+.banhead { flex: 0 0 auto; display: grid; gap: 0; margin: 0; font-size: 13px; line-height: 1.25; }
+.banhead em { margin: 0; }
+.banchips { flex: 1 1 auto; min-width: 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 2px; }
+.banchips::-webkit-scrollbar { display: none; }
+.banchip { flex: 0 0 auto; white-space: nowrap; }
+@media (max-width: 560px) { .banbar { gap: 8px; padding: 7px 10px 9px; } .banhead { font-size: 12px; } .banchip { padding: 7px 10px; font-size: 14px; } }
+/* Niedrige Bildschirme (Handy quer): Leisten unten kleiner */
+@media (max-height: 520px) {
+  .banbar { bottom: calc(60px + env(safe-area-inset-bottom)); }
+  .reactbar { bottom: 6px; }
+  .reactbar button { width: 34px; height: 34px; font-size: 19px; }
+  .geostage { height: max(300px, calc(100dvh - 150px)); }
+}
+/* Such den Unterschied: Raster passt immer komplett auf den Bildschirm (auch Handy quer) */
+.rxgrid { width: min(520px, 100%, calc(100dvh - 230px)); min-width: 220px; }
+@media (max-height: 560px) { .rxgrid { width: min(520px, 100%, calc(100dvh - 130px)); min-width: 0; } .rxgrid button { padding: 0; min-width: 0; min-height: 0; font-size: clamp(12px, calc((100dvh - 130px) / var(--n) / 1.7), 34px); } .rxarena { min-height: calc(100dvh - 16px); } }
+/* Spielauswahl in der Lobby: auf schmalen Handys zwei Reihen statt abgeschnitten */
+@media (max-width: 560px) {
+  .seg.apps-seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+  .seg.apps-seg button { white-space: nowrap; }
+}
+.seg { max-width: 100%; flex-wrap: wrap; }
 </style>
 </head>
 <body>
@@ -13888,7 +13946,7 @@ window.__launchGate = (() => {
   const PREFIX = 'sizeclash-v1-';
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = '2f829e83e6';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = '58fa4068fd';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -15781,7 +15839,7 @@ window.__launchGate = (() => {
       r.double ? `<span class="tag dbl">⭐ ×2</span>` : '',
       r.streakBonus ? `<span class="tag fire">🔥 ${T('tagStreak', { n: r.streak, b: r.streakBonus })}</span>` : ''].join('');
   }
-  let banSig = '';
+  // Inhalt der Bann-Leiste hängt am Element selbst: jede neue Runde baut eine frische (leere) Leiste, die neu gefüllt werden muss
   function updateBanBar() {
     const bar = $('#banBar'); if (!bar || !S || S.phase !== 'question') return;
     const mine = myP();
@@ -15790,11 +15848,11 @@ window.__launchGate = (() => {
     const left = Math.ceil((BAN_MS - elapsed) / 1000);
     const targets = S.players.filter(p => p.online && p.pid !== me.pid && !S.banned?.[p.pid] && !(S.settings.teams && p.team === mine?.team));
     const show = S.settings.bans && S.settings.app === 'size' && mine && mine.bans > 0 && !S.banned?.[me.pid] && left > 0 && targets.length && !G.banSent;
-    if (!show) { bar.hidden = true; banSig = ''; return; }
+    if (!show) { bar.hidden = true; bar.dataset.sig = ''; return; }
     bar.hidden = false;
     const sig = mine.bans + '|' + targets.map(p => p.pid).join();
-    if (sig !== banSig) {
-      banSig = sig;
+    if (sig !== bar.dataset.sig) {
+      bar.dataset.sig = sig;
       bar.innerHTML = `<div class="banhead"><b>🚫 ${T('banTitle')}</b><span>${T('banLeft', { n: mine.bans })}</span><em id="banSec"></em></div>
         <div class="banchips">${targets.map(p => `<button class="banchip" data-ban="${esc(p.pid)}" style="--pc:${p.color}"><span>${p.avatar}</span>${esc(p.name)}</button>`).join('')}</div><i class="banprog" id="banProg"></i>`;
       $$('#banBar [data-ban]').forEach(b => b.onclick = () => {
@@ -16346,7 +16404,7 @@ window.__launchGate = (() => {
         </div>
         <div class="card georevmap"><div id="revMap"></div>
           <div class="geoplace"><span class="gflag">${ccFlag(s[4])}</span><div><div class="kicker">${T('geoWas')}</div><b>${esc(s[4] ? ccName(s[4]) : '?')}</b>
-            <a href="https://www.google.com/maps/search/?api=1&query=${R.lat},${R.lng}" target="_blank" rel="noopener">${T('geoOpenMaps')} ↗</a></div></div>
+            <a class="gmlink" href="https://www.google.com/maps/search/?api=1&query=${R.lat},${R.lng}" target="_blank" rel="noopener">${T('geoOpenMaps')} ↗</a></div></div>
         </div>
         ${teamStrip()}
         <div class="card results">
@@ -16550,7 +16608,11 @@ window.__launchGate = (() => {
     const t = rxNow(), g = S.q.g;
     if (R.state === 'prep') {
       const cd = $('#rxCd'); if (cd) { const n = Math.ceil(-t / 1000); cd.textContent = n > 0 ? n : '!'; if (n !== R.lastCd && n > 0 && n <= 3) { Sound.tick(); R.lastCd = n; } }
-      if (t >= 0) { R.state = 'play'; R.t0 = Date.now(); Sound.start(); rxRender(); }
+      if (t >= 0) {
+        R.state = 'play'; R.t0 = Date.now(); Sound.start(); rxRender();
+        // Niedrige Bildschirme (Handy quer): Spielfeld nach oben holen, damit nichts unter den Rand rutscht
+        if (innerHeight < 560) $('#rxArena')?.scrollIntoView({ block: 'start' });
+      }
       return;
     }
     if (R.state !== 'play') return;
@@ -17345,7 +17407,7 @@ window.__launchGate = (() => {
   }
 
   // Für automatisierte Tests
-  window.__sizeclash = { get state() { return S; }, get host() { return H; }, me };
+  window.__sizeclash = { get state() { return S; }, get host() { return H; }, me, advance: () => role === 'host' && advance() };
 
   // Bis zum Launch-Termin zeigt launch.js einen Countdown und startet das Spiel danach selbst
   (window.__launchGate || (f => f()))(init);
