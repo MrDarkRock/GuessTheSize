@@ -1518,8 +1518,14 @@ body.spy-app .bg i:nth-child(3) { background: #08d9d6; opacity: .25; }
 .qscene.ph .qscene-ph::before { top: 10px; } .qscene.ph .qscene-ph::after { bottom: 10px; }
 .qscene-ph span { font-size: clamp(64px, 12vw, 110px); filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .6)); animation: popin .6s cubic-bezier(.3, 1.6, .5, 1); }
 .qscene-ph i { position: absolute; right: 16px; bottom: 34px; font-style: normal; font-size: 30px; opacity: .6; }
-.qscene.portrait { background: radial-gradient(circle at 50% 30%, #2a2050, #0b0d22); }
-.qscene.portrait img { object-fit: contain; }
+.qscene-bg { display: none; }
+.qscene.poster .qscene-bg { display: block; position: absolute; inset: -40px; background: #0b0d22 center / cover no-repeat; filter: blur(34px) brightness(.42) saturate(1.3); transform: scale(1.15); }
+.qscene.poster img { position: relative; width: auto; max-width: 100%; height: 100%; margin: 0 auto; object-fit: contain; }
+/* Ausschnitt aus der Postermitte: oben (Namen) und unten (Titel, Credits) abgeschnitten und weich ausgeblendet */
+.qscene.poster.crop img { width: 74%; object-fit: cover; object-position: 50% 34%; -webkit-mask-image: linear-gradient(transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(transparent, #000 9%, #000 91%, transparent); }
+.qscene.poster.full img { box-shadow: 0 0 40px rgba(0, 0, 0, .6); }
+.qscene.poster.full.small { aspect-ratio: 4 / 3; max-width: 380px; }
+.qscene.ph .qscene-bg { display: none; }
 .qscene-src { position: absolute; right: 8px; bottom: 8px; z-index: 1; padding: 2px 8px; border-radius: 99px; background: rgba(0, 0, 0, .6); color: #fff; font-size: 11px; }
 .qscene.small { max-width: 560px; margin-bottom: 12px; }
 @keyframes sceneIn { from { opacity: 0; transform: scale(1.04); filter: blur(8px); } }
@@ -1785,7 +1791,7 @@ window.I18N = (() => {
       connecting: 'Verbinde mit Raum {code} …',
       roomNotFound: 'Raum {code} wurde nicht gefunden. Ist der Code richtig und der Host noch online?',
       connFail: 'Verbindung fehlgeschlagen. Prüfe deine Internetverbindung.',
-      timeout: 'Zeitüberschreitung beim Verbinden. Manche Netzwerke (Firmen-/Uni-WLAN) blockieren Peer-to-Peer. Versuch es nochmal oder über einen Handy-Hotspot.',
+      joinRetry: 'Der Host antwortet noch nicht, neuer Versuch … (Tipp an den Host: Spielseite im Vordergrund offen lassen)', timeout: 'Zeitüberschreitung beim Verbinden. Häufigste Ursache: Der Host ist mit mobilen Daten online (manche Mobilfunknetze blockieren direkte Verbindungen) oder in einem Firmen-/Uni-WLAN. Am besten erstellt jemand im normalen WLAN den Raum. Versuch es sonst nochmal.',
       joinFailTitle: 'Beitritt nicht möglich',
       kickedTitle: 'Entfernt', kickedText: 'Der Host hat dich aus dem Raum entfernt.',
       byeTitle: 'Spiel beendet', byeText: 'Der Host hat den Raum geschlossen.',
@@ -1837,11 +1843,11 @@ window.I18N = (() => {
       qprompt: { flaggen: 'Welches Land hat diese Flagge?', logos: 'Welche Marke ist das?', autos: 'Welche Automarke ist das?', fussball: 'Welcher Verein ist das?', diziler: 'Welche Serie oder welcher Film?', yabanci: 'Welche Serie oder welcher Film?', orte: 'Welche Sehenswürdigkeit ist das?', tuerkei: 'Welcher Ort in der Türkei ist das?', muzik_int: 'Welcher Song läuft?', muzik_tr: 'Welches Lied läuft?' },
       quizHint: 'Tippe die Antwort ein, auf Deutsch oder Türkisch. Kleine Tippfehler sind ok, Versuche unbegrenzt.',
       quizInput: 'Antwort eintippen …', quizSend: 'Raten', quizHintLbl: 'Tipp', thTime: 'Zeit',
-      quizFoundOther: '{who} hat es!', quizClose: '🔥 nah dran', chatTitle: '💬 Chat', quizCloseOther: 'ganz nah dran …', rejVersion: 'Du hast eine andere Spielversion als der Host. Bitte lade die Seite neu (ggf. Browser-Cache leeren) und tritt erneut bei.', noRounds: 'Für diese Auswahl gibt es keine Runden.',
+      quizFoundOther: '{who} hat es!', quizClose: '🔥 nah dran', chatTitle: '💬 Chat', quizCloseOther: 'ganz nah dran …', rejVersionHost: 'Der Host hat eine ältere Spielversion. Der Host muss die Seite neu laden und den Raum neu erstellen.', rejVersion: 'Du hast eine andere Spielversion als der Host. Bitte lade die Seite neu (ggf. Browser-Cache leeren) und tritt erneut bei.', noRounds: 'Für diese Auswahl gibt es keine Runden.',
       rxJackShowSub: 'auf die Hundertstel genau: {t} Sekunden!', rxJackClose: 'Weiter 🏆', rxJackLines: ['Hundertstel-genau. Der Rest kann nach Hause gehen. 🏠', 'Diese Präzision ist nicht von dieser Welt. 👽', 'Schweizer Uhrwerk? Nein, {name}! ⌚', 'Alle anderen gerade: 😐😐😐', 'Ab heute heißt die Stoppuhr {name}. ⏱️', 'Bitte Doping-Test machen. 🧪'],
       rxJackTitle: 'JACKPOT!', rxJackText: '{name} hat genau {t} gestoppt und gewinnt das ganze Spiel!', rxJackWin: '{name} gewinnt per Jackpot!', rxJackAward: 'Jackpot', rxJackAwardX: 'stoppte auf die Hundertstel genau: {t}',
-      sceneLoading: '🎬 Szenenbilder werden geladen …', sceneHint: 'Schau dir die Szene und die Hinweise an und tippe die richtige Antwort. Nur ein Versuch, je schneller desto mehr Punkte.',
-      tmdbLabel: 'Szenenbilder für Filme', tmdbOpt: '(optional, nur für dich als Host)', tmdbPh: 'TMDB-API-Schlüssel einfügen', tmdbOn: 'TMDB aktiv: Szenen für Serien und Filme', tmdbOff: 'TMDB-Schlüssel entfernt', tmdbHelp: 'Ohne Schlüssel gibt es Szenen nur für Serien (TVmaze). Mit einem kostenlosen Schlüssel von themoviedb.org auch für alle Filme.',
+      sceneLoading: '🎬 Poster werden geladen …', sceneHint: 'Schau dir das Poster und die Hinweise an und tippe die richtige Antwort. Nur ein Versuch, je schneller desto mehr Punkte.',
+      tmdbLabel: 'Poster ohne Schrift', tmdbOpt: '(optional, nur für dich als Host)', tmdbPh: 'TMDB-API-Schlüssel einfügen', tmdbOn: 'TMDB aktiv: Poster ohne Schrift, wo vorhanden', tmdbOff: 'TMDB-Schlüssel entfernt', tmdbHelp: 'Ohne Schlüssel zeigt das Spiel nur die Mitte des Posters, damit der Titel nicht zu sehen ist. Mit einem kostenlosen Schlüssel von themoviedb.org gibt es für viele Titel Poster ganz ohne Schrift.',
       banLate: 'Zu spät, die Bann-Zeit war schon vorbei.', banTaken: 'Den hat schon jemand gebannt. Such dir ein anderes Ziel.', banFail: 'Bann nicht möglich.',
       spyTagline: 'Alle kennen das geheime Wort, nur einer nicht: der Spion. Gebt reihum Hinweise, findet den Spion, bevor er das Wort errät.<br><b>Bluffen, verdächtigen, entlarven. 3 bis 10 Spieler.</b>',
       spyRules: [
@@ -1918,7 +1924,7 @@ window.I18N = (() => {
       geoWait: 'Getippt! Warte auf die anderen …', geoClosest: '👑 am nächsten', geoBull: '🎯 Volltreffer', geoNone: 'kein Tipp',
       geoWas: 'Du warst in', geoOpenMaps: 'In Google Maps ansehen', geoDist: 'Entfernung',
       geoBestT: 'Präzisionslandung', geoBestX: 'lag nur {d} daneben ({p}).',
-      geoWorstT: 'Weltenbummler', geoWorstX: 'lag {d} daneben ({p}).', geoKingX: 'war {n}× am nächsten dran.', volume: 'Lautstärke', musicLoading: '🎵 Songs werden geladen …', musicFail: 'Die Song-Ausschnitte konnten nicht geladen werden. Prüfe die Internetverbindung oder wähle andere Kategorien.', musicPlay: 'Abspielen', musicHint: 'Hör genau hin und tippe die richtige Antwort. Nur ein Versuch, je schneller desto mehr Punkte.', musicAnswered: '{who} hat geantwortet', musicLocked: 'Antwort abgegeben{j}. Auflösung gleich!', chatPh: 'Nachricht …', chatSend: 'Senden', chatSlow: 'Langsam! Kurz warten, dann weiterschreiben.', chatSpoiler: '🤐 Nicht spoilern! Die Lösung gehört ins Antwortfeld.', reactBlocked: 'Emoji-Pause {s} s', quizCloseBig: '🔥 Ganz nah dran! Prüf die Schreibweise.', multiHint: '(mehrere wählbar)', quizFound: 'Richtig! Gefunden nach {s}{j}. Warte auf die anderen …',
+      geoWorstT: 'Weltenbummler', geoWorstX: 'lag {d} daneben ({p}).', geoKingX: 'war {n}× am nächsten dran.', volume: 'Lautstärke', musicLoading: '🎵 Songs werden geladen …', musicRetry: 'Nochmal versuchen', musicFail: 'Die Song-Ausschnitte konnten nicht geladen werden. Prüfe die Internetverbindung oder wähle andere Kategorien.', musicPlay: 'Abspielen', musicHint: 'Hör genau hin und tippe die richtige Antwort. Nur ein Versuch, je schneller desto mehr Punkte.', musicAnswered: '{who} hat geantwortet', musicLocked: 'Antwort abgegeben{j}. Auflösung gleich!', chatPh: 'Nachricht …', chatSend: 'Senden', chatSlow: 'Langsam! Kurz warten, dann weiterschreiben.', chatSpoiler: '🤐 Nicht spoilern! Die Lösung gehört ins Antwortfeld.', reactBlocked: 'Emoji-Pause {s} s', quizCloseBig: '🔥 Ganz nah dran! Prüf die Schreibweise.', multiHint: '(mehrere wählbar)', quizFound: 'Richtig! Gefunden nach {s}{j}. Warte auf die anderen …',
       quizHintText: 'Je schneller du richtig liegst, desto mehr Punkte!',
       quizLocked: 'Deine Antwort: <b>{a}</b>{j}. Warte auf die anderen …',
       jokerTitleQuiz: 'Gefunden: doppelte Punkte. Nicht gefunden: 0.',
@@ -1971,7 +1977,7 @@ window.I18N = (() => {
       connecting: '{code} odasına bağlanılıyor …',
       roomNotFound: '{code} kodlu oda bulunamadı. Kod doğru mu ve oda sahibi hâlâ çevrimiçi mi?',
       connFail: 'Bağlantı kurulamadı. İnternet bağlantını kontrol et.',
-      timeout: 'Bağlantı zaman aşımına uğradı. Bazı ağlar (şirket/üniversite Wi-Fi) eşler arası bağlantıyı engelliyor. Tekrar dene ya da telefonundan hotspot aç.',
+      joinRetry: 'Oda sahibi henüz cevap vermiyor, tekrar deneniyor … (oda sahibine not: oyun sayfası açık ve ön planda kalsın)', timeout: 'Bağlantı zaman aşımına uğradı. En sık sebep: oda sahibi mobil veriyle bağlı (bazı operatörler doğrudan bağlantıyı engelliyor) ya da şirket/üniversite Wi-Fi’ında. En iyisi odayı normal ev Wi-Fi’ındaki biri kursun. Olmazsa tekrar dene.',
       joinFailTitle: 'Odaya katılınamadı',
       kickedTitle: 'Çıkarıldın', kickedText: 'Oda sahibi seni odadan çıkardı.',
       byeTitle: 'Oyun bitti', byeText: 'Oda sahibi odayı kapattı.',
@@ -2023,11 +2029,11 @@ window.I18N = (() => {
       qprompt: { flaggen: 'Bu bayrak hangi ülkenin?', logos: 'Bu hangi marka?', autos: 'Bu hangi otomobil markası?', fussball: 'Bu hangi kulüp?', diziler: 'Hangi dizi ya da film?', yabanci: 'Hangi dizi ya da film?', orte: 'Burası neresi?', tuerkei: 'Türkiye’de burası neresi?', muzik_int: 'Hangi şarkı çalıyor?', muzik_tr: 'Hangi şarkı çalıyor?' },
       quizHint: 'Cevabı Türkçe ya da Almanca yaz. Küçük yazım hataları sorun değil, deneme hakkı sınırsız.',
       quizInput: 'Cevabını yaz …', quizSend: 'Tahmin et', quizHintLbl: 'İpucu', thTime: 'Süre',
-      quizFoundOther: '{who} buldu!', quizClose: '🔥 çok yakın', chatTitle: '💬 Sohbet', quizCloseOther: 'çok yakın …', rejVersion: 'Oyun sürümün oda sahibininkinden farklı. Lütfen sayfayı yenile (gerekirse önbelleği temizle) ve tekrar katıl.', noRounds: 'Bu seçim için tur yok.',
+      quizFoundOther: '{who} buldu!', quizClose: '🔥 çok yakın', chatTitle: '💬 Sohbet', quizCloseOther: 'çok yakın …', rejVersionHost: 'Oda sahibinde oyunun eski sürümü var. Oda sahibi sayfayı yenileyip odayı yeniden kurmalı.', rejVersion: 'Oyun sürümün oda sahibininkinden farklı. Lütfen sayfayı yenile (gerekirse önbelleği temizle) ve tekrar katıl.', noRounds: 'Bu seçim için tur yok.',
       rxJackShowSub: 'salisesine kadar: {t} saniye!', rxJackClose: 'Devam 🏆', rxJackLines: ['Salisesine kadar! Diğerleri eve gidebilir. 🏠', 'Bu hassasiyet bu dünyadan değil. 👽', 'İsviçre saati mi? Hayır, {name}! ⌚', 'Diğerlerinin şu anki hâli: 😐😐😐', 'Bugünden itibaren kronometrenin adı {name}. ⏱️', 'Doping testi lazım. 🧪'],
       rxJackTitle: 'JACKPOT!', rxJackText: '{name} tam {t} durdurdu ve oyunun tamamını kazandı!', rxJackWin: '{name} jackpot ile kazandı!', rxJackAward: 'Jackpot', rxJackAwardX: 'salisesine kadar tutturdu: {t}',
-      sceneLoading: '🎬 Sahneler yükleniyor …', sceneHint: 'Sahneye ve ipuçlarına bak, doğru cevaba dokun. Tek hakkın var, ne kadar hızlıysan o kadar puan.',
-      tmdbLabel: 'Filmler için sahne görselleri', tmdbOpt: '(isteğe bağlı, sadece oda sahibi için)', tmdbPh: 'TMDB API anahtarını yapıştır', tmdbOn: 'TMDB aktif: diziler ve filmler için sahneler', tmdbOff: 'TMDB anahtarı kaldırıldı', tmdbHelp: 'Anahtar olmadan sadece diziler için sahne gelir (TVmaze). themoviedb.org’dan ücretsiz bir anahtarla tüm filmler için de.',
+      sceneLoading: '🎬 Kapak resimleri yükleniyor …', sceneHint: 'Kapak resmine ve ipuçlarına bak, doğru cevaba dokun. Tek hakkın var, ne kadar hızlıysan o kadar puan.',
+      tmdbLabel: 'Yazısız kapak resimleri', tmdbOpt: '(isteğe bağlı, sadece oda sahibi için)', tmdbPh: 'TMDB API anahtarını yapıştır', tmdbOn: 'TMDB aktif: mümkünse yazısız kapaklar', tmdbOff: 'TMDB anahtarı kaldırıldı', tmdbHelp: 'Anahtar olmadan oyun, isim görünmesin diye kapağın sadece orta kısmını gösterir. themoviedb.org’dan ücretsiz bir anahtarla birçok yapım için hiç yazısı olmayan kapaklar gelir.',
       banLate: 'Geç kaldın, yasaklama süresi doldu.', banTaken: 'Onu zaten biri yasakladı. Başka birini seç.', banFail: 'Yasaklama mümkün değil.',
       spyTagline: 'Herkes gizli kelimeyi biliyor, biri hariç: casus. Sırayla ipucu verin, casus kelimeyi bulmadan onu yakalayın.<br><b>Blöf yap, şüphelen, ifşa et. 3 ila 10 oyuncu.</b>',
       spyRules: [
@@ -2104,7 +2110,7 @@ window.I18N = (() => {
       geoWait: 'Tahmin verildi! Diğerleri bekleniyor …', geoClosest: '👑 en yakın', geoBull: '🎯 tam isabet', geoNone: 'tahmin yok',
       geoWas: 'Buradaydın', geoOpenMaps: 'Google Haritalar’da aç', geoDist: 'Mesafe',
       geoBestT: 'Hassas iniş', geoBestX: 'sadece {d} uzağa işaret koydu ({p}).',
-      geoWorstT: 'Dünya gezgini', geoWorstX: '{d} uzağa işaret koydu ({p}).', geoKingX: '{n} kez en yakın tahmini yaptı.', volume: 'Ses seviyesi', musicLoading: '🎵 Şarkılar yükleniyor …', musicFail: 'Şarkı parçaları yüklenemedi. İnternet bağlantını kontrol et ya da başka kategoriler seç.', musicPlay: 'Çal', musicHint: 'İyi dinle ve doğru cevaba dokun. Tek hakkın var, ne kadar hızlıysan o kadar puan.', musicAnswered: '{who} cevap verdi', musicLocked: 'Cevap verildi{j}. Sonuç birazdan!', chatPh: 'Mesaj yaz …', chatSend: 'Gönder', chatSlow: 'Yavaş! Biraz bekle, sonra yaz.', chatSpoiler: '🤐 Spoiler yok! Cevabı cevap kutusuna yaz.', reactBlocked: 'Emoji molası {s} sn', quizCloseBig: '🔥 Çok yakın! Yazımı kontrol et.', multiHint: '(birden fazla seçilebilir)', quizFound: 'Doğru! {s} içinde buldun{j}. Diğerleri bekleniyor …',
+      geoWorstT: 'Dünya gezgini', geoWorstX: '{d} uzağa işaret koydu ({p}).', geoKingX: '{n} kez en yakın tahmini yaptı.', volume: 'Ses seviyesi', musicLoading: '🎵 Şarkılar yükleniyor …', musicRetry: 'Tekrar dene', musicFail: 'Şarkı parçaları yüklenemedi. İnternet bağlantını kontrol et ya da başka kategoriler seç.', musicPlay: 'Çal', musicHint: 'İyi dinle ve doğru cevaba dokun. Tek hakkın var, ne kadar hızlıysan o kadar puan.', musicAnswered: '{who} cevap verdi', musicLocked: 'Cevap verildi{j}. Sonuç birazdan!', chatPh: 'Mesaj yaz …', chatSend: 'Gönder', chatSlow: 'Yavaş! Biraz bekle, sonra yaz.', chatSpoiler: '🤐 Spoiler yok! Cevabı cevap kutusuna yaz.', reactBlocked: 'Emoji molası {s} sn', quizCloseBig: '🔥 Çok yakın! Yazımı kontrol et.', multiHint: '(birden fazla seçilebilir)', quizFound: 'Doğru! {s} içinde buldun{j}. Diğerleri bekleniyor …',
       quizHintText: 'Ne kadar hızlı doğru cevap verirsen o kadar çok puan!',
       quizLocked: 'Cevabın: <b>{a}</b>{j}. Diğerleri bekleniyor …',
       jokerTitleQuiz: 'Bulursan: iki kat puan. Bulamazsan: 0.',
@@ -13944,9 +13950,10 @@ window.__launchGate = (() => {
 
   // ---------- Konstanten ----------
   const PREFIX = 'sizeclash-v1-';
+  const sess = (k, v) => { try { if (v === undefined) return sessionStorage.getItem(k) || ''; sessionStorage.setItem(k, v); } catch { /* privater Modus */ } return ''; };
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = '58fa4068fd';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = 'f2c6ae4a6b';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -14092,12 +14099,15 @@ window.__launchGate = (() => {
   }
   // Zusatzinfo bei der Auflösung: Serien zeigen Jahre und Sender, Orte den Ort in der eigenen Sprache
   const clueInfo = it => (it.cat === 'diziler' || it.cat === 'yabanci' ? it.y : (it.y.split(' · ')[LI()] || it.y));
-  // Hinweis-Quiz: erster Hinweis sofort, die weiteren gleichmäßig bis 60 % der Zeit (schwer → leicht)
+  // Hinweis-Quiz: erster Hinweis sofort, dann alle 5 Sekunden der nächste (schwer → leicht)
+  const CLUE_STEP = 5000;
   function clueShown(it) {
     const n = it.cl[0].length;
     if (!S || S.phase !== 'question' || G.locked) return n;
-    const frac = 1 - Math.max(0, deadline - Date.now()) / (S.settings.time * 1000);
-    return Math.max(1, Math.min(n, 1 + Math.floor(frac / (0.6 / (n - 1)))));
+    // gezählt ab dem Erscheinen der Frage (die Uhr hat vorher einen kurzen Vorlauf); wer später dazukommt, übernimmt die vergangene Zeit
+    const key = S.round + ':' + S.q?.id;
+    if (G.clueKey !== key) { G.clueKey = key; G.clueT0 = Date.now() - Math.max(0, S.settings.time * 1000 - Math.max(0, deadline - Date.now())); }
+    return Math.max(1, Math.min(n, 1 + Math.floor((Date.now() - G.clueT0) / CLUE_STEP)));
   }
   const clueItem = (it, i, open) => (open
     ? `<div class="clue"><span>${i + 1}</span>${esc(it.cl[LI()][i])}</div>`
@@ -14284,6 +14294,17 @@ window.__launchGate = (() => {
     return o;
   }
 
+  // Verbindung zum Vermittlungsserver halten: Ohne sie findet niemand den Raum mehr. Auf dem Handy reißt sie ab,
+  // sobald der Browser im Hintergrund ist (z. B. beim Teilen des Codes über WhatsApp); ein einzelner Versuch reicht dann nicht.
+  function keepSignal() {
+    if (!peer || leaving || peer.destroyed || !peer.disconnected) return;
+    try { peer.reconnect(); } catch { /* nächster Versuch folgt */ }
+  }
+  setInterval(keepSignal, 4000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) keepSignal(); });
+  window.addEventListener('online', keepSignal);
+  window.addEventListener('pageshow', keepSignal);
+
   // =====================================================================
   //  HOST
   // =====================================================================
@@ -14350,7 +14371,7 @@ window.__launchGate = (() => {
   function onHostMsg(conn, d) {
     if (!d || typeof d !== 'object') return;
     if (d.t === 'hello') {
-      if (d.v !== BUILD) { conn.send({ t: 'reject', code: 'rejVersion' }); setTimeout(() => { try { conn.close(); } catch { /* ignore */ } }, 800); return; }
+      if (d.v !== BUILD) { conn.send({ t: 'reject', code: 'rejVersion', hb: BUILD }); setTimeout(() => { try { conn.close(); } catch { /* ignore */ } }, 800); return; }
       const pid = String(d.pid || '');
       if (!/^[a-z0-9]{6,24}$/.test(pid)) { conn.send({ t: 'reject', code: 'rejId' }); return; }
       let p = findP(pid);
@@ -14646,117 +14667,153 @@ window.__launchGate = (() => {
   }
 
   // ---------- Musik: 30-s-Ausschnitte über die iTunes-Suche (JSONP), Deezer als Ersatz ----------
-  function jsonp(url, ms = 7000) {
+  function jsonp(url, ms = 6000) {
     return new Promise(resolve => {
       const cb = '__sc' + rid(10), s = document.createElement('script');
-      const done = v => { clearTimeout(t); delete window[cb]; s.remove(); resolve(v); };
+      const done = v => { clearTimeout(t); window[cb] = () => {}; s.remove(); resolve(v); };
       const t = setTimeout(() => done(null), ms);
-      window[cb] = d => done(d);
+      window[cb] = d => done(d || null);
       s.onerror = () => done(null);
       s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
       document.head.appendChild(s);
     });
   }
-  const musicCache = {};
+  // Höchstens n Aufgaben gleichzeitig: die iTunes-Suche sperrt bei vielen parallelen Anfragen
+  async function pool(items, n, fn) {
+    let i = 0;
+    await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => { while (i < items.length) await fn(items[i++]); }));
+  }
+  const musicCache = {}, musicNet = { itFail: 0 };
   async function findPreview(it) {
-    if (musicCache[it.id]) return musicCache[it.id];
-    const na = qnorm(it.artist), nt = qnorm(it.title).replace(/ /g, '');
+    const c = musicCache[it.id];
+    if (c && Date.now() - c.t < 10 * 60000) return c.hit; // Deezer-Links laufen nach einer Weile ab
+    const na = qnorm(it.artist), nt = qnorm(it.title);
     const fit = (artist, title) => {
-      const a = qnorm(artist), t = qnorm(title).replace(/ /g, '');
-      return (a.includes(na) || na.includes(a)) && (t.startsWith(nt) || nt.startsWith(t) || t.includes(nt));
+      const a = qnorm(artist), t = qnorm(title);
+      return !!a && !!t && (a.includes(na) || na.includes(a)) && (t.startsWith(nt) || nt.startsWith(t) || t.includes(nt));
     };
-    let hit = null;
-    for (const country of it.cat === 'muzik_tr' ? ['TR', 'DE'] : ['DE', 'US']) {
-      const d = await jsonp(`https://itunes.apple.com/search?term=${encodeURIComponent(it.artist + ' ' + it.title)}&media=music&entity=song&limit=15&country=${country}`);
-      const r = d && (d.results || []).find(x => x.previewUrl && fit(x.artistName, x.trackName));
-      if (r) { hit = { audio: r.previewUrl, art: (r.artworkUrl100 || '').replace('100x100', '300x300') }; break; }
-    }
-    if (!hit) {
-      const d = await jsonp(`https://api.deezer.com/search?q=${encodeURIComponent(`artist:"${it.artist}" track:"${it.title}"`)}&output=jsonp`);
+    const term = encodeURIComponent(it.artist + ' ' + it.title);
+    const itunes = async country => {
+      if (musicNet.itFail >= 3) return null; // iTunes antwortet gerade nicht: nicht weiter warten, Deezer reicht
+      const d = await jsonp(`https://itunes.apple.com/search?term=${term}&media=music&entity=song&limit=15&country=${country}`);
+      if (!d) { musicNet.itFail++; return null; }
+      musicNet.itFail = 0;
+      const r = (d.results || []).find(x => x.previewUrl && fit(x.artistName, x.trackName));
+      return r ? { audio: r.previewUrl, art: (r.artworkUrl100 || '').replace('100x100', '300x300') } : null;
+    };
+    const deezer = async () => {
+      const d = await jsonp(`https://api.deezer.com/search?q=${term}&limit=15&output=jsonp`);
       const r = d && (d.data || []).find(x => x.preview && fit(x.artist?.name || '', x.title || ''));
-      if (r) hit = { audio: r.preview, art: r.album?.cover_medium || '' };
-    }
-    if (hit) musicCache[it.id] = hit; // Fehlschläge nicht merken, beim nächsten Spiel neu versuchen
+      return r ? { audio: r.preview, art: r.album?.cover_medium || '' } : null;
+    };
+    const [c1, c2] = it.cat === 'muzik_tr' ? ['TR', 'DE'] : ['DE', 'US'];
+    const hit = await itunes(c1) || await deezer() || await itunes(c2);
+    if (hit) musicCache[it.id] = { hit, t: Date.now() }; // Fehlschläge nicht merken, beim nächsten Spiel neu versuchen
     return hit;
   }
-  // Ersetzt Musik-Runden ohne Ausschnitt durch andere Songs derselben Kategorie
+  // Ersetzt Musik-Runden ohne Ausschnitt durch andere Songs derselben Kategorie; Runden ohne Song fallen weg
   async function prepareMusic() {
-    const taken = new Set(H.order.map(r => r.id)), until = Date.now() + 30000;
-    await Promise.all(H.order.map(async r => {
-      const it = QZBYID[r.id];
-      if (!it || it.kind !== 'music') return;
-      let hit = await findPreview(it);
-      for (let k = 0; !hit && k < 4 && Date.now() < until; k++) {
+    const taken = new Set(H.order.map(r => r.id)), until = Date.now() + 35000;
+    const rounds = H.order.filter(r => QZBYID[r.id]?.kind === 'music');
+    let ok = 0;
+    musicNet.itFail = 0;
+    await pool(rounds, 3, async r => {
+      let it = QZBYID[r.id], hit = Date.now() < until ? await findPreview(it) : null;
+      for (let k = 0; !hit && k < 3 && Date.now() < until; k++) {
         const alt = shuffle(QUIZ.filter(x => x.cat === it.cat && !taken.has(x.id)))[0];
         if (!alt) break;
-        taken.add(alt.id); r.id = alt.id;
+        taken.add(alt.id); r.id = alt.id; it = alt;
         hit = await findPreview(alt);
       }
-      if (hit) Object.assign(r, hit); else r.drop = true;
-    }));
+      if (hit) { Object.assign(r, hit); ok++; } else r.drop = true;
+      busy(`${T('musicLoading')} ${ok}/${rounds.length}`);
+    });
     H.order = H.order.filter(r => !r.drop);
   }
 
-  // ---------- Szenenbilder für Serien und Filme ----------
-  // Nur Bilder ohne Titel-Schriftzug: 1. TMDB-Szenen ohne Sprache (mit eigenem Schlüssel des Hosts),
-  // 2. Episodenbilder von TVmaze (Serien, echte Szenen), 3. Foto eines Hauptdarstellers von Wikimedia Commons (über Wikidata).
+  // ---------- Kapakbilder (Poster) für Serien und Filme ----------
+  // Mehrere Quellen nacheinander, bis ein Kapakbild gefunden ist: TMDB (nur mit Schlüssel des Hosts, schriftfreie Poster bevorzugt),
+  // TVmaze (Serien), iTunes (Film-Poster bzw. Staffel-Cover), Wikipedia (Bild im Artikel, keine Logos).
+  // Normale Poster tragen oben Namen und unten Titel und Credits: im Spiel ist nur die Bildmitte zu sehen (siehe sceneHtml).
   const sceneCache = {};
   const tmdbKey = () => String(store.get('tmdb') || '').trim();
   async function getJSON(url, ms = 6000) {
     const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms);
     try { const r = await fetch(url, { signal: ctl.signal }); return r.ok ? await r.json() : null; } catch { return null; } finally { clearTimeout(t); }
   }
-  const pickOne = a => a[Math.floor(Math.random() * a.length)];
-  async function tmdbScene(key, type, q, yr) {
+  // N = { q: Titel in Originalschreibweise für die Suche, n: dieselben normalisiert für den Vergleich }
+  const nameMatch = (a, N, loose) => { const x = qnorm(String(a || '').replace(/\(.*?\)|,? *(season|staffel|sezon) *\d+.*$/gi, '')); return !!x && N.n.some(y => x === y || (loose && y.length > 3 && (x.startsWith(y) || y.startsWith(x)))); };
+  // genauer Titel (mit passendem Jahr) vor ähnlichem Titel
+  const bestMatch = (list, nameOf, dateOf, N, yr) => list.find(x => nameMatch(nameOf(x), N) && yearNear(dateOf(x), yr)) || list.find(x => nameMatch(nameOf(x), N)) || list.find(x => nameMatch(nameOf(x), N, true) && yearNear(dateOf(x), yr));
+  const yearNear = (d, yr) => !yr || !d || Math.abs(parseInt(String(d).slice(0, 4), 10) - yr) <= 2;
+  async function tmdbPoster(key, type, q, yr) {
     const base = 'https://api.themoviedb.org/3', k = encodeURIComponent(key);
     const yp = yr ? `&${type === 'tv' ? 'first_air_date_year' : 'primary_release_year'}=${yr}` : '';
     let s = await getJSON(`${base}/search/${type}?api_key=${k}&query=${encodeURIComponent(q)}${yp}`);
     if (!s?.results?.length && yr) s = await getJSON(`${base}/search/${type}?api_key=${k}&query=${encodeURIComponent(q)}`);
     const hit = s?.results?.[0]; if (!hit) return '';
-    // include_image_language=null: nur Bilder ohne Schrift (keine Titel, keine Logos)
+    // include_image_language=null: Poster ganz ohne Schrift („textless“), dann darf das ganze Bild zu sehen sein
     const im = await getJSON(`${base}/${type}/${hit.id}/images?api_key=${k}&include_image_language=null`);
-    const bd = (im?.backdrops || []).filter(b => !b.iso_639_1).slice(0, 12);
-    return bd.length ? 'https://image.tmdb.org/t/p/w1280' + pickOne(bd).file_path : '';
+    const clean = (im?.posters || []).filter(p => !p.iso_639_1).sort((a, b) => (b.vote_average || 0) - (a.vote_average || 0))[0];
+    if (clean) return 'https://image.tmdb.org/t/p/w780' + clean.file_path + '#clean';
+    return hit.poster_path ? 'https://image.tmdb.org/t/p/w780' + hit.poster_path : '';
   }
-  async function tvmazeStill(q) {
-    const s = await getJSON(`https://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(q)}`);
-    if (!s?.id || !(qnorm(s.name).includes(qnorm(q)) || qnorm(q).includes(qnorm(s.name)))) return '';
-    // Episodenbilder sind Standbilder aus den Folgen, also echte Szenen ohne Titel
-    const eps = await getJSON(`https://api.tvmaze.com/shows/${s.id}/episodes`, 8000);
-    const imgs = (eps || []).map(e => e.image?.original || e.image?.medium).filter(Boolean);
-    return imgs.length ? pickOne(imgs) : '';
+  async function tvmazePoster(N, yr) {
+    for (const q of N.q.slice(0, 2)) {
+      const s = await getJSON(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(q)}`);
+      const shows = (s || []).map(x => x.show).filter(x => x?.image);
+      const hit = bestMatch(shows, x => x.name, x => x.premiered, N, yr);
+      if (hit) return hit.image.original || hit.image.medium;
+    }
+    return '';
   }
-  async function wikidataCast(q, type, yr) {
-    const W = 'https://www.wikidata.org/w/api.php?format=json&origin=*';
-    const s = await getJSON(`${W}&action=wbsearchentities&type=item&limit=12&language=en&uselang=en&search=${encodeURIComponent(q)}`);
-    const re = type === 'tv' ? /series|serial|sitcom|soap|telenovela|programme|dizi/i : /\bfilm\b|movie/i;
-    const cand = (s?.search || []).filter(x => re.test(x.description || ''));
-    const hit = (yr && cand.find(x => (x.description || '').includes(String(yr)))) || cand[0];
-    if (!hit) return '';
-    const e = await getJSON(`${W}&action=wbgetentities&props=claims&ids=${hit.id}`);
-    const cast = (e?.entities?.[hit.id]?.claims?.P161 || []).map(c => c.mainsnak?.datavalue?.value?.id).filter(Boolean).slice(0, 8);
-    if (!cast.length) return '';
-    const pe = await getJSON(`${W}&action=wbgetentities&props=claims&ids=${cast.join('|')}`);
-    const files = cast.map(id => pe?.entities?.[id]?.claims?.P18?.[0]?.mainsnak?.datavalue?.value).filter(Boolean).slice(0, 3);
-    return files.length ? `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(pickOne(files))}?width=960` : '';
+  async function itunesPoster(type, N, yr, tr) {
+    for (const country of tr ? ['TR', 'DE', 'US'] : ['US', 'DE']) {
+      const ent = type === 'tv' ? 'media=tvShow&entity=tvSeason' : 'media=movie&entity=movie';
+      const d = await jsonp(`https://itunes.apple.com/search?term=${encodeURIComponent(N.q[0])}&${ent}&limit=25&country=${country}`);
+      if (!d) return ''; // iTunes nicht erreichbar
+      const hit = bestMatch((d.results || []).filter(x => x.artworkUrl100), x => (type === 'tv' ? x.artistName || x.collectionName : x.trackName), x => (type === 'tv' ? '' : x.releaseDate), N, yr);
+      if (hit) return hit.artworkUrl100.replace(/\/\d+x\d+(bb)?\.(jpg|png)$/, type === 'tv' ? '/600x600bb.jpg' : '/600x900bb.jpg');
+    }
+    return '';
+  }
+  async function wikiPoster(lang, N, type, yr) {
+    const api = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|description&piprop=thumbnail&pithumbsize=780&pilicense=any`;
+    // Nur Artikel über die Serie bzw. den Film (Kurzbeschreibung oder Klammerzusatz), keine Logos
+    const about = type === 'tv' ? /dizi|series|serie|sitcom|soap|telenovela|programme|show/i : /film|movie/i;
+    const ok = p => p?.thumbnail?.source && !/\.svg|logo|title|jenerik|intertitle|wordmark/i.test(p.thumbnail.source) && about.test(`${p.description || ''} ${(p.title.match(/\(.*\)/) || [''])[0]}`);
+    const sfx = type === 'tv' ? (lang === 'tr' ? ['(dizi)', '(televizyon dizisi)'] : ['(TV series)', '(Turkish TV series)']) : (lang === 'tr' ? ['(film)', `(${yr} filmi)`] : ['(film)', `(${yr} film)`]);
+    // 1. genaue Artikeltitel (mit den üblichen Klammerzusätzen), 2. Volltextsuche
+    const titles = [...new Set(N.q.slice(0, 2).flatMap(n => [n, ...sfx.map(s => `${n} ${s}`)]))].slice(0, 12);
+    const d = await getJSON(`${api}&titles=${encodeURIComponent(titles.join('|'))}`);
+    const pages = Object.values(d?.query?.pages || {}).filter(ok);
+    const pref = p => (/\(/.test(p.title) ? 0 : 1) + (p.thumbnail.height >= p.thumbnail.width ? 0 : 2); // Zusatz in Klammern und Hochformat zuerst
+    if (pages.length) return pages.sort((a, b) => pref(a) - pref(b))[0].thumbnail.source;
+    const kw = type === 'tv' ? (lang === 'tr' ? 'dizi' : 'TV series') : 'film';
+    const s = await getJSON(`${api}&generator=search&gsrlimit=6&gsrsearch=${encodeURIComponent(`${N.q[0]} ${yr || ''} ${kw}`)}`);
+    const p = Object.values(s?.query?.pages || {}).sort((a, b) => a.index - b.index).find(x => ok(x) && nameMatch(x.title, N, true));
+    return p ? p.thumbnail.source : '';
   }
   async function findScene(it) {
     if (sceneCache[it.id]) return sceneCache[it.id];
-    const m = it.m || {}, type = m.t || 'tv', q = m.q || it.al?.find(a => /[a-z]/i.test(a) && it.cat === 'yabanci') || it.a[0], yr = m.yr || parseInt(String(it.y).match(/\d{4}/)?.[0], 10) || 0;
-    const key = tmdbKey();
-    let url = key ? await tmdbScene(key, type, q, yr) : '';
-    if (!url && type === 'tv') url = await tvmazeStill(q);
-    if (!url) url = await wikidataCast(q, type, yr);
+    const m = it.m || {}, type = m.t || 'tv', tr = it.cat === 'diziler', yr = m.yr || parseInt(String(it.y).match(/\d{4}/)?.[0], 10) || 0;
+    const raw = [m.q, ...(tr ? [it.a[1], it.a[0]] : [it.a[0], it.a[1]]), ...(it.al || [])].filter(Boolean);
+    const N = { q: [...new Set(raw)], n: [...new Set(raw.map(qnorm).filter(Boolean))] }, key = tmdbKey();
+    let url = key ? await tmdbPoster(key, type, N.q[0], yr) : '';
+    if (!url && type === 'tv') url = await tvmazePoster(N, yr);
+    for (const l of tr ? ['tr', 'en'] : ['en', 'tr']) if (!url) url = await wikiPoster(l, N, type, yr);
+    if (!url) url = await itunesPoster(type, N, yr, tr);
     if (url) sceneCache[it.id] = url;
     return url;
   }
   async function prepareScenes() {
-    const until = Date.now() + 20000;
-    await Promise.all(H.order.map(async r => {
-      const it = QZBYID[r.id];
-      if (!it || !QCATS[it.cat]?.mc || Date.now() > until) return;
-      r.img = await findScene(it);
-    }));
+    const until = Date.now() + 25000, rounds = H.order.filter(r => QCATS[QZBYID[r.id]?.cat]?.mc);
+    let ok = 0;
+    await pool(rounds, 4, async r => {
+      if (Date.now() < until) r.img = await findScene(QZBYID[r.id]);
+      if (r.img) ok++;
+      busy(`${T('sceneLoading')} ${ok}/${rounds.length}`);
+    });
   }
 
   let starting = false;
@@ -14768,7 +14825,7 @@ window.__launchGate = (() => {
     if (H.order.some(r => QZBYID[r.id]?.kind === 'music')) {
       starting = true; busy(T('musicLoading'));
       try { await prepareMusic(); } finally { starting = false; unbusy(); }
-      if (!H.order.length) { overlay(T('error'), T('musicFail'), [{ t: 'OK', primary: true }]); return; }
+      if (!H.order.length) { overlay(T('error'), T('musicFail'), [{ t: T('musicRetry'), primary: true, fn: startGame }, { t: 'OK' }]); return; }
     }
     if (H.order.some(r => QCATS[QZBYID[r.id]?.cat]?.mc)) {
       starting = true; busy(T('sceneLoading'));
@@ -15019,15 +15076,22 @@ window.__launchGate = (() => {
     leaving = false; role = 'client'; roomCode = code; joined = false;
     busy(T('connecting', { code }));
     peer = new Peer(peerOpts());
-    peer.on('open', () => {
+    let unavail = 0;
+    const dial = () => {
       hostConn = peer.connect(PREFIX + code, { reliable: true, serialization: 'json' });
-      hostConn.on('open', () => hostConn.send({ t: 'hello', pid: me.pid, name: me.name, avatar: me.avatar, v: BUILD }));
-      hostConn.on('data', onClientMsg);
-      hostConn.on('close', onLost);
-      hostConn.on('error', onLost);
-    });
+      const c = hostConn, mine = f => (...a) => { if (c === hostConn) f(...a); }; // Ereignisse eines abgebrochenen ersten Versuchs ignorieren
+      c.on('open', mine(() => c.send({ t: 'hello', pid: me.pid, name: me.name, avatar: me.avatar, v: BUILD })));
+      c.on('data', mine(onClientMsg));
+      c.on('close', mine(onLost));
+      c.on('error', mine(onLost));
+    };
+    peer.on('open', dial);
     peer.on('error', e => {
-      if (e.type === 'peer-unavailable') { joinFailed(T('roomNotFound', { code })); return; }
+      if (e.type === 'peer-unavailable') {
+        // Raum gerade nicht erreichbar: Ein Host-Handy meldet sich nach dem Zurückwechseln erst nach ein paar Sekunden wieder an
+        if (!joined && unavail++ < 2) { busy(T('joinRetry', { code })); setTimeout(() => { if (!joined && role === 'client' && peer?.open) dial(); }, 3000); return; }
+        joinFailed(T('roomNotFound', { code })); return;
+      }
       if (!joined) joinFailed(T('connFail') + errDetail(e));
     });
     peer.on('disconnected', () => {
@@ -15035,7 +15099,14 @@ window.__launchGate = (() => {
       setTimeout(() => { try { if (peer && !peer.destroyed && peer.disconnected) peer.reconnect(); } catch { /* ignore */ } }, 1500);
     });
     clearTimeout(joinTimer);
-    joinTimer = setTimeout(() => { if (!joined && role === 'client') joinFailed(T('timeout')); }, 15000);
+    // Antwortet der Host nicht (z. B. Host-Handy gerade im Hintergrund), nach 12 s ein zweiter Versuch, erst danach Fehler
+    joinTimer = setTimeout(() => {
+      if (joined || role !== 'client' || !peer || peer.destroyed) return;
+      busy(T('joinRetry', { code }));
+      try { hostConn?.close(); } catch { /* ignore */ }
+      if (peer.open) dial();
+      joinTimer = setTimeout(() => { if (!joined && role === 'client') joinFailed(T('timeout')); }, 15000);
+    }, 12000);
   }
 
   function joinFailed(msg) {
@@ -15050,7 +15121,7 @@ window.__launchGate = (() => {
   function onClientMsg(d) {
     if (!d || typeof d !== 'object') return;
     switch (d.t) {
-      case 'welcome': clearTimeout(joinTimer); joined = true; unbusy(); closeOverlay(); break;
+      case 'welcome': clearTimeout(joinTimer); joined = true; sess('sc_vr', ''); unbusy(); closeOverlay(); break;
       case 'state': applyState(d.s); break;
       case 'react': showReaction(d.pid, d.e); break;
       case 'chat': addChat(d.pid, d.text); break;
@@ -15060,7 +15131,10 @@ window.__launchGate = (() => {
       case 'tpins': geoTeamIn(d); break;
       case 'spyrole': spyRoleIn(d); break;
       case 'spyNo': spyNoIn(d); break;
-      case 'reject': joinFailed(d.code ? T(d.code, { n: d.n }) : (d.reason || T('rejected'))); break;
+      case 'reject':
+        // Andere Spielversion: einmal frisch laden (am Cache vorbei) und automatisch wieder beitreten; hilft es nicht, ist der Host veraltet
+        if (d.code === 'rejVersion' && sess('sc_vr') !== roomCode) { sess('sc_vr', roomCode); sess('sc_aj', roomCode); leaving = true; const q = new URLSearchParams(location.search); q.set('r', Date.now()); location.replace(`${location.pathname}?${q}#${roomCode}`); break; }
+        joinFailed(d.code === 'rejVersion' ? T('rejVersionHost') : d.code ? T(d.code, { n: d.n }) : (d.reason || T('rejected'))); break;
       case 'kicked': leaving = true; teardown(true); S = null; mounted = ''; render(); overlay(T('kickedTitle'), T('kickedText'), [{ t: 'OK', primary: true }]); break;
       case 'bye': leaving = true; teardown(true); S = null; mounted = ''; render(); overlay(T('byeTitle'), T('byeText'), [{ t: 'OK', primary: true }]); break;
     }
@@ -15546,13 +15620,15 @@ window.__launchGate = (() => {
   }
   // Serien und Filme: Szenenbild, Hinweise nach und nach, 4 Antworten
   const optLabel = (q, i) => (q.mc ? quizAnswer(QZBYID[q.opts[i]] || { a: ['?', '?'] }) : q.opts[i]);
-  // Jede Frage bekommt ein Bild: Szene bzw. Foto, sonst (oder wenn es nicht lädt) eine Filmstreifen-Grafik
+  // Jede Frage bekommt ein Kapakbild, sonst (oder wenn es nicht lädt) eine Filmstreifen-Grafik.
+  // In der Frage nur die Bildmitte (Titel und Namen sitzen oben und unten), dahinter dasselbe Bild stark unscharf;
+  // in der Auflösung (small) das ganze Poster. Schriftfreie TMDB-Poster (#clean) sind immer ganz zu sehen.
   function sceneHtml(img, small, cat) {
     const ph = `<div class="qscene-ph"><span>${QCATS[cat]?.e || '🎬'}</span><i>🎬</i></div>`;
     if (!img) return `<div class="qscene ph ${small ? 'small' : ''}">${ph}</div>`;
-    const commons = img.includes('commons.wikimedia.org');
-    return `<div class="qscene ${small ? 'small' : ''}"><img src="${esc(img)}" alt="" draggable="false" referrerpolicy="no-referrer"
-      onload="if (this.naturalHeight > this.naturalWidth * 0.9) this.parentNode.classList.add('portrait')" onerror="this.parentNode.classList.add('ph')">${ph}${commons ? '<small class="qscene-src">📷 Wikimedia Commons</small>' : ''}</div>`;
+    const full = small || img.endsWith('#clean'), src = esc(img.replace(/#clean$/, ''));
+    return `<div class="qscene poster ${full ? 'full' : 'crop'} ${small ? 'small' : ''}"><div class="qscene-bg" style="background-image:url('${src}')"></div><img src="${src}" alt="" draggable="false" referrerpolicy="no-referrer"
+      onerror="this.parentNode.classList.add('ph')">${ph}</div>`;
   }
   function mountScene(q, it, keep) {
     const opts = q.opts || [];
@@ -15629,7 +15705,8 @@ window.__launchGate = (() => {
 
   // Ab der Hälfte der Zeit: Anfangsbuchstabe und Länge der Antwort in der eigenen Sprache
   function quizHintTick() {
-    const el = $('#qHint'); if (!el || !S || S.phase !== 'question' || S.q?.type !== 'quiz') return;
+    if (!S || S.phase !== 'question' || S.q?.type !== 'quiz') return;
+    const el = $('#qHint'); // fehlt bei Serien & Filme (4 Antworten), die Hinweise müssen trotzdem aufgehen
     const total = S.settings.time * 1000;
     const left = deadline - Date.now();
     const it = QZBYID[S.q.id]; if (!it || it.kind === 'music') return;
@@ -15638,6 +15715,7 @@ window.__launchGate = (() => {
       // nur neu aufgedeckte Hinweise ersetzen, damit die sichtbaren nicht erneut einblenden
       if (box) [...box.children].forEach((el, i) => { if (i < k && el.classList.contains('locked')) el.outerHTML = clueItem(it, i, true); });
     }
+    if (!el) return;
     if (S.q.mc || left > total * (it.kind === 'clue' ? 0.25 : 0.5) || G.locked) { el.textContent = ''; return; }
     const ans = quizAnswer(it);
     const mask = [...ans].map((c, i) => (i === 0 ? c : /[\p{L}\p{N}]/u.test(c) ? '_' : c)).join(' ');
@@ -17399,11 +17477,15 @@ window.__launchGate = (() => {
     window.addEventListener('beforeunload', e => {
       if (role === 'host' && S && S.players.length > 1) { e.preventDefault(); e.returnValue = ''; }
     });
-    window.addEventListener('pagehide', () => { if (role === 'host') broadcast({ t: 'bye' }); });
+    // persisted: Seite kommt aus dem Zwischenspeicher zurück (Handy), dann den Raum nicht auflösen
+    window.addEventListener('pagehide', e => { if (role === 'host' && !e.persisted) broadcast({ t: 'bye' }); });
     if (typeof window.Peer !== 'function') {
       overlay(T('error'), T('libError'), [{ t: 'OK', primary: true }]);
     }
     render();
+    // nach dem Neuladen wegen anderer Spielversion automatisch wieder beitreten
+    const aj = sess('sc_aj');
+    if (aj) { sess('sc_aj', ''); if (aj === (location.hash || '').slice(1).toUpperCase() && me.name && window.Peer) setTimeout(() => joinRoom(aj), 300); }
   }
 
   // Für automatisierte Tests
