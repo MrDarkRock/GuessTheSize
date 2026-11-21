@@ -1158,6 +1158,10 @@ input[type=range]:disabled { filter: grayscale(.7); opacity: .6; cursor: default
   .qmedia.small { overflow: visible; }
 }
 @media (max-width: 400px) {
+  /* Host im Spiel hat einen Knopf mehr (Spieler) */
+  .topbar { padding-left: 14px; padding-right: 14px; }
+  .top-right { gap: 5px; }
+  .iconbtn { width: 34px; height: 34px; font-size: 15px; }
   .logo .mark { display: none; }
   .logo { font-size: 16px; }
 }
@@ -1605,7 +1609,7 @@ body.spy-app .bg i:nth-child(3) { background: #08d9d6; opacity: .25; }
   .gamebar { gap: 6px; }
   .gamebar .pill { padding: 7px 11px; font-size: 13px; }
   /* Die Spielmarke steht schon im Logo oben links */
-  .gamebar .spybrand, .gamebar .rxbrand, .gamebar .geobrand { display: none; }
+  .gamebar .spybrand, .gamebar .rxbrand, .gamebar .geobrand, .gamebar .hitbrand, .gamebar .drawbrand { display: none; }
 }
 /* Geo-Karte im Vollbild auf dem Handy: deckend, nichts scheint durch */
 @media (max-width: 760px) {
@@ -1653,6 +1657,153 @@ body.spy-app .bg i:nth-child(3) { background: #08d9d6; opacity: .25; }
   .seg.apps-seg button { white-space: nowrap; }
 }
 .seg { max-width: 100%; flex-wrap: wrap; }
+
+/* AFK-Warnung und Spielerliste des Hosts */
+.afkwarn { position: fixed; left: 50%; top: 72px; transform: translateX(-50%); z-index: 90; display: grid; gap: 4px; width: min(92vw, 440px); padding: 14px 18px; border-radius: 16px; text-align: center;
+  background: linear-gradient(135deg, #3a1d5c, #1d2650); border: 1px solid rgba(255, 200, 80, .6); box-shadow: 0 16px 40px rgba(0, 0, 0, .55); animation: popin .35s ease; }
+.afkwarn b { font-size: 18px; }
+.afkwarn span { font-size: 14px; opacity: .9; }
+.pmodal { width: min(92vw, 460px); }
+.pmhint { margin: 0 0 12px; font-size: 14px; opacity: .75; }
+.pmlist { display: grid; gap: 8px; max-height: 52vh; overflow-y: auto; margin-bottom: 14px; }
+.pmrow { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; background: rgba(255, 255, 255, .06); }
+.pmrow.off { opacity: .55; }
+.pmav { font-size: 24px; }
+.pmname { flex: 1; min-width: 0; display: grid; text-align: left; }
+.pmname b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pmname small { font-size: 12px; opacity: .7; }
+.btn.pmkick { padding: 8px 12px; font-size: 14px; color: #ff9aa8; border-color: rgba(255, 110, 130, .5); }
+.btn.pmkick.sure { background: #e0455d; color: #fff; }
+
+/* ===== Hit Clash ===== */
+body.hit-app { --acc1: #ff4fa3; --acc2: #ffd166; --grad: linear-gradient(100deg, #ff4fa3, #ff8a5b 50%, #ffd166); }
+body.hit-app .bg i:nth-child(1) { background: #ff4fa3; }
+body.hit-app .bg i:nth-child(2) { background: #6a00f4; }
+body.hit-app .bg i:nth-child(3) { background: #ffb703; opacity: .22; }
+.hitbrand, .drawbrand { font-weight: 800; letter-spacing: .08em; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hitq { display: grid; gap: 14px; }
+.hitcard { display: grid; justify-items: center; gap: 10px; padding: 22px 20px 18px; text-align: center; }
+.hitplayer { display: grid; place-items: center; gap: 8px; }
+.vinyl { position: relative; width: 112px; height: 112px; border-radius: 50%;
+  background: radial-gradient(circle, #111 0 6%, transparent 6.5%), radial-gradient(circle, var(--acc1) 0 27%, transparent 27.5%), repeating-radial-gradient(circle, #191919 0 2px, #0b0b0b 2px 4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .5), inset 0 0 0 2px rgba(255, 255, 255, .06); }
+.vinyl i { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 40deg, transparent 0 20%, rgba(255, 255, 255, .14) 25%, transparent 32% 70%, rgba(255, 255, 255, .08) 75%, transparent 82%); }
+.vinyl.on { animation: spin 1.8s linear infinite; }
+.hitq-t { font-weight: 700; color: var(--muted); }
+.hity { font-family: var(--head); font-size: clamp(56px, 12vw, 96px); line-height: 1; font-weight: 800; letter-spacing: .02em; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; transition: opacity .2s; }
+.hity.idle { opacity: .35; }
+.hitslider { display: flex; align-items: center; gap: 12px; width: min(100%, 680px); }
+.hitslider input { flex: 1; min-width: 0; height: 36px; accent-color: var(--acc1); cursor: pointer; }
+.btn.hitstep { width: 46px; height: 46px; padding: 0; font-size: 24px; border-radius: 50%; flex: none; }
+.hitdec { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.hitdec button { padding: 6px 11px; border-radius: 99px; border: 1px solid var(--card-b); background: rgba(255, 255, 255, .06); color: var(--muted); font-weight: 700; font-size: 13px; }
+.hitdec button:hover:not(:disabled) { color: var(--text); border-color: var(--acc2); }
+.hitbonus { padding: 16px 18px; }
+.hitbonus .mopts { margin-top: 10px; }
+.hitctl { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.hitsong { display: flex; align-items: center; gap: 20px; padding: 18px 22px; }
+.hitcover { width: 120px; height: 120px; border-radius: 14px; object-fit: cover; flex: none; box-shadow: 0 12px 30px rgba(0, 0, 0, .45); }
+.hitcover.ph { display: grid; place-items: center; font-size: 52px; background: var(--card); }
+.hitmeta { display: grid; gap: 2px; min-width: 0; }
+.hitmeta small { color: var(--muted); font-weight: 600; }
+.hitbig { font-family: var(--head); font-size: clamp(52px, 10vw, 84px); line-height: 1; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hitname { font-weight: 700; font-size: 18px; overflow-wrap: anywhere; }
+.hitline { padding: 46px 26px 14px; }
+.hitscale { position: relative; height: 10px; border-radius: 99px; background: linear-gradient(90deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .22), rgba(255, 255, 255, .08)); }
+.hitgoal { position: absolute; top: -40px; bottom: -8px; width: 3px; margin-left: -1.5px; background: var(--acc2); border-radius: 3px; }
+.hitgoal b { position: absolute; top: -4px; left: 50%; transform: translate(-50%, -100%); font-size: 14px; color: var(--acc2); }
+.hitmark { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: var(--card); border: 2px solid var(--pc); font-size: 18px; animation: popin .5s both; }
+.hitends { display: flex; justify-content: space-between; margin-top: 18px; color: var(--muted); font-size: 12px; font-weight: 700; }
+@media (max-width: 560px) {
+  .hitcard { padding: 16px 12px 14px; gap: 8px; }
+  .vinyl { width: 84px; height: 84px; }
+  .btn.hitstep { width: 40px; height: 40px; font-size: 20px; }
+  .hitsong { gap: 14px; padding: 14px; }
+  .hitcover { width: 86px; height: 86px; }
+  .hitname { font-size: 15px; }
+  .hitctl .hint { flex-basis: 100%; }
+  .hitctl .btn { width: 100%; }
+}
+
+/* ===== Draw Clash ===== */
+body.draw-app { --acc1: #4dabf7; --acc2: #63e6be; --grad: linear-gradient(100deg, #4dabf7, #845ef7 50%, #63e6be); }
+body.draw-app .bg i:nth-child(1) { background: #4dabf7; }
+body.draw-app .bg i:nth-child(2) { background: #845ef7; }
+body.draw-app .bg i:nth-child(3) { background: #63e6be; opacity: .22; }
+.drawword { display: flex; align-items: baseline; gap: 8px; min-width: 0; font-weight: 700; }
+.drawword b { font-size: 17px; letter-spacing: .04em; color: var(--acc2); }
+.drawword .dmask { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 18px; letter-spacing: .28em; white-space: pre-wrap; }
+.drawword small { color: var(--muted); font-size: 12px; }
+.drawgrid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; align-items: start; }
+.drawmain { display: grid; gap: 10px; min-width: 0; }
+.drawboard { position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
+.drawboard canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.drawboard.mine canvas { cursor: crosshair; }
+.drawcover { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; background: rgba(10, 12, 30, .82); backdrop-filter: blur(4px); }
+.drawcover[hidden] { display: none; }
+.dpick { display: grid; gap: 14px; justify-items: center; text-align: center; }
+.dpick b { font-size: 20px; }
+.dpick.wait b { font-size: 18px; font-weight: 600; }
+.dpicks { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.btn.dchoice { display: grid; gap: 4px; justify-items: center; min-width: 130px; padding: 14px 18px; font-size: 18px; }
+.btn.dchoice span { font-size: 26px; }
+.drawtools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 16px; background: var(--card); border: 1px solid var(--card-b); }
+.drawtools[hidden] { display: none; }
+.dcolors, .dsizes { display: flex; flex-wrap: wrap; gap: 6px; }
+.dcol { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .25); background: var(--c); }
+.dcol.on { outline: 3px solid var(--acc2); outline-offset: 2px; }
+.dsz { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--card-b); background: rgba(255, 255, 255, .06); font-size: 18px; }
+.dsz i { width: var(--s); height: var(--s); border-radius: 50%; background: var(--text); }
+.dsz.on { border-color: var(--acc2); background: color-mix(in srgb, var(--acc2) 20%, transparent); }
+.drawside { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; padding: 12px; height: 100%; min-height: 260px; }
+.drawfeed { display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: 52vh; font-size: 14px; }
+.dfe { padding: 5px 9px; border-radius: 10px; background: rgba(255, 255, 255, .05); border-left: 3px solid var(--pc, transparent); overflow-wrap: anywhere; }
+.dfe.ok { background: color-mix(in srgb, #2f9e44 30%, transparent); font-weight: 600; }
+.dfe.close { background: color-mix(in srgb, #f08c00 26%, transparent); }
+.dfe.hint { border: 0; background: none; color: var(--muted); }
+.drawguess input { font-size: 16px; padding: 12px 14px; }
+.drawguess .btn { padding: 10px 14px; }
+.drawrevgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 14px; align-items: center; }
+.drawsol { display: grid; gap: 6px; justify-items: center; text-align: center; padding: 22px; }
+.drawsol small { color: var(--muted); font-weight: 600; }
+.dsolw { font-family: var(--head); font-size: clamp(34px, 6vw, 56px); line-height: 1.05; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; overflow-wrap: anywhere; }
+.dsolo { color: var(--muted); font-weight: 700; }
+.dsolby { margin-top: 6px; padding: 4px 12px; border-radius: 99px; border: 1px solid var(--pc); font-weight: 600; font-size: 14px; }
+.drawboard.rev { max-width: 560px; justify-self: center; }
+@media (max-width: 900px) {
+  .drawgrid, .drawrevgrid { grid-template-columns: 1fr; }
+  .drawside { min-height: 0; grid-template-rows: auto auto; }
+  .drawfeed { max-height: 120px; }
+}
+@media (max-width: 560px) {
+  .drawtools { padding: 8px; gap: 8px; }
+  .dcol { width: 26px; height: 26px; }
+  .dsz { width: 36px; height: 36px; }
+  .btn.dchoice { min-width: 0; flex: 1 1 40%; font-size: 16px; padding: 12px; }
+  .drawword .dmask { font-size: 15px; letter-spacing: .2em; }
+}
+.drawside > * { min-width: 0; }
+.drawguess .btn { flex: none; }
+/* Draw Clash: das Wort in der Leiste hat Vorrang; die Zeichenfläche passt samt Werkzeugen auf den Bildschirm */
+.gamebar .drawword { flex: 0 0 auto; max-width: 100%; }
+.drawq .drawmain { justify-items: center; }
+.drawq .drawboard, .drawq .drawtools { width: min(100%, calc((100dvh - 300px) * 4 / 3)); min-width: min(100%, 320px); }
+@media (max-width: 900px) { .drawq .drawboard, .drawq .drawtools { width: 100%; } }
+@media (max-width: 560px) {
+  .drawword b { font-size: 15px; }
+  .drawword small { display: none; }
+}
+/* Sechs Spiele: am PC 3 × 2, auf Tablet und Handy 2 Spalten mit kompakten Karten */
+.apps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .apps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .apps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .appcard { flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 12px 13px; }
+  .appcard .ai { font-size: 26px; }
+  .appcard b { font-size: 15px; letter-spacing: .02em; }
+  .appcard small { font-size: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .appcard em { right: 8px; font-size: 10px; padding: 2px 7px; }
+}
 </style>
 </head>
 <body>
@@ -1663,6 +1814,7 @@ body.spy-app .bg i:nth-child(3) { background: #08d9d6; opacity: .25; }
     <button class="chip" id="roomChip" hidden><em id="roomLabel">Raum</em> <b id="roomCode"></b> <span>📋</span></button>
     <button class="iconbtn" id="langBtn"></button>
     <button class="iconbtn" id="muteBtn" title="Ton an/aus">🔊</button>
+    <button class="iconbtn" id="playersBtn" hidden title="Spieler">👥</button>
     <button class="iconbtn" id="leaveBtn" hidden title="Raum verlassen">🚪</button>
   </div>
 </header>
@@ -1793,7 +1945,7 @@ window.I18N = (() => {
       connFail: 'Verbindung fehlgeschlagen. Prüfe deine Internetverbindung.',
       joinRetry: 'Der Host antwortet noch nicht, neuer Versuch … (Tipp an den Host: Spielseite im Vordergrund offen lassen)', timeout: 'Zeitüberschreitung beim Verbinden. Häufigste Ursache: Der Host ist mit mobilen Daten online (manche Mobilfunknetze blockieren direkte Verbindungen) oder in einem Firmen-/Uni-WLAN. Am besten erstellt jemand im normalen WLAN den Raum. Versuch es sonst nochmal.',
       joinFailTitle: 'Beitritt nicht möglich',
-      kickedTitle: 'Entfernt', kickedText: 'Der Host hat dich aus dem Raum entfernt.',
+      afkTitle: 'Wegen Inaktivität entfernt', afkText: 'Du warst über 1 Minute inaktiv und wurdest aus dem Spiel genommen. Mit „Wieder beitreten“ bist du sofort zurück, deine Punkte bleiben erhalten.', rejoin: 'Wieder beitreten', afkKickedOther: '💤 {who} war 1 Minute inaktiv und wurde entfernt', kickedOther: '🚪 {who} wurde vom Host entfernt', afkQ: 'Bist du noch da?', afkWarnText: 'Tippe irgendwo, sonst wirst du in {s} s wegen Inaktivität entfernt.', pmTitle: 'Spieler', pmHint: 'Wer 1 Minute lang nichts tippt oder klickt, wird automatisch entfernt.', pmIdle: 'zuletzt aktiv vor {s} s', pmOff: 'nicht verbunden', pmEmpty: 'Keine anderen Spieler im Raum.', pmSure: 'Sicher?', rejKicked: 'Der Host hat dich aus diesem Raum entfernt.', kickedTitle: 'Entfernt', kickedText: 'Der Host hat dich aus dem Raum entfernt.',
       byeTitle: 'Spiel beendet', byeText: 'Der Host hat den Raum geschlossen.',
       lostTitle: 'Verbindung verloren', lostText: 'Die Verbindung zum Host ist abgebrochen. Dein Punktestand bleibt erhalten, wenn du wieder beitrittst.',
       reconnect: 'Neu verbinden', toHome: 'Zur Startseite',
@@ -1849,6 +2001,32 @@ window.I18N = (() => {
       sceneLoading: '🎬 Poster werden geladen …', sceneHint: 'Schau dir das Poster und die Hinweise an und tippe die richtige Antwort. Nur ein Versuch, je schneller desto mehr Punkte.',
       tmdbLabel: 'Poster ohne Schrift', tmdbOpt: '(optional, nur für dich als Host)', tmdbPh: 'TMDB-API-Schlüssel einfügen', tmdbOn: 'TMDB aktiv: Poster ohne Schrift, wo vorhanden', tmdbOff: 'TMDB-Schlüssel entfernt', tmdbHelp: 'Ohne Schlüssel zeigt das Spiel nur die Mitte des Posters, damit der Titel nicht zu sehen ist. Mit einem kostenlosen Schlüssel von themoviedb.org gibt es für viele Titel Poster ganz ohne Schrift.',
       banLate: 'Zu spät, die Bann-Zeit war schon vorbei.', banTaken: 'Den hat schon jemand gebannt. Such dir ein anderes Ziel.', banFail: 'Bann nicht möglich.',
+      hitTagline: 'Ein Song-Ausschnitt läuft: <b>Aus welchem Jahr ist er?</b> Von Elvis bis heute, Welthits und türkische Klassiker.<br><b>Wer die Musikgeschichte im Ohr hat, gewinnt.</b>',
+      hitRules: [
+        '🎵 Ein <b>Song-Ausschnitt</b> läuft. Schieb den Regler auf das <b>Erscheinungsjahr</b>, das du vermutest.',
+        '🎯 Genau getroffen: <b>1000 Punkte</b>. Je weiter daneben, desto weniger, ab 15 Jahren gibt es nichts.',
+        '🎤 Bonus: Tippe auf den richtigen <b>Interpreten</b> und hol dir <b>+300</b>.',
+        '👑 Wer am nächsten dran ist, bekommt den Rundensieg (+100). Einloggen mit Enter oder dem Knopf, sonst zählt dein letzter Stand.',
+      ],
+      hitQ: 'Aus welchem Jahr ist dieser Song?', hitIntro: 'Welches Jahr?', hitArtistQ: 'Bonus: Wer singt?', hitHint: 'Regler schieben, Interpret antippen (optional), dann einloggen.',
+      hitMoveFirst: 'Schieb zuerst den Regler auf ein Jahr.', hitWas: 'Der Song ist von', hitTip: 'Tipp', hitExact: 'Genau!', hitArtistOk: 'Interpret',
+      hitSongs: 'Songs aus', hitAll: 'Alle Songs', hitNSongs: '{n} Songs',
+      hitTime: 'Zeitreisende/r', hitTimeX: 'lag im Schnitt {n} Jahre daneben.', hitExactA: 'Volltreffer', hitExactX: 'traf {n}× das genaue Jahr.', hitArtA: 'Musiklexikon', hitArtX: 'erkannte {n}× den Interpreten.',
+      drawTagline: 'Einer zeichnet, alle anderen raten, so schnell sie können. Reihum ist jeder mal dran.<br><b>Kritzeln, raten, lachen.</b>',
+      drawRules: [
+        '🎨 Reihum ist jeder einmal <b>Zeichner</b> und wählt eines von <b>drei Wörtern</b>.',
+        '✏️ Zeichne es. Buchstaben, Zahlen oder Wörter malen ist unfair! Mit der Zeit werden einzelne Buchstaben als Hinweis aufgedeckt.',
+        '⌨️ Alle anderen tippen ihre Tipps ins <b>Ratefeld</b>, auf Deutsch oder Türkisch. Kleine Tippfehler zählen.',
+        '🏆 Je schneller du es errätst, desto mehr Punkte (bis 1000, der Erste +100). Der Zeichner punktet, wenn viele es erraten.',
+      ],
+      drawCats: { tiere: 'Tiere', essen: 'Essen & Obst', dinge: 'Dinge', natur: 'Natur & Wetter', fahrzeuge: 'Fahrzeuge', koerper: 'Körper & Kleidung', orte: 'Orte & Gebäude', aktion: 'Tätigkeiten & Feste' },
+      drawMin: 'Draw Clash braucht mindestens 2 Spieler. Lade noch Freunde ein!', drawPasses: 'Jeder zeichnet', drawTimeL: 'Zeit zum Zeichnen', drawWords: 'Wörter aus',
+      drawIntro: '{name} zeichnet', drawPick: 'Wähle dein Wort', drawPickT: 'Was willst du zeichnen?', drawChoosing: '{name} wählt ein Wort …',
+      drawGuessPh: 'Dein Tipp …', drawSend: 'Raten', drawYouDraw: 'Du zeichnest gerade', drawYouHave: 'Erraten! Warte auf die anderen …', drawWaitWord: 'Gleich geht es los …',
+      drawFeedEmpty: 'Noch keine Tipps. Leg los!', drawFeedDrawer: 'Hier erscheinen die Tipps der anderen.', drawGotIt: 'hat es erraten!', drawClose: 'ist ganz nah dran', drawCloseYou: 'Ganz nah dran!',
+      drawYouGot: 'Richtig erraten!', drawEraser: 'Radierer', drawUndo: 'Rückgängig', drawClear: 'Alles löschen',
+      drawWordWas: 'Gesucht war', drawBy: 'gezeichnet von {name}', drawTime: 'Zeit', drawFans: '{n}× erraten', drawDrawer: 'Zeichner', drawFirst: 'Erster',
+      drawArtA: 'Picasso', drawArtX: 'malte Bilder, die {n}× erraten wurden.', drawFastA: 'Blitzmerker', drawFastX: 'erriet ein Bild nach {s} s.', drawFoxA: 'Ratefuchs', drawFoxX: 'lag {n}× richtig.',
       spyTagline: 'Alle kennen das geheime Wort, nur einer nicht: der Spion. Gebt reihum Hinweise, findet den Spion, bevor er das Wort errät.<br><b>Bluffen, verdächtigen, entlarven. 3 bis 10 Spieler.</b>',
       spyRules: [
         '🕵️ Alle bekommen dasselbe <b>geheime Wort</b>, nur <b>einer ist der Spion</b>. Er kennt weder Wort noch Kategorie, sondern bekommt nur <b>einen einzigen vagen Hinweis</b>.',
@@ -1906,7 +2084,7 @@ window.I18N = (() => {
       youBanned: '{who} hat dich gebannt!', youBannedSub: 'Diese Runde setzt du aus. Rache ist süß …',
       streakT: 'Heißer Lauf', streakX: 'hatte {n} starke Runden in Folge.', victimT: 'Prügelknabe', victimX: 'wurde {n}× gebannt.',
       setBans: 'Bann (pro 5 Runden 1×)', setBonus: 'Bonusrunden & Serien', on: 'an', off: 'aus',
-      apps: { size: 'Party-Quiz: schätzen, vergleichen, erraten', geo: 'Wo auf der Welt bist du? Umsehen, laufen, tippen', reflex: 'Reaktions-Minispiele: Blind-Stopp, Ampel, Zielscheiben …', spy: 'Einer kennt das Wort nicht. Findet den Spion!' }, isNew: 'NEU',
+      apps: { size: 'Party-Quiz: schätzen, vergleichen, erraten', geo: 'Wo auf der Welt bist du? Umsehen, laufen, tippen', reflex: 'Reaktions-Minispiele: Blind-Stopp, Ampel, Zielscheiben …', spy: 'Einer kennt das Wort nicht. Findet den Spion!', hit: 'Song hören, Jahr schätzen: Hitster-Feeling', draw: 'Einer zeichnet, alle raten: Montagsmaler' }, isNew: 'NEU',
       geoTagline: 'Du landest irgendwo auf der Welt. Schau dich um, lauf die Straße entlang und tipp auf der Karte, wo du bist.<br><b>Wer am nächsten dran ist, gewinnt. 2 bis 10 Spieler.</b>',
       chooseGame: 'Spiel', geoRegion: 'Region',
       geoRegions: { world: 'Ganze Welt', eu: 'Europa', am: 'Amerika', as: 'Asien', afoc: 'Afrika & Ozeanien', detr: 'Deutschland & Türkei' },
@@ -1979,7 +2157,7 @@ window.I18N = (() => {
       connFail: 'Bağlantı kurulamadı. İnternet bağlantını kontrol et.',
       joinRetry: 'Oda sahibi henüz cevap vermiyor, tekrar deneniyor … (oda sahibine not: oyun sayfası açık ve ön planda kalsın)', timeout: 'Bağlantı zaman aşımına uğradı. En sık sebep: oda sahibi mobil veriyle bağlı (bazı operatörler doğrudan bağlantıyı engelliyor) ya da şirket/üniversite Wi-Fi’ında. En iyisi odayı normal ev Wi-Fi’ındaki biri kursun. Olmazsa tekrar dene.',
       joinFailTitle: 'Odaya katılınamadı',
-      kickedTitle: 'Çıkarıldın', kickedText: 'Oda sahibi seni odadan çıkardı.',
+      afkTitle: 'Hareketsizlik nedeniyle çıkarıldın', afkText: '1 dakikadan uzun süre hareketsiz kaldığın için oyundan çıkarıldın. „Tekrar katıl“ ile hemen geri dönersin, puanların kaybolmaz.', rejoin: 'Tekrar katıl', afkKickedOther: '💤 {who} 1 dakika hareketsiz kaldı ve çıkarıldı', kickedOther: '🚪 {who} oda sahibi tarafından çıkarıldı', afkQ: 'Hâlâ orada mısın?', afkWarnText: 'Bir yere dokun, yoksa {s} sn içinde hareketsizlik nedeniyle çıkarılacaksın.', pmTitle: 'Oyuncular', pmHint: '1 dakika boyunca hiçbir şeye dokunmayan ya da tıklamayan otomatik olarak çıkarılır.', pmIdle: 'son hareket {s} sn önce', pmOff: 'bağlı değil', pmEmpty: 'Odada başka oyuncu yok.', pmSure: 'Emin misin?', rejKicked: 'Oda sahibi seni bu odadan çıkardı.', kickedTitle: 'Çıkarıldın', kickedText: 'Oda sahibi seni odadan çıkardı.',
       byeTitle: 'Oyun bitti', byeText: 'Oda sahibi odayı kapattı.',
       lostTitle: 'Bağlantı koptu', lostText: 'Oda sahibiyle bağlantı koptu. Tekrar katılırsan puanların korunur.',
       reconnect: 'Yeniden bağlan', toHome: 'Ana sayfaya dön',
@@ -2035,6 +2213,32 @@ window.I18N = (() => {
       sceneLoading: '🎬 Kapak resimleri yükleniyor …', sceneHint: 'Kapak resmine ve ipuçlarına bak, doğru cevaba dokun. Tek hakkın var, ne kadar hızlıysan o kadar puan.',
       tmdbLabel: 'Yazısız kapak resimleri', tmdbOpt: '(isteğe bağlı, sadece oda sahibi için)', tmdbPh: 'TMDB API anahtarını yapıştır', tmdbOn: 'TMDB aktif: mümkünse yazısız kapaklar', tmdbOff: 'TMDB anahtarı kaldırıldı', tmdbHelp: 'Anahtar olmadan oyun, isim görünmesin diye kapağın sadece orta kısmını gösterir. themoviedb.org’dan ücretsiz bir anahtarla birçok yapım için hiç yazısı olmayan kapaklar gelir.',
       banLate: 'Geç kaldın, yasaklama süresi doldu.', banTaken: 'Onu zaten biri yasakladı. Başka birini seç.', banFail: 'Yasaklama mümkün değil.',
+      hitTagline: 'Bir şarkıdan bir parça çalıyor: <b>Hangi yıldan?</b> Elvis’ten bugüne, dünya hitleri ve Türk klasikleri.<br><b>Müzik tarihini kulağında taşıyan kazanır.</b>',
+      hitRules: [
+        '🎵 Bir <b>şarkı parçası</b> çalıyor. Sürgüyü tahmin ettiğin <b>çıkış yılına</b> getir.',
+        '🎯 Tam isabet: <b>1000 puan</b>. Ne kadar uzaksan o kadar az, 15 yıldan sonrası sıfır.',
+        '🎤 Bonus: Doğru <b>şarkıcıya</b> dokun, <b>+300</b> kap.',
+        '👑 En yakın tahmin turu kazanır (+100). Enter ya da butonla kilitle, yoksa son ayarın sayılır.',
+      ],
+      hitQ: 'Bu şarkı hangi yıldan?', hitIntro: 'Hangi yıl?', hitArtistQ: 'Bonus: Kim söylüyor?', hitHint: 'Sürgüyü kaydır, şarkıcıya dokun (isteğe bağlı), sonra kilitle.',
+      hitMoveFirst: 'Önce sürgüyü bir yıla getir.', hitWas: 'Şarkı şu yıldan', hitTip: 'Tahmin', hitExact: 'Tam isabet!', hitArtistOk: 'Şarkıcı',
+      hitSongs: 'Şarkılar', hitAll: 'Tüm şarkılar', hitNSongs: '{n} şarkı',
+      hitTime: 'Zaman yolcusu', hitTimeX: 'ortalama {n} yıl şaştı.', hitExactA: 'Tam isabet', hitExactX: '{n} kez yılı tam bildi.', hitArtA: 'Müzik ansiklopedisi', hitArtX: 'şarkıcıyı {n} kez bildi.',
+      drawTagline: 'Biri çiziyor, diğerleri olabildiğince hızlı tahmin ediyor. Herkes sırayla çizer.<br><b>Karala, tahmin et, gül.</b>',
+      drawRules: [
+        '🎨 Sırayla herkes bir kez <b>çizer</b> ve <b>üç kelimeden</b> birini seçer.',
+        '✏️ Onu çiz. Harf, rakam ya da kelime yazmak haksızlık! Zamanla bazı harfler ipucu olarak açılır.',
+        '⌨️ Diğerleri tahminlerini <b>tahmin kutusuna</b> yazar, Türkçe ya da Almanca. Küçük yazım hataları sayılır.',
+        '🏆 Ne kadar hızlı bilirsen o kadar puan (1000’e kadar, ilk bilen +100). Çizen, çok kişi bilirse puan alır.',
+      ],
+      drawCats: { tiere: 'Hayvanlar', essen: 'Yiyecek & Meyve', dinge: 'Eşyalar', natur: 'Doğa & Hava', fahrzeuge: 'Taşıtlar', koerper: 'Vücut & Giysi', orte: 'Yerler & Binalar', aktion: 'Eylemler & Kutlamalar' },
+      drawMin: 'Draw Clash en az 2 oyuncu ister. Arkadaşlarını davet et!', drawPasses: 'Herkes çizer', drawTimeL: 'Çizim süresi', drawWords: 'Kelimeler',
+      drawIntro: '{name} çiziyor', drawPick: 'Kelimeni seç', drawPickT: 'Ne çizmek istersin?', drawChoosing: '{name} kelime seçiyor …',
+      drawGuessPh: 'Tahminin …', drawSend: 'Tahmin et', drawYouDraw: 'Şu an sen çiziyorsun', drawYouHave: 'Bildin! Diğerleri bekleniyor …', drawWaitWord: 'Birazdan başlıyor …',
+      drawFeedEmpty: 'Henüz tahmin yok. Hadi başla!', drawFeedDrawer: 'Diğerlerinin tahminleri burada görünür.', drawGotIt: 'bildi!', drawClose: 'çok yakın', drawCloseYou: 'Çok yakın!',
+      drawYouGot: 'Doğru bildin!', drawEraser: 'Silgi', drawUndo: 'Geri al', drawClear: 'Hepsini sil',
+      drawWordWas: 'Aranan kelime', drawBy: 'çizen: {name}', drawTime: 'Süre', drawFans: '{n} kişi bildi', drawDrawer: 'Çizen', drawFirst: 'İlk bilen',
+      drawArtA: 'Picasso', drawArtX: '{n} kez bilinen çizimler yaptı.', drawFastA: 'Şimşek', drawFastX: 'bir çizimi {s} sn’de bildi.', drawFoxA: 'Tahmin ustası', drawFoxX: '{n} kez doğru bildi.',
       spyTagline: 'Herkes gizli kelimeyi biliyor, biri hariç: casus. Sırayla ipucu verin, casus kelimeyi bulmadan onu yakalayın.<br><b>Blöf yap, şüphelen, ifşa et. 3 ila 10 oyuncu.</b>',
       spyRules: [
         '🕵️ Herkes aynı <b>gizli kelimeyi</b> alır, sadece <b>biri casustur</b>. Ne kelimeyi ne kategoriyi bilir, sadece <b>tek bir belirsiz ipucu</b> alır.',
@@ -2092,7 +2296,7 @@ window.I18N = (() => {
       youBanned: '{who} seni banladı!', youBannedSub: 'Bu turu pas geçiyorsun. İntikam tatlıdır …',
       streakT: 'Ateşli seri', streakX: 'üst üste {n} güçlü tur yaptı.', victimT: 'Günah keçisi', victimX: '{n} kez banlandı.',
       setBans: 'Ban (her 5 turda 1)', setBonus: 'Bonus turlar ve seriler', on: 'açık', off: 'kapalı',
-      apps: { size: 'Parti yarışması: tahmin et, karşılaştır, bil', geo: 'Dünyanın neresindesin? Etrafına bak, yürü, haritada tahmin et', reflex: 'Refleks mini oyunları: kör kronometre, trafik ışığı, hedefler …', spy: 'Biri kelimeyi bilmiyor. Casusu bul!' }, isNew: 'YENİ',
+      apps: { size: 'Parti yarışması: tahmin et, karşılaştır, bil', geo: 'Dünyanın neresindesin? Etrafına bak, yürü, haritada tahmin et', reflex: 'Refleks mini oyunları: kör kronometre, trafik ışığı, hedefler …', spy: 'Biri kelimeyi bilmiyor. Casusu bul!', hit: 'Şarkıyı dinle, yılını tahmin et', draw: 'Biri çizer, herkes tahmin eder' }, isNew: 'YENİ',
       geoTagline: 'Dünyanın herhangi bir yerine düşüyorsun. Etrafına bak, sokakta yürü ve haritada nerede olduğunu işaretle.<br><b>En yakın tahmin kazanır. 2 ila 10 oyuncu.</b>',
       chooseGame: 'Oyun', geoRegion: 'Bölge',
       geoRegions: { world: 'Tüm dünya', eu: 'Avrupa', am: 'Amerika', as: 'Asya', afoc: 'Afrika ve Okyanusya', detr: 'Almanya ve Türkiye' },
@@ -13655,6 +13859,61 @@ window.SPYW = {
 
 </script>
 <script>
+// Draw Clash: Begriffe zum Zeichnen. Pro Wort: [Deutsch, Türkisch, [weitere richtige Schreibweisen]]
+// Nur Dinge, die man gut zeichnen kann und die jeder kennt. Geraten wird in beiden Sprachen, kleine Tippfehler zählen.
+window.DRAWW = {
+  tiere: { e: '🐘', w: [
+    ['Katze', 'Kedi', []], ['Hund', 'Köpek', []], ['Elefant', 'Fil', []], ['Giraffe', 'Zürafa', []], ['Löwe', 'Aslan', ['loewe']],
+    ['Pferd', 'At', []], ['Kuh', 'İnek', []], ['Schwein', 'Domuz', []], ['Schaf', 'Koyun', []], ['Huhn', 'Tavuk', ['henne']],
+    ['Fisch', 'Balık', []], ['Hai', 'Köpekbalığı', []], ['Schlange', 'Yılan', []], ['Schildkröte', 'Kaplumbağa', ['schildkroete']],
+    ['Spinne', 'Örümcek', []], ['Biene', 'Arı', []], ['Schmetterling', 'Kelebek', []], ['Affe', 'Maymun', []], ['Hase', 'Tavşan', ['kaninchen']],
+    ['Maus', 'Fare', []], ['Frosch', 'Kurbağa', []], ['Pinguin', 'Penguen', []], ['Eule', 'Baykuş', []], ['Krokodil', 'Timsah', []],
+    ['Kamel', 'Deve', []], ['Schnecke', 'Salyangoz', []], ['Wal', 'Balina', []], ['Ente', 'Ördek', []], ['Bär', 'Ayı', ['baer']], ['Zebra', 'Zebra', []],
+  ] },
+  essen: { e: '🍕', w: [
+    ['Pizza', 'Pizza', []], ['Banane', 'Muz', []], ['Apfel', 'Elma', []], ['Erdbeere', 'Çilek', []], ['Wassermelone', 'Karpuz', ['melone']],
+    ['Kirsche', 'Kiraz', []], ['Ananas', 'Ananas', []], ['Karotte', 'Havuç', ['möhre', 'mohrrübe']], ['Brot', 'Ekmek', []], ['Ei', 'Yumurta', []],
+    ['Eis', 'Dondurma', ['eiscreme']], ['Torte', 'Pasta', ['kuchen']], ['Döner', 'Döner', ['kebab']], ['Simit', 'Simit', []], ['Brezel', 'Pretzel', []],
+    ['Hamburger', 'Hamburger', ['burger']], ['Pommes', 'Patates kızartması', ['patates', 'pommes frites']], ['Käse', 'Peynir', []], ['Zitrone', 'Limon', []],
+    ['Tomate', 'Domates', []], ['Pilz', 'Mantar', []], ['Popcorn', 'Patlamış mısır', ['misir']], ['Lolli', 'Lolipop', ['lutscher']], ['Trauben', 'Üzüm', ['traube']],
+  ] },
+  dinge: { e: '🏠', w: [
+    ['Haus', 'Ev', []], ['Stuhl', 'Sandalye', []], ['Tisch', 'Masa', []], ['Bett', 'Yatak', []], ['Lampe', 'Lamba', []], ['Schlüssel', 'Anahtar', []],
+    ['Brille', 'Gözlük', []], ['Handy', 'Telefon', ['cep telefonu', 'smartphone']], ['Uhr', 'Saat', []], ['Regenschirm', 'Şemsiye', ['schirm']],
+    ['Schere', 'Makas', []], ['Gitarre', 'Gitar', []], ['Ball', 'Top', []], ['Buch', 'Kitap', []], ['Kerze', 'Mum', []], ['Tür', 'Kapı', []],
+    ['Fenster', 'Pencere', []], ['Zahnbürste', 'Diş fırçası', []], ['Kamera', 'Fotoğraf makinesi', ['fotoapparat']], ['Fernseher', 'Televizyon', ['tv']],
+    ['Krone', 'Taç', []], ['Geschenk', 'Hediye', []], ['Ballon', 'Balon', ['luftballon']], ['Hammer', 'Çekiç', []], ['Glühbirne', 'Ampul', ['birne']],
+    ['Teekanne', 'Çaydanlık', []], ['Koffer', 'Valiz', ['bavul']], ['Kopfhörer', 'Kulaklık', []], ['Spiegel', 'Ayna', []], ['Anker', 'Çapa', []],
+  ] },
+  natur: { e: '🌳', w: [
+    ['Sonne', 'Güneş', []], ['Mond', 'Ay', []], ['Stern', 'Yıldız', []], ['Wolke', 'Bulut', []], ['Regenbogen', 'Gökkuşağı', []], ['Blitz', 'Şimşek', []],
+    ['Baum', 'Ağaç', []], ['Blume', 'Çiçek', []], ['Kaktus', 'Kaktüs', []], ['Berg', 'Dağ', []], ['Vulkan', 'Yanardağ', ['volkan']], ['Insel', 'Ada', []],
+    ['Schneemann', 'Kardan adam', []], ['Regen', 'Yağmur', []], ['Feuer', 'Ateş', []], ['Welle', 'Dalga', []], ['Palme', 'Palmiye', []], ['Blatt', 'Yaprak', []],
+  ] },
+  fahrzeuge: { e: '🚗', w: [
+    ['Auto', 'Araba', []], ['Fahrrad', 'Bisiklet', ['rad']], ['Flugzeug', 'Uçak', []], ['Schiff', 'Gemi', []], ['Zug', 'Tren', []], ['Bus', 'Otobüs', []],
+    ['Hubschrauber', 'Helikopter', []], ['Rakete', 'Roket', []], ['Motorrad', 'Motosiklet', []], ['Traktor', 'Traktör', []], ['Boot', 'Tekne', ['kayık']],
+    ['Feuerwehrauto', 'İtfaiye aracı', ['itfaiye']], ['Krankenwagen', 'Ambulans', []], ['Taxi', 'Taksi', []], ['Ufo', 'Ufo', []],
+  ] },
+  koerper: { e: '👕', w: [
+    ['Auge', 'Göz', []], ['Nase', 'Burun', []], ['Mund', 'Ağız', []], ['Ohr', 'Kulak', []], ['Hand', 'El', []], ['Fuß', 'Ayak', ['fuss']],
+    ['Zahn', 'Diş', []], ['Herz', 'Kalp', []], ['Hut', 'Şapka', []], ['Schuh', 'Ayakkabı', []], ['Socke', 'Çorap', []], ['Hose', 'Pantolon', []],
+    ['T-Shirt', 'Tişört', ['tshirt']], ['Kleid', 'Elbise', []], ['Krawatte', 'Kravat', []], ['Schnurrbart', 'Bıyık', ['bart']],
+  ] },
+  orte: { e: '🏰', w: [
+    ['Burg', 'Kale', ['schloss']], ['Moschee', 'Cami', []], ['Kirche', 'Kilise', []], ['Leuchtturm', 'Deniz feneri', []], ['Brücke', 'Köprü', []],
+    ['Pyramide', 'Piramit', []], ['Eiffelturm', 'Eyfel Kulesi', []], ['Zelt', 'Çadır', []], ['Strand', 'Plaj', []], ['Bahnhof', 'Tren istasyonu', ['istasyon']],
+    ['Krankenhaus', 'Hastane', []], ['Schule', 'Okul', []], ['Spielplatz', 'Oyun parkı', ['park']], ['Fußballstadion', 'Futbol stadyumu', ['stadion', 'stadyum']],
+  ] },
+  aktion: { e: '🏃', w: [
+    ['Schwimmen', 'Yüzmek', ['yüzme']], ['Schlafen', 'Uyumak', ['uyku']], ['Tanzen', 'Dans etmek', ['dans']], ['Kochen', 'Yemek yapmak', ['yemek pişirmek']],
+    ['Angeln', 'Balık tutmak', []], ['Lachen', 'Gülmek', []], ['Weinen', 'Ağlamak', []], ['Fußball', 'Futbol', []], ['Skifahren', 'Kayak', []],
+    ['Grillen', 'Mangal', []], ['Selfie', 'Selfie', []], ['Hochzeit', 'Düğün', []], ['Geburtstag', 'Doğum günü', []], ['Zähneputzen', 'Diş fırçalamak', []],
+  ] },
+};
+
+</script>
+<script>
 // =====================================================================
 //  LAUNCH-COUNTDOWN: Bis zum Starttermin liegt ein Countdown über der Seite,
 //  das Spiel startet erst danach (wer die Seite offen hat, erlebt den Start live).
@@ -13953,7 +14212,7 @@ window.__launchGate = (() => {
   const sess = (k, v) => { try { if (v === undefined) return sessionStorage.getItem(k) || ''; sessionStorage.setItem(k, v); } catch { /* privater Modus */ } return ''; };
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = 'f2c6ae4a6b';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = 'ee904676e6';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -14309,9 +14568,11 @@ window.__launchGate = (() => {
   //  HOST
   // =====================================================================
   // Zwei Spiele auf einer Seite: Size Clash (Quiz) und Geo Clash (Street View)
-  const APP_DEF = { size: { app: 'size', rounds: 10, time: 25 }, geo: { app: 'geo', rounds: 5, time: 120 }, reflex: { app: 'reflex', rounds: 7, time: 30 }, spy: { app: 'spy', rounds: 5, time: 30, teams: 0 } };
-  const APPS = ['size', 'geo', 'reflex', 'spy'];
-  const APP_UI = { size: ['📏', 'SIZE'], geo: ['🌍', 'GEO'], reflex: ['⚡', 'REFLEX'], spy: ['🕵️', 'SPY'] };
+  const APP_DEF = { size: { app: 'size', rounds: 10, time: 25 }, geo: { app: 'geo', rounds: 5, time: 120 }, reflex: { app: 'reflex', rounds: 7, time: 30 }, spy: { app: 'spy', rounds: 5, time: 30, teams: 0 },
+    hit: { app: 'hit', rounds: 10, time: 25 }, draw: { app: 'draw', time: 80, teams: 0, drawpass: 1 } };
+  const APPS = ['size', 'geo', 'reflex', 'spy', 'hit', 'draw'];
+  const APP_UI = { size: ['📏', 'SIZE'], geo: ['🌍', 'GEO'], reflex: ['⚡', 'REFLEX'], spy: ['🕵️', 'SPY'], hit: ['🎵', 'HIT'], draw: ['🎨', 'DRAW'] };
+  const NEW_APPS = ['hit', 'draw'];
   me.app = APPS.includes(store.get('app', 'size')) ? store.get('app', 'size') : 'size';
   const curApp = () => (S ? S.settings.app : me.app) || 'size';
   const isGeoApp = () => (S ? S.settings.app === 'geo' : me.app === 'geo');
@@ -14325,7 +14586,7 @@ window.__launchGate = (() => {
     peer.on('open', () => {
       roomCode = code;
       H = {
-        code, phase: 'lobby', settings: Object.assign({ app: 'size', rounds: 10, time: 25, cat: [], mode: 'mix', qcat: [], ncat: [], region: 'world', bans: 1, bonus: 1, teams: 0, rxg: [], spycat: [], spypass: 2 }, APP_DEF[me.app] || {}), players: [], round: 0, total: 0,
+        code, phase: 'lobby', settings: Object.assign({ app: 'size', rounds: 10, time: 25, cat: [], mode: 'mix', qcat: [], ncat: [], region: 'world', bans: 1, bonus: 1, teams: 0, rxg: [], spycat: [], spypass: 2, hitcat: [], drawcat: [], drawpass: 1 }, APP_DEF[me.app] || {}), players: [], round: 0, total: 0,
         order: [], used: new Set(), q: null, range: null, guesses: {}, reveal: null, final: null,
         deadlineAt: 0, timer: null, best: null, worst: null, fast: null, qStart: 0,
       };
@@ -14376,6 +14637,7 @@ window.__launchGate = (() => {
       if (!/^[a-z0-9]{6,24}$/.test(pid)) { conn.send({ t: 'reject', code: 'rejId' }); return; }
       let p = findP(pid);
       if (p && p.host) { conn.send({ t: 'reject', code: 'rejId' }); return; }
+      if (H.kickedIds?.has(pid)) { conn.send({ t: 'reject', code: 'rejKicked' }); setTimeout(() => { try { conn.close(); } catch { /* ignore */ } }, 800); return; }
       if (!p) {
         if (H.players.length >= MAX_PLAYERS) {
           conn.send({ t: 'reject', code: 'rejFull', n: MAX_PLAYERS });
@@ -14385,20 +14647,23 @@ window.__launchGate = (() => {
         p = addPlayer({ pid, name: d.name, avatar: d.avatar });
         toast(T('joined', { who: `${p.avatar} ${esc(p.name)}` }));
       } else {
-        p.online = true;
+        p.online = true; p.gone = false;
         const old = conns.get(pid);
         if (old && old !== conn) { old._replaced = true; try { old.close(); } catch { /* ignore */ } }
         toast(T('back', { who: `${p.avatar} ${esc(p.name)}` }));
       }
       conn.pid = pid;
       conns.set(pid, conn);
+      p.lastAct = Date.now();
       conn.send({ t: 'welcome', pid });
       publish();
       if (H.phase === 'question' && H.q?.type === 'spy') spySecrets(pid);
+      if (H.phase === 'question' && H.q?.type === 'draw') drawSecrets(pid);
       return;
     }
     const pid = conn.pid;
     if (!pid) return;
+    if (d.t === 'act') { const p = findP(pid); if (p) p.lastAct = Date.now(); return; }
     if (d.t === 'guess') return guessIn(pid, d);
     if (d.t === 'react') {
       if (!REACTIONS.includes(d.e) || !spamGuard(spamOf(pid, 'react')).ok) return;
@@ -14441,7 +14706,7 @@ window.__launchGate = (() => {
     if (!txt) return;
     const reply = m => (pid === me.pid ? onClientMsg(m) : conn.send(m));
     if (!spamGuard(spamOf(pid, 'chat'), 6, 6000, 10000).ok) return reply({ t: 'chatNo', code: 'chatSlow' });
-    if (H.phase === 'question' && H.q && H.q.type === 'quiz') {
+    if (H.phase === 'question' && H.q && (H.q.type === 'quiz' || H.q.type === 'hit')) {
       const g = qnorm(txt), words = txt.split(/\s+/);
       const spoil = quizMatch(txt, H.q.acc) || H.q.acc.some(a => a.length >= 4 && g.replace(/ /g, '').includes(a.replace(/ /g, ''))) ||
         words.some(w => quizMatch(w, H.q.acc));
@@ -14449,6 +14714,8 @@ window.__launchGate = (() => {
     }
     // Spy Clash: Agenten dürfen das Wort auch im Chat nicht verraten
     if (H.phase === 'question' && H.q?.type === 'spy' && pid !== H.q.spy && H.q.order.includes(pid) && spyLeak(txt, spyForms(H.q.cat, H.q.w))) return reply({ t: 'chatNo', code: 'chatSpoiler' });
+    // Draw Clash: das Wort darf niemand in den Chat schreiben (Raten geht über das Ratefeld)
+    if (H.phase === 'question' && H.q?.type === 'draw' && H.q.cat && spyLeak(txt, drawForms(H.q.cat, H.q.w))) return reply({ t: 'chatNo', code: 'chatSpoiler' });
     const msg = { t: 'chat', pid, text: txt };
     broadcast(msg); onClientMsg(msg);
   }
@@ -14465,6 +14732,75 @@ window.__launchGate = (() => {
     if (H.phase === 'question') checkAllLocked();
   }
 
+  // ---------- Entfernen: durch den Host (Lobby und laufendes Spiel) oder automatisch nach 1 Minute Inaktivität ----------
+  const AFK_MS = 60000;
+  function kickPlayer(pid, why) {
+    const p = findP(pid);
+    if (!H || !p || p.host) return;
+    const c = conns.get(pid);
+    if (c) { try { c.send({ t: 'kicked', why }); } catch { /* ignore */ } setTimeout(() => { try { c.close(); } catch { /* ignore */ } }, 200); }
+    conns.delete(pid);
+    // vom Host Entfernte kommen in diesem Raum nicht wieder rein; wer wegen Inaktivität fliegt, darf neu beitreten
+    if (why === 'host') (H.kickedIds = H.kickedIds || new Set()).add(pid);
+    // im laufenden Spiel wie ein Verbindungsabbruch behandeln (Punkte bleiben in der Tabelle), beim nächsten Spielstart fällt er raus
+    if (H.phase === 'lobby') H.players = H.players.filter(x => x !== p);
+    else { p.online = false; p.gone = true; }
+    const note = { t: 'note', k: why === 'afk' ? 'afkKickedOther' : 'kickedOther', who: `${p.avatar} ${p.name}` };
+    broadcast(note); onClientMsg(note);
+    publish();
+    if (H.phase === 'question') checkAllLocked();
+  }
+  setInterval(() => {
+    if (role !== 'host' || !H || H.phase === 'lobby' || H.phase === 'final') return;
+    const now = Date.now();
+    H.players.filter(p => !p.host && p.online && now - (p.lastAct || now) > AFK_MS).forEach(p => kickPlayer(p.pid, 'afk'));
+  }, 3000);
+
+  // Gäste melden Eingaben (Tippen, Klicken, Tasten) an den Host, höchstens alle 5 s, die letzte immer
+  const AFK_WARN = 40000;
+  let lastInput = Date.now(), lastActSent = 0, actTimer = null, afkShown = false;
+  function sendAct() { actTimer = null; lastActSent = Date.now(); send({ t: 'act' }); }
+  function onInput() {
+    lastInput = Date.now();
+    if (afkShown) afkWarn(0);
+    if (role !== 'client' || !hostConn?.open || actTimer) return;
+    const wait = 5000 - (Date.now() - lastActSent);
+    if (wait <= 0) sendAct(); else actTimer = setTimeout(sendAct, wait);
+  }
+  ['pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(e => addEventListener(e, onInput, { passive: true, capture: true }));
+  addEventListener('mousemove', () => { if (Date.now() - lastInput > 2000) onInput(); }, { passive: true });
+  function afkWarn(sec) {
+    let el = $('#afkWarn');
+    if (!sec) { if (el) el.remove(); afkShown = false; return; }
+    if (!el) { el = document.createElement('div'); el.id = 'afkWarn'; el.className = 'afkwarn'; document.body.appendChild(el); Sound.pop(); }
+    afkShown = true;
+    el.innerHTML = `<b>💤 ${T('afkQ')}</b><span>${T('afkWarnText', { s: sec })}</span>`;
+  }
+  // Warnung ab 40 s ohne Eingabe; in Lobby und Endstand zählt nichts (der Host setzt die Zeit beim Spielstart zurück)
+  setInterval(() => {
+    if (role !== 'client' || !S || !joined || S.phase === 'lobby' || S.phase === 'final') { lastInput = Date.now(); if (afkShown) afkWarn(0); return; }
+    const idle = Date.now() - lastInput;
+    if (idle > AFK_WARN) afkWarn(Math.max(1, Math.ceil((AFK_MS - idle) / 1000)));
+  }, 500);
+
+  // Host im laufenden Spiel: Spielerliste mit Inaktivität und „Entfernen“ (zweimal tippen zur Sicherheit)
+  function playersPanel() {
+    if (role !== 'host' || !H) return;
+    const o = $('#overlay'), now = Date.now();
+    const list = H.players.filter(p => !p.host && !p.gone);
+    o.innerHTML = `<div class="modal card pmodal"><h3>👥 ${T('pmTitle')}</h3><p class="pmhint">${T('pmHint')}</p>
+      <div class="pmlist">${list.map(p => `<div class="pmrow ${p.online ? '' : 'off'}"><span class="pmav">${p.avatar}</span>
+        <span class="pmname"><b>${esc(p.name)}</b><small>${p.online ? T('pmIdle', { s: Math.round((now - (p.lastAct || now)) / 1000) }) : T('pmOff')}</small></span>
+        <button class="btn pmkick" data-pk="${esc(p.pid)}">${T('kick')}</button></div>`).join('') || `<p class="pmhint">${T('pmEmpty')}</p>`}</div>
+      <div class="mbtns"><button class="btn primary" id="pmClose">OK</button></div></div>`;
+    o.hidden = false;
+    $('#pmClose').onclick = closeOverlay;
+    $$('[data-pk]', o).forEach(b => b.onclick = () => {
+      if (!b.classList.contains('sure')) { b.classList.add('sure'); b.textContent = T('pmSure'); return; }
+      kickPlayer(b.dataset.pk, 'host'); playersPanel();
+    });
+  }
+
   function guessIn(pid, d) {
     if (H.phase !== 'question') return;
     const p = findP(pid); if (!p || H.banned?.[pid]) return;
@@ -14472,6 +14808,8 @@ window.__launchGate = (() => {
     if (H.q.type === 'geo') return geoGuessIn(pid, d);
     if (H.q.type === 'rx') return rxGuessIn(pid, d);
     if (H.q.type === 'spy') return spyIn(pid, d);
+    if (H.q.type === 'draw') return drawIn(pid, d);
+    if (H.q.type === 'hit') return hitGuessIn(pid, d);
     if (H.q.type === 'quiz' && (H.q.kind === 'music' || H.q.mc)) {
       // Musik und Serien/Filme: 4 Antworten, genau ein Versuch pro Spieler; ob richtig, verrät der Feed erst bei der Auflösung
       const pick = Math.floor(+d.pick);
@@ -14544,6 +14882,7 @@ window.__launchGate = (() => {
 
   function checkAllLocked() {
     if (H.q?.type === 'spy') return spyCheck();
+    if (H.q?.type === 'draw') return drawCheck();
     const on = H.players.filter(p => p.online);
     if (on.length && on.every(p => H.guesses[p.pid]?.locked || H.banned?.[p.pid])) {
       clearTimeout(H.timer);
@@ -14720,7 +15059,7 @@ window.__launchGate = (() => {
     await pool(rounds, 3, async r => {
       let it = QZBYID[r.id], hit = Date.now() < until ? await findPreview(it) : null;
       for (let k = 0; !hit && k < 3 && Date.now() < until; k++) {
-        const alt = shuffle(QUIZ.filter(x => x.cat === it.cat && !taken.has(x.id)))[0];
+        const alt = shuffle(QUIZ.filter(x => x.cat === it.cat && !taken.has(x.id) && (r.type !== 'hit' || x.year > 0)))[0];
         if (!alt) break;
         taken.add(alt.id); r.id = alt.id; it = alt;
         hit = await findPreview(alt);
@@ -14820,7 +15159,9 @@ window.__launchGate = (() => {
   async function startGame() {
     if (starting) return;
     if (H.settings.app === 'spy' && H.players.filter(p => p.online).length < SPY_MIN) { overlay(T('error'), T('spyMin', { n: SPY_MIN }), [{ t: 'OK', primary: true }]); return; }
-    H.order = H.settings.app === 'geo' ? buildGeoRounds() : H.settings.app === 'reflex' ? buildRxRounds() : H.settings.app === 'spy' ? buildSpyRounds() : buildRounds();
+    if (H.settings.app === 'draw' && H.players.filter(p => p.online).length < DRAW_MIN) { overlay(T('error'), T('drawMin'), [{ t: 'OK', primary: true }]); return; }
+    const app = H.settings.app;
+    H.order = app === 'geo' ? buildGeoRounds() : app === 'reflex' ? buildRxRounds() : app === 'spy' ? buildSpyRounds() : app === 'hit' ? buildHitRounds() : app === 'draw' ? buildDrawRounds() : buildRounds();
     if (!H.order.length) { overlay(T('error'), T(H.settings.app === 'geo' ? 'geoNoSpots' : 'noRounds'), [{ t: 'OK', primary: true }]); return; }
     if (H.order.some(r => QZBYID[r.id]?.kind === 'music')) {
       starting = true; busy(T('musicLoading'));
@@ -14832,9 +15173,9 @@ window.__launchGate = (() => {
       try { await prepareScenes(); } finally { starting = false; unbusy(); }
     }
     H.gid = (H.gid || 0) + 1;
-    H.total = H.order.length; H.round = 0; H.best = null; H.worst = null; H.final = null; H.geoBest = null; H.geoWorst = null; H.rxBest = null; H.jackpot = null; H.spyStats = {}; H.spyBag = [];
+    H.total = H.order.length; H.round = 0; H.best = null; H.worst = null; H.final = null; H.geoBest = null; H.geoWorst = null; H.rxBest = null; H.jackpot = null; H.spyStats = {}; H.spyBag = []; H.hitStats = {}; H.drawStats = {};
     H.players = H.players.filter(p => p.online);
-    H.players.forEach(p => Object.assign(p, { score: 0, joker: true, wins: 0, hits: 0 }));
+    H.players.forEach(p => Object.assign(p, { score: 0, joker: true, wins: 0, hits: 0, lastAct: Date.now() }));
     resetExtras();
     teamFill();
     H.fast = null;
@@ -14848,8 +15189,10 @@ window.__launchGate = (() => {
     const spec = H.order[H.round - 1];
     H.ttot = 0;
     if (spec.type === 'spy') return startSpyRound(spec);
+    if (spec.type === 'draw') return startDrawRound(spec);
     let rxDur = 0;
     if (spec.type === 'geo') nextGeoRound(spec);
+    else if (spec.type === 'hit') startHitRound(spec);
     else if (spec.type === 'rx') rxDur = startRxRound(spec);
     else if (spec.type === 'num') {
       H.q = Object.assign({ type: 'num' }, QBYID[spec.id]);
@@ -14956,6 +15299,8 @@ window.__launchGate = (() => {
     if (H.q.type === 'geo') return endGeoRound();
     if (H.q.type === 'rx') return endRxRound();
     if (H.q.type === 'spy') return spyTimeout();
+    if (H.q.type === 'draw') return drawTimeout();
+    if (H.q.type === 'hit') return endHitRound();
     const a = H.q.v;
     const before = rankOf(H.players);
     const res = [];
@@ -15012,7 +15357,7 @@ window.__launchGate = (() => {
     clearTimeout(H.timer);
     H.phase = 'final'; H.deadlineAt = 0;
     const victim = H.players.slice().sort((a, b) => (b.bannedN || 0) - (a.bannedN || 0))[0];
-    H.final = { best: H.best, worst: H.worst, fast: H.fast, geoBest: H.geoBest, geoWorst: H.geoWorst, rxBest: H.rxBest, jackpot: H.jackpot || null, spy: H.spyStats, streak: H.maxStreak,
+    H.final = { best: H.best, worst: H.worst, fast: H.fast, geoBest: H.geoBest, geoWorst: H.geoWorst, rxBest: H.rxBest, jackpot: H.jackpot || null, spy: H.spyStats, hit: H.hitStats, draw: H.drawStats, streak: H.maxStreak,
       victim: victim && victim.bannedN ? { pid: victim.pid, n: victim.bannedN } : null };
     publish();
   }
@@ -15032,8 +15377,8 @@ window.__launchGate = (() => {
       players: H.players.map(({ pid, name, avatar, color, score, online, host, joker, wins, hits, bans, streak, team }) => ({ pid, name, avatar, color, score, online, host, joker, wins, hits, bans: bans || 0, streak: streak || 0, team: H.settings.teams && team != null ? team : null })),
       banned: H.phase === 'question' || H.phase === 'reveal' ? H.banned || {} : {},
       dbl: !!(H.q && H.q.double && H.phase !== 'lobby'),
-      ttot: H.phase === 'question' && H.q?.type === 'spy' ? H.ttot || 0 : 0,
-      q: H.q && H.phase !== 'lobby' ? (H.q.type === 'spy' ? spyPublic(H.q) : H.q.type === 'geo' ? { type: 'geo', id: H.q.id, i: H.q.i } : H.q.type === 'rx' ? { type: 'rx', id: H.q.id, g: H.q.g, seed: H.q.seed } : H.q.type === 'num'
+      ttot: H.phase === 'question' && (H.q?.type === 'spy' || H.q?.type === 'draw') ? H.ttot || 0 : 0,
+      q: H.q && H.phase !== 'lobby' ? (H.q.type === 'spy' ? spyPublic(H.q) : H.q.type === 'draw' ? drawPublic(H.q) : H.q.type === 'hit' ? hitPublic(H.q) : H.q.type === 'geo' ? { type: 'geo', id: H.q.id, i: H.q.i } : H.q.type === 'rx' ? { type: 'rx', id: H.q.id, g: H.q.g, seed: H.q.seed } : H.q.type === 'num'
         ? { type: 'num', id: H.q.id, e: H.q.e, n: H.q.n, p: H.q.p, cat: H.q.cat, u: H.q.u, lo: H.range.lo, hi: H.range.hi }
         : H.q.type === 'quiz'
         ? { type: 'quiz', id: H.q.id, cat: H.q.cat, kind: H.q.kind, opts: H.q.opts, audio: H.q.audio, mc: !!H.q.mc, img: H.q.img || '' }
@@ -15131,11 +15476,21 @@ window.__launchGate = (() => {
       case 'tpins': geoTeamIn(d); break;
       case 'spyrole': spyRoleIn(d); break;
       case 'spyNo': spyNoIn(d); break;
+      case 'drawsec': drawSecIn(d); break;
+      case 'draw': drawMsgIn(d); break;
+      case 'drawClose': toast('🤏 ' + T('drawCloseYou')); Sound.beep(520, 0.12, 'triangle', 0.08); break;
       case 'reject':
         // Andere Spielversion: einmal frisch laden (am Cache vorbei) und automatisch wieder beitreten; hilft es nicht, ist der Host veraltet
         if (d.code === 'rejVersion' && sess('sc_vr') !== roomCode) { sess('sc_vr', roomCode); sess('sc_aj', roomCode); leaving = true; const q = new URLSearchParams(location.search); q.set('r', Date.now()); location.replace(`${location.pathname}?${q}#${roomCode}`); break; }
         joinFailed(d.code === 'rejVersion' ? T('rejVersionHost') : d.code ? T(d.code, { n: d.n }) : (d.reason || T('rejected'))); break;
-      case 'kicked': leaving = true; teardown(true); S = null; mounted = ''; render(); overlay(T('kickedTitle'), T('kickedText'), [{ t: 'OK', primary: true }]); break;
+      case 'kicked': {
+        const code = roomCode;
+        leaving = true; teardown(true); S = null; mounted = ''; afkWarn(0); render();
+        if (d.why === 'afk') overlay(T('afkTitle'), T('afkText'), [{ t: T('rejoin'), primary: true, fn: () => joinRoom(code) }, { t: 'OK' }]);
+        else overlay(T('kickedTitle'), T('kickedText'), [{ t: 'OK', primary: true }]);
+        break;
+      }
+      case 'note': if (d.k === 'afkKickedOther' || d.k === 'kickedOther') toast(T(d.k, { who: esc(String(d.who || '')) })); break;
       case 'bye': leaving = true; teardown(true); S = null; mounted = ''; render(); overlay(T('byeTitle'), T('byeText'), [{ t: 'OK', primary: true }]); break;
     }
   }
@@ -15203,9 +15558,11 @@ window.__launchGate = (() => {
     render();
   }
 
+  // Farbwelt je Spiel (body.geo-app, body.hit-app, …)
+  const appTheme = app => APPS.forEach(a => document.body.classList.toggle(`${a}-app`, a === app && a !== 'size'));
   function render() {
     updateHeader();
-    if (!S) { stopMusic(); killMaps(); document.body.classList.toggle('geo-app', me.app === 'geo'); document.body.classList.toggle('reflex-app', me.app === 'reflex'); document.body.classList.toggle('spy-app', me.app === 'spy'); if (mounted !== 'home') { mounted = 'home'; renderHome(); } return; }
+    if (!S) { stopMusic(); killMaps(); appTheme(me.app); if (mounted !== 'home') { mounted = 'home'; renderHome(); } return; }
     const key = S.phase + ':' + S.round;
     const fresh = key !== mounted;
     mounted = key;
@@ -15213,9 +15570,7 @@ window.__launchGate = (() => {
     if (fresh) killMaps();
     // Neue Runde: nach oben scrollen, sonst bleibt man auf dem Handy dort, wo man in der Lobby war
     if (fresh && S.phase !== 'lobby' && (window.scrollY || 0) > 0) window.scrollTo(0, 0);
-    document.body.classList.toggle('geo-app', S.settings.app === 'geo');
-    document.body.classList.toggle('reflex-app', S.settings.app === 'reflex');
-    document.body.classList.toggle('spy-app', S.settings.app === 'spy');
+    appTheme(S.settings.app);
     ({ lobby: renderLobby, question: renderQuestion, reveal: renderReveal, final: renderFinal })[S.phase](fresh);
     $('#reactbar').hidden = false;
   }
@@ -15224,6 +15579,8 @@ window.__launchGate = (() => {
     const inRoom = !!S;
     $('#roomChip').hidden = !inRoom;
     $('#leaveBtn').hidden = !inRoom;
+    $('#playersBtn').hidden = !(inRoom && role === 'host' && S.phase !== 'lobby');
+    $('#playersBtn').title = T('pmTitle');
     $('#reactbar').hidden = !inRoom;
     if (!inRoom && (chat.log.length || chat.open)) resetChat();
     if (inRoom) $('#roomCode').textContent = S.code;
@@ -15244,13 +15601,13 @@ window.__launchGate = (() => {
       <section class="screen home">
         <div class="hero">
           <div class="logo-big"><span class="l1">${APP_UI[me.app][1]}</span><span class="l2">CLASH</span></div>
-          <p class="tagline">${T({ size: 'tagline', geo: 'geoTagline', reflex: 'rxTagline', spy: 'spyTagline' }[me.app])}</p>
+          <p class="tagline">${T({ size: 'tagline', geo: 'geoTagline', reflex: 'rxTagline', spy: 'spyTagline', hit: 'hitTagline', draw: 'drawTagline' }[me.app])}</p>
         </div>
         <div class="apps">
           ${APPS.map(a => `<button class="appcard ${a} ${me.app === a ? 'on' : ''}" data-app="${a}">
             <span class="ai">${APP_UI[a][0]}</span>
             <span class="at"><b>${APP_UI[a][1]} CLASH</b><small>${T('apps')[a]}</small></span>
-            ${a === 'spy' ? `<em>${T('isNew')}</em>` : ''}</button>`).join('')}
+            ${NEW_APPS.includes(a) ? `<em>${T('isNew')}</em>` : ''}</button>`).join('')}
         </div>
         <div class="card home-card">
           <div class="field">
@@ -15367,6 +15724,23 @@ window.__launchGate = (() => {
               <div class="slabel">${T('spyWords')} <em class="smuted">${T('multiHint')}</em></div>
               <div class="cats">${Object.entries(SPYCATS).map(([k, c]) => `<button class="${isOn(st.spycat || [], k) ? 'on' : ''}" ${host ? '' : 'disabled'} data-set="spycat" data-val="${k}"><span>${c.e}</span>${k === 'all' ? T('spyAllCats') : esc(spyCatName(k))}<small>${T('spyNWords', { n: k === 'all' ? spyTotal : SPYW[k].w.length })}</small></button>`).join('')}</div>
             </div>`;
+    const hitN = c => hitPool(c === 'all' ? allKeys(HITCATS) : [c]).length;
+    const hitSettings = `
+            ${seg('rounds', [[5, '5'], [10, '10'], [15, '15'], [20, '20']], T('rounds'))}
+            ${seg('time', [[15, '15 s'], [25, '25 s'], [40, '40 s']], T('time'))}
+            ${teamSeg}
+            <div class="setting">
+              <div class="slabel">${T('hitSongs')} <em class="smuted">${T('multiHint')}</em></div>
+              <div class="cats">${Object.entries(HITCATS).map(([k, c]) => `<button class="${isOn(st.hitcat || [], k) ? 'on' : ''}" ${host ? '' : 'disabled'} data-set="hitcat" data-val="${k}"><span>${c.e}</span>${k === 'all' ? T('hitAll') : esc(qcatName(k))}<small>${T('hitNSongs', { n: hitN(k) })}</small></button>`).join('')}</div>
+            </div>`;
+    const drawTotal = Object.values(DRAWW).reduce((a, c) => a + c.w.length, 0);
+    const drawSettings = `
+            ${seg('drawpass', [[1, '1×'], [2, '2×'], [3, '3×']], T('drawPasses'))}
+            ${seg('time', [[60, '60 s'], [80, '80 s'], [100, '100 s'], [120, '120 s']], T('drawTimeL'))}
+            <div class="setting">
+              <div class="slabel">${T('drawWords')} <em class="smuted">${T('multiHint')}</em></div>
+              <div class="cats">${Object.entries(DRAWCATS).map(([k, c]) => `<button class="${isOn(st.drawcat || [], k) ? 'on' : ''}" ${host ? '' : 'disabled'} data-set="drawcat" data-val="${k}"><span>${c.e}</span>${k === 'all' ? T('spyAllCats') : esc(drawCatName(k))}<small>${T('spyNWords', { n: k === 'all' ? drawTotal : DRAWW[k].w.length })}</small></button>`).join('')}</div>
+            </div>`;
     const catBlock = st.mode === 'num' ? catBtns('ncat', NCATS, st.ncat, ncatName, ncatCount)
       : st.mode === 'quiz' ? catBtns('qcat', QCATS, st.qcat, qcatName, qcatCount)
       : catBtns('cat', CATS, st.cat, catName, catCount);
@@ -15401,7 +15775,7 @@ window.__launchGate = (() => {
           <div class="card settings">
             <div class="card-head"><h3>${T('settings')}</h3>${host ? '' : `<span class="count">${T('hostOnly')}</span>`}</div>
             ${appSwitch}
-            ${st.app === 'spy' ? spySettings : st.app === 'reflex' ? rxSettings : geo ? geoSettings : `<div class="setting">
+            ${st.app === 'spy' ? spySettings : st.app === 'reflex' ? rxSettings : st.app === 'hit' ? hitSettings : st.app === 'draw' ? drawSettings : geo ? geoSettings : `<div class="setting">
               <div class="slabel">${T('mode')}</div>
               <div class="cats modes">${Object.entries(MODES).map(([k, m]) => `<button class="${st.mode === k ? 'on' : ''}" ${host ? '' : 'disabled'} data-set="mode" data-val="${k}"><span>${m.e}</span>${T('modes')[k][0]}<small>${T('modes')[k][1]}</small></button>`).join('')}</div>
             </div>
@@ -15424,12 +15798,12 @@ window.__launchGate = (() => {
           </div>
           <div class="card rules">
             <h3>${T('rulesTitle')}</h3>
-            <ul>${T(st.app === 'spy' ? 'spyRules' : st.app === 'reflex' ? 'rxRules' : geo ? 'geoRules' : 'rules').map(r => `<li>${r}</li>`).join('')}</ul>
+            <ul>${T({ spy: 'spyRules', reflex: 'rxRules', geo: 'geoRules', hit: 'hitRules', draw: 'drawRules' }[st.app] || 'rules').map(r => `<li>${r}</li>`).join('')}</ul>
           </div>
         </div>
         <div class="lobby-cta">
           ${host
-            ? `<button class="btn primary huge" id="startBtn">${T('start')}</button><div class="hint">${st.app === 'spy' && S.players.length < SPY_MIN ? T('spyMin', { n: SPY_MIN }) : S.players.length < 2 ? T('alone') : T('allThere')}</div>`
+            ? `<button class="btn primary huge" id="startBtn">${T('start')}</button><div class="hint">${st.app === 'spy' && S.players.length < SPY_MIN ? T('spyMin', { n: SPY_MIN }) : st.app === 'draw' && S.players.length < DRAW_MIN ? T('drawMin') : S.players.length < 2 ? T('alone') : T('allThere')}</div>`
             : `<div class="waiting"><span class="dots"><i></i><i></i><i></i></span> ${T('waitHost')}</div>`}
         </div>
       </section>`;
@@ -15441,7 +15815,7 @@ window.__launchGate = (() => {
     if (host) {
       $$('[data-set]').forEach(b => b.onclick = () => {
         const k = b.dataset.set;
-        const DEF = { cat: CATS, qcat: QCATS, ncat: NCATS, rxg: RXDEF, spycat: SPYCATS }[k];
+        const DEF = { cat: CATS, qcat: QCATS, ncat: NCATS, rxg: RXDEF, spycat: SPYCATS, hitcat: HITCATS, drawcat: DRAWCATS }[k];
         if (DEF) {
           // Mehrfachauswahl: antippen schaltet um, „Alles gemischt“ setzt zurück
           const val = b.dataset.val;
@@ -15455,11 +15829,7 @@ window.__launchGate = (() => {
         if (k === 'teams') { if (H.settings.teams && !H.players.some(p => p.team != null && p.team < H.settings.teams)) teamShuffle(); else teamFill(); }
         Sound.pop(); publish();
       });
-      $$('[data-kick]').forEach(b => b.onclick = () => {
-        const c = conns.get(b.dataset.kick);
-        if (c) { try { c.send({ t: 'kicked' }); } catch { /* ignore */ } setTimeout(() => { try { c.close(); } catch { /* ignore */ } }, 200); }
-        H.players = H.players.filter(p => p.pid !== b.dataset.kick); conns.delete(b.dataset.kick); publish();
-      });
+      $$('[data-kick]').forEach(b => b.onclick = () => kickPlayer(b.dataset.kick, 'host'));
       $('#startBtn').onclick = startGame;
       if ($('#teamShuffle')) $('#teamShuffle').onclick = () => { teamShuffle(); Sound.pop(); publish(); };
     }
@@ -15817,12 +16187,14 @@ window.__launchGate = (() => {
     if (fresh) {
       const keep = G.round === S.round && G.gid === S.gid; // z. B. nach Sprachwechsel: Eingabe behalten
       if (!keep) G = { gid: S.gid, round: S.round, cur: 1, touched: false, locked: S.locked.includes(me.pid), known: false, joker: false, sendT: null };
-      if (q.type === 'spy') mountSpy(q, keep); else if (q.type === 'rx') mountRx(q, keep); else if (q.type === 'geo') mountGeo(q, keep); else if (q.type === 'quiz') mountQuiz(q, keep); else if (q.type === 'cmp') mountCmp(q, keep); else mountGuess(q, keep);
+      if (q.type === 'spy') mountSpy(q, keep); else if (q.type === 'draw') mountDraw(q, keep); else if (q.type === 'hit') mountHit(q, keep); else if (q.type === 'rx') mountRx(q, keep); else if (q.type === 'geo') mountGeo(q, keep); else if (q.type === 'quiz') mountQuiz(q, keep); else if (q.type === 'cmp') mountCmp(q, keep); else mountGuess(q, keep);
     }
     if (S.locked.includes(me.pid)) G.locked = true;
     if (q.type === 'geo') { updateGeoUi(); updateLockstrip(); return; }
     if (q.type === 'rx') { updateLockstrip(); return; }
     if (q.type === 'spy') { spyRender(); return; }
+    if (q.type === 'draw') { drawRender(); return; }
+    if (q.type === 'hit') { hitUi(); updateLockstrip(); return; }
     applyBan();
     updateGuessUi();
     updateLockstrip();
@@ -16042,6 +16414,8 @@ window.__launchGate = (() => {
     if (S.q.type === 'geo') return renderGeoReveal();
     if (S.q.type === 'rx') return renderRxReveal();
     if (S.q.type === 'spy') return renderSpyReveal();
+    if (S.q.type === 'hit') return renderHitReveal();
+    if (S.q.type === 'draw') return renderDrawReveal();
     const q = S.q; const R = S.reveal;
     const isCmp = q.type === 'cmp';
     const tx = qtext(isCmp ? q.tgt.id : q.id);
@@ -16164,7 +16538,7 @@ window.__launchGate = (() => {
     const F = S.final || {};
     const award = (icon, title, info, text) => info && pById(info.pid) ? `<div class="award"><div class="aicon">${icon}</div><div><div class="atitle">${title}</div><div><b>${esc(pById(info.pid).name)}</b> ${text}</div></div></div>` : '';
     const mostWins = S.players.slice().sort((a, b) => b.wins - a.wins)[0];
-    const awards = S.settings.app === 'geo' ? geoAwards(F, award, mostWins) : S.settings.app === 'reflex' ? rxAwards(F, award, mostWins) : S.settings.app === 'spy' ? spyAwards(F, award, mostWins) : [
+    const awards = S.settings.app === 'geo' ? geoAwards(F, award, mostWins) : S.settings.app === 'reflex' ? rxAwards(F, award, mostWins) : S.settings.app === 'spy' ? spyAwards(F, award, mostWins) : S.settings.app === 'hit' ? hitAwards(F, award, mostWins) : S.settings.app === 'draw' ? drawAwards(F, award, mostWins) : [
       award('🎯', T('sharp'), F.best, F.best ? (Math.abs(F.best.v / F.best.a - 1) < 0.005 ? T('sharpExact', { q: esc(qLabel(F.best)) }) : T('sharpOff', { q: esc(qLabel(F.best)), off: offText(F.best.v, F.best.a) })) : ''),
       award('🤡', T('worst'), F.worst, F.worst ? T('worstText', { q: esc(qLabel(F.worst)), g: fmtVal(F.worst, F.worst.v), a: fmtVal(F.worst, F.worst.a, 4) }) : ''),
       F.fast ? award('⚡', T('fast'), F.fast, T('fastText', { q: esc(qLabel(F.fast)), s: num(F.fast.ms / 1000, 2) })) : '',
@@ -17276,6 +17650,646 @@ window.__launchGate = (() => {
     ].join('');
   }
 
+  // =====================================================================
+  //  HIT CLASH: Song-Ausschnitt hören, Erscheinungsjahr schätzen, Bonus für den richtigen Interpreten
+  //  Nur Songs mit gesichertem Jahr. Der Ausschnitt kommt wie beim Musik-Quiz über die iTunes-Suche.
+  //  (wird von build.js an der Stelle /* @include hit.js */ in game.js eingefügt)
+  // =====================================================================
+  const HITCATS = { all: { e: '🎲' }, muzik_int: { e: '🌍' }, muzik_tr: { e: '🇹🇷' } };
+  const HIT_ARTIST = 300, HIT_RANGE = 15;   // Bonus für den Interpreten; ab 15 Jahren daneben gibt es nichts
+  const hitPool = cats => QUIZ.filter(x => x.kind === 'music' && x.year > 0 && cats.includes(x.cat));
+  const hitSpan = () => { const ys = QUIZ.filter(x => x.kind === 'music' && x.year > 0).map(x => x.year); return [Math.floor(Math.min(...ys) / 10) * 10, new Date().getFullYear()]; };
+  const hitPts = d => (d === 0 ? 1000 : Math.round(900 * Math.pow(Math.max(0, 1 - d / HIT_RANGE), 1.5)));
+
+  // ---------- Host ----------
+  function buildHitRounds() {
+    const cats = pickedCats(H.settings.hitcat || [], HITCATS), next = catBag(cats), taken = new Set();
+    const rounds = [], recent = [];
+    for (let i = 0; i < H.settings.rounds; i++) {
+      // Möglichst neue Songs und nicht derselbe Interpret wie in den letzten Runden
+      const c = next(), fresh = x => !taken.has(x.id), pool = shuffle(hitPool([c]).filter(fresh));
+      const it = pool.find(x => !H.used.has(x.id) && !recent.includes(x.artist)) || pool.find(x => !recent.includes(x.artist)) || pool[0];
+      if (!it) continue;
+      taken.add(it.id); recent.push(it.artist); if (recent.length > 3) recent.shift();
+      rounds.push({ type: 'hit', id: it.id });
+    }
+    return rounds;
+  }
+  function startHitRound(spec) {
+    const it = QZBYID[spec.id];
+    // Bonus-Frage: 4 Interpreten aus derselben Kategorie
+    const others = shuffle(QUIZ.filter(x => x.kind === 'music' && x.cat === it.cat && x.artist !== it.artist));
+    const opts = [it.artist];
+    for (const x of others) { if (opts.length === 4) break; if (!opts.includes(x.artist)) opts.push(x.artist); }
+    const order = shuffle(opts);
+    const [lo, hi] = hitSpan();
+    H.q = { type: 'hit', id: it.id, cat: it.cat, year: it.year, artist: it.artist, title: it.title, audio: spec.audio, art: spec.art || '',
+      opts: order, ans: order.indexOf(it.artist), lo, hi, acc: [qnorm(it.artist), qnorm(it.title)].filter(x => x.length >= 3) };
+    H.used.add(it.id);
+    H.range = null;
+  }
+  function hitGuessIn(pid, d) {
+    const q = H.q, y = Math.round(+d.y);
+    if (!(y >= q.lo && y <= q.hi)) return;
+    const pick = Number.isInteger(+d.pick) && +d.pick >= 0 && +d.pick < q.opts.length ? +d.pick : -1;
+    // Entwürfe zählen, falls die Zeit abläuft; eingeloggt ist eingeloggt
+    H.guesses[pid] = { y, pick, locked: !!d.lock, t: Date.now() };
+    if (d.lock) { publish(); checkAllLocked(); }
+  }
+  function endHitRound() {
+    const q = H.q, before = rankOf(H.players), res = [];
+    H.hitStats = H.hitStats || {};
+    const st = pid => (H.hitStats[pid] = H.hitStats[pid] || { exact: 0, artists: 0, off: 0, n: 0 });
+    for (const p of H.players) {
+      const g = H.guesses[p.pid];
+      if (!g) { if (p.online) res.push({ pid: p.pid, y: null, pts: 0 }); continue; }
+      const d = Math.abs(g.y - q.year), artistOk = g.pick === q.ans;
+      const ypts = hitPts(d);
+      res.push({ pid: p.pid, y: g.y, d, pick: g.pick, artistOk, ypts, pts: ypts + (artistOk ? HIT_ARTIST : 0) });
+      const s = st(p.pid); s.n++; s.off += d; if (d === 0) s.exact++; if (artistOk) s.artists++;
+    }
+    const guessed = res.filter(r => r.y != null);
+    if (guessed.length) { const m = Math.min(...guessed.map(r => r.d)); guessed.filter(r => r.d === m && r.d <= 5).forEach(r => { r.crown = true; r.pts += 100; }); }
+    roundExtras(res, r => r.y != null && r.d <= 2);
+    for (const r of res) {
+      const p = findP(r.pid);
+      p.score += r.pts;
+      if (r.crown) p.wins++;
+      if (r.y != null && r.d <= 1) p.hits++;
+    }
+    const after = rankOf(H.players);
+    for (const r of res) { r.total = findP(r.pid).score; r.move = before[r.pid] - after[r.pid]; }
+    res.sort((a, b) => b.pts - a.pts || (a.d ?? 99) - (b.d ?? 99));
+    H.reveal = { year: q.year, artist: q.artist, title: q.title, art: q.art, opts: q.opts, ans: q.ans, lo: q.lo, hi: q.hi, res };
+    H.phase = 'reveal';
+    H.deadlineAt = Date.now() + REVEAL_MS;
+    H.timer = setTimeout(advance, REVEAL_MS);
+    publish();
+  }
+  const hitPublic = q => ({ type: 'hit', id: q.id, cat: q.cat, audio: q.audio, opts: q.opts, lo: q.lo, hi: q.hi });
+
+  // ---------- Client ----------
+  function mountHit(q, keep) {
+    if (!keep || G.hitY == null) Object.assign(G, { hitY: Math.round((q.lo + q.hi) / 2 / 5) * 5, hitTouched: false, hitPick: -1 });
+    app().innerHTML = `
+      <section class="screen hitq">
+        <div class="gamebar">
+          <div class="pill">${T('round')} <b>${S.round}</b> / ${S.total}</div>
+          <div class="pill hitbrand">🎵 HIT CLASH</div>
+          ${timerHtml()}
+        </div>
+        <div class="card hitcard">
+          <div class="hitplayer">
+            <div class="vinyl" id="musicViz"><i></i></div>
+            <button class="btn primary" id="musicPlay" hidden>▶️ ${T('musicPlay')}</button>
+          </div>
+          <div class="hitq-t">${T('hitQ')}</div>
+          <div class="hity ${G.hitTouched ? '' : 'idle'}" id="hitY">${G.hitTouched ? G.hitY : '????'}</div>
+          <div class="hitslider">
+            <button class="btn hitstep" data-step="-1" aria-label="-1">−</button>
+            <input type="range" id="hitRange" min="${q.lo}" max="${q.hi}" step="1" value="${G.hitY}">
+            <button class="btn hitstep" data-step="1" aria-label="+1">+</button>
+          </div>
+          <div class="hitdec">${hitDecades(q).map(y => `<button data-dec="${y}">${y}</button>`).join('')}</div>
+        </div>
+        <div class="card hitbonus">
+          <div class="slabel">🎤 ${T('hitArtistQ')} <em class="smuted">+${HIT_ARTIST}</em></div>
+          <div class="mopts" id="hitOpts">${q.opts.map((o, i) => `<button class="mopt ${G.hitPick === i ? 'picked' : ''}" data-i="${i}"><kbd>${i + 1}</kbd><span>${esc(o)}</span></button>`).join('')}</div>
+        </div>
+        <div class="controls hitctl">
+          <span class="hint" id="hitHint">${T('hitHint')}</span>
+          <button class="btn primary big" id="hitLock">${T('lock')}</button>
+        </div>
+        <div class="lockstrip" id="lockstrip"></div>
+        ${keep ? '' : `<div class="intro" id="intro"><div><small>${T('roundOf', { r: S.round, n: S.total })}</small><b>🎵</b><em>${T('hitIntro')}</em></div></div>`}
+      </section>`;
+    setTimeout(() => { const el = $('#intro'); if (el) el.remove(); }, keep ? 0 : INTRO_MS);
+    const r = $('#hitRange');
+    r.oninput = () => hitSet(+r.value);
+    $$('.hitstep').forEach(b => b.onclick = () => hitSet(G.hitY + +b.dataset.step));
+    $$('[data-dec]').forEach(b => b.onclick = () => hitSet(+b.dataset.dec + (+b.dataset.dec < 2020 ? 5 : 2)));
+    $$('#hitOpts .mopt').forEach(b => b.onclick = () => { if (G.locked) return; G.hitPick = G.hitPick === +b.dataset.i ? -1 : +b.dataset.i; Sound.pop(); hitUi(); hitDraft(); });
+    $('#hitLock').onclick = hitLock;
+    $('#musicPlay').onclick = playMusic;
+    if (!keep) {
+      if (q.audio && player.dataset.src !== q.audio) { player.dataset.src = q.audio; player.src = q.audio; try { player.load(); } catch { /* ignore */ } }
+      setTimeout(() => { if (S && S.phase === 'question' && S.q?.id === q.id) playMusic(); }, INTRO_MS);
+    } else if (!player.paused) $('#musicViz')?.classList.add('on');
+    else if (q.audio) $('#musicPlay').hidden = false;
+    hitUi();
+  }
+  const hitDecades = q => { const a = []; for (let y = Math.ceil(q.lo / 10) * 10; y <= q.hi; y += 10) a.push(y); return a; };
+  function hitSet(y) {
+    if (G.locked || !S?.q) return;
+    y = clamp(Math.round(y), S.q.lo, S.q.hi);
+    if (y !== G.hitY && y % 10 === 0) Sound.tick();
+    G.hitY = y; G.hitTouched = true;
+    hitUi(); hitDraft();
+  }
+  // Zwischenstand an den Host, damit ein Tipp auch ohne Einloggen zählt
+  function hitDraft() {
+    clearTimeout(G.hitT);
+    G.hitT = setTimeout(() => { if (!G.locked && G.hitTouched) send({ t: 'guess', y: G.hitY, pick: G.hitPick }); }, 250);
+  }
+  function hitLock() {
+    if (G.locked || !G.hitTouched) { if (!G.hitTouched) { shake($('#hitY')); toast(T('hitMoveFirst')); } return; }
+    clearTimeout(G.hitT);
+    G.locked = true;
+    send({ t: 'guess', y: G.hitY, pick: G.hitPick, lock: true });
+    Sound.lock(); hitUi();
+  }
+  function hitUi() {
+    const y = $('#hitY'); if (!y) return;
+    y.textContent = G.hitTouched ? G.hitY : '????';
+    y.classList.toggle('idle', !G.hitTouched);
+    const r = $('#hitRange'); if (r && +r.value !== G.hitY) r.value = G.hitY;
+    $$('#hitOpts .mopt').forEach((b, i) => b.classList.toggle('picked', G.hitPick === i));
+    const lk = $('#hitLock');
+    if (lk) { lk.disabled = !!G.locked; lk.textContent = G.locked ? '✓' : T('lock'); }
+    $$('.hitq input, .hitq .hitstep, .hitq [data-dec], #hitOpts .mopt').forEach(el => { el.disabled = !!G.locked; });
+    const h = $('#hitHint'); if (h) h.textContent = G.locked ? T('lockedShort') : T('hitHint');
+  }
+  // Tastatur: Pfeile ±1, Bild ±10, 1–4 Interpret, Enter einloggen
+  document.addEventListener('keydown', e => {
+    if (!S || S.phase !== 'question' || S.q?.type !== 'hit' || G.locked) return;
+    if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName) && document.activeElement.type !== 'range') return;
+    const k = e.key, step = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -10, PageUp: 10 }[k];
+    if (step && document.activeElement?.id !== 'hitRange') { e.preventDefault(); hitSet(G.hitY + step); }
+    else if (/^[1-4]$/.test(k)) { G.hitPick = G.hitPick === +k - 1 ? -1 : +k - 1; hitUi(); hitDraft(); }
+    else if (k === 'Enter') { e.preventDefault(); hitLock(); }
+  });
+
+  function renderHitReveal() {
+    const R = S.reveal, lo = Math.max(R.lo, R.year - 20), hi = Math.min(R.hi, R.year + 20), pos = y => clamp((y - lo) / (hi - lo) * 100, 0, 100);
+    const rows = R.res.map((r, i) => {
+      const p = pById(r.pid); if (!p) return '';
+      const mv = r.move > 0 ? `<i class="up">▲${r.move}</i>` : r.move < 0 ? `<i class="down">▼${-r.move}</i>` : '';
+      const tip = r.y == null ? T('noAnswer') : `${r.y} ${r.d === 0 ? '🎯' : `(${r.y > R.year ? '+' : '−'}${r.d})`}`;
+      return `<div class="rrow ${p.pid === me.pid ? 'me' : ''}" style="--pc:${p.color};animation-delay:${0.5 + i * 0.08}s">
+        <div class="rk">${r.pts > 0 ? i + 1 : '–'}</div><div class="ra">${p.avatar}</div>
+        <div class="rn"><b>${esc(p.name)}</b><div class="tags">${r.crown ? `<span class="tag crown">${T('tagCrown')}</span>` : ''}${r.d === 0 ? `<span class="tag hit">🎯 ${T('hitExact')}</span>` : ''}${r.artistOk ? `<span class="tag hit">🎤 ${T('hitArtistOk')}</span>` : ''}</div></div>
+        <div class="rg ${r.y == null ? 'no' : r.d <= 2 ? 'ok' : ''}">${tip}</div>
+        <div class="rp">+${r.pts}</div><div class="rt">${r.total}${mv}</div></div>`;
+    }).join('');
+    const marks = R.res.filter(r => r.y != null).map(r => { const p = pById(r.pid); return p ? `<div class="hitmark" style="left:${pos(r.y)}%;--pc:${p.color}" title="${esc(p.name)}: ${r.y}">${p.avatar}</div>` : ''; }).join('');
+    app().innerHTML = `
+      <section class="screen reveal hitrev">
+        <div class="gamebar"><div class="pill">${T('round')} <b>${S.round}</b> / ${S.total}</div><div class="pill hitbrand">🎵 HIT CLASH</div>${timerHtml()}</div>
+        <div class="card hitsong">
+          ${R.art ? `<img class="hitcover" src="${esc(R.art)}" alt="" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;hitcover ph&quot;>🎵</div>'">` : '<div class="hitcover ph">🎵</div>'}
+          <div class="hitmeta"><small>${T('hitWas')}</small><b class="hitbig" id="hitBig">${R.year}</b><span class="hitname">${esc(R.artist)} – ${esc(R.title)}</span></div>
+        </div>
+        <div class="card hitline">
+          <div class="hitscale"><div class="hitgoal" style="left:${pos(R.year)}%"><b>${R.year}</b></div>${marks}</div>
+          <div class="hitends"><span>${lo}</span><span>${hi}</span></div>
+        </div>
+        ${teamStrip()}
+        <div class="card results">
+          <div class="rrow head"><div class="rk">#</div><div class="ra"></div><div class="rn">${T('thPlayer')}</div><div class="rg">${T('hitTip')}</div><div class="rp">${T('thPoints')}</div><div class="rt">${T('thTotal')}</div></div>
+          ${rows || `<p class="hint">${T('nobody')}</p>`}
+        </div>
+        <div class="reveal-foot" id="revealFoot"></div>
+      </section>`;
+    // Jahreszahl hochzählen
+    const el = $('#hitBig'), t0 = performance.now(), from = lo;
+    const step = t => { const k = Math.min(1, (t - t0) / 900), e = 1 - Math.pow(1 - k, 3); if (el) el.textContent = Math.round(from + (R.year - from) * e); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+    if (R.res.some(r => r.pid === me.pid && r.d === 0)) { confetti(); Sound.win(); }
+    renderRevealFooter();
+  }
+  function hitAwards(F, award, mostWins) {
+    const st = F.hit || {}, list = Object.entries(st);
+    const top = f => { const e = list.filter(([, s]) => f(s) > 0).sort((a, b) => f(b[1]) - f(a[1]))[0]; return e ? { pid: e[0], n: f(e[1]) } : null; };
+    const exact = top(s => s.exact), art = top(s => s.artists);
+    const avg = list.filter(([, s]) => s.n).map(([pid, s]) => ({ pid, avg: s.off / s.n })).sort((a, b) => a.avg - b.avg)[0];
+    return [
+      avg ? award('🕰️', T('hitTime'), avg, T('hitTimeX', { n: num(avg.avg, 1) })) : '',
+      exact ? award('🎯', T('hitExactA'), exact, T('hitExactX', { n: exact.n })) : '',
+      art ? award('🎤', T('hitArtA'), art, T('hitArtX', { n: art.n })) : '',
+      mostWins && mostWins.wins ? award('👑', T('king'), { pid: mostWins.pid }, T('kingText', { n: mostWins.wins })) : '',
+    ].join('');
+  }
+
+  // =====================================================================
+  //  DRAW CLASH: Einer zeichnet, alle anderen raten. Reihum zeichnet jeder.
+  //  Ablauf pro Runde: Zeichner wählt eins von drei Wörtern → Zeichnen und Raten → Auflösung.
+  //  Das Wort kennen nur der Zeichner und wer es schon erraten hat (einzeln vom Host zugestellt).
+  //  Die Striche schickt der Zeichner laufend an den Host, der sie an alle weitergibt (Koordinaten 0–1000).
+  //  (wird von build.js an der Stelle /* @include draw.js */ in game.js eingefügt)
+  // =====================================================================
+  const DRAWW = window.DRAWW || {};
+  const DRAWCATS = Object.assign({ all: { e: '🎲' } }, Object.fromEntries(Object.entries(DRAWW).map(([k, v]) => [k, { e: v.e }])));
+  const DRAW_CHOOSE_MS = 12000, DRAW_MIN = 2;
+  const DRAW_COLORS = ['#111111', '#ffffff', '#e03131', '#f08c00', '#fcc419', '#2f9e44', '#1c7ed6', '#7048e8', '#e64980', '#8d5524'];
+  const DRAW_SIZES = [6, 14, 30];
+  const drawCatName = k => (T('drawCats') || {})[k] || k;
+  const drawWord = (cat, i, li = LI()) => DRAWW[cat]?.w[i]?.[li] || '?';
+  const drawForms = (cat, i) => { const w = DRAWW[cat].w[i]; return [w[0], w[1], ...(w[2] || [])].map(qnorm).filter(Boolean); };
+  // Buchstaben als Striche, Leerzeichen und Bindestriche bleiben sichtbar, aufgedeckte Buchstaben stehen da
+  const drawMask = (word, rev) => [...word].map((ch, i) => (/[\p{L}\p{N}]/u.test(ch) ? (rev.includes(i) ? ch : '_') : ch)).join('');
+
+  // ---------- Host ----------
+  function buildDrawRounds() {
+    const on = shuffle(H.players.filter(p => p.online).map(p => p.pid));
+    const rounds = [];
+    for (let k = 0; k < (H.settings.drawpass || 1); k++) for (const pid of on) rounds.push({ type: 'draw', drawer: pid });
+    return rounds;
+  }
+  function drawPickWords() {
+    const cats = pickedCats(H.settings.drawcat || [], DRAWCATS), out = [], seen = new Set(out);
+    for (let t = 0; out.length < 3 && t < 200; t++) {
+      const cat = cats[Math.floor(Math.random() * cats.length)], i = Math.floor(Math.random() * DRAWW[cat].w.length), key = `draww-${cat}-${i}`;
+      if (seen.has(key) || (H.used.has(key) && t < 150)) continue;
+      seen.add(key); out.push([cat, i]);
+    }
+    return out;
+  }
+  function startDrawRound(spec) {
+    // Ist der Zeichner nicht mehr da, übernimmt wer bisher am seltensten gezeichnet hat
+    let drawer = findP(spec.drawer)?.online ? spec.drawer : null;
+    if (!drawer) {
+      const done = {}; H.order.slice(0, H.round - 1).forEach(r => { done[r.drawer] = (done[r.drawer] || 0) + 1; });
+      drawer = H.players.filter(p => p.online).sort((a, b) => (done[a.pid] || 0) - (done[b.pid] || 0))[0]?.pid;
+      if (!drawer) return finish();
+      spec.drawer = drawer;
+    }
+    H.q = { type: 'draw', id: `draw-${H.gid || 0}-${H.round}`, drawer, step: 'choose', choices: drawPickWords(), cat: null, w: null,
+      strokes: [], got: {}, feed: [], rev: [[], []], t0: 0, double: false };
+    H.range = null; H.banned = {}; H.guesses = {}; H.reveal = null; H.phase = 'question';
+    drawStep('choose', DRAW_CHOOSE_MS + INTRO_MS);
+    drawSecrets();
+  }
+  function drawStep(step, ms) {
+    clearTimeout(H.timer); clearTimeout(H.q.hintT);
+    H.q.step = step; H.ttot = ms; H.deadlineAt = Date.now() + ms;
+    H.timer = setTimeout(drawTimeout, ms + 300);
+    if (step === 'draw') {
+      H.q.t0 = Date.now();
+      // Nach der Hälfte und nach drei Vierteln der Zeit je einen Buchstaben aufdecken
+      const hint = () => { if (H.phase !== 'question' || H.q?.type !== 'draw' || H.q.step !== 'draw') return; drawReveal(); publish(); };
+      H.q.hintT = setTimeout(() => { hint(); H.q.hintT = setTimeout(hint, ms / 4); }, ms / 2);
+    }
+    publish();
+  }
+  function drawReveal() {
+    const q = H.q;
+    [0, 1].forEach(li => {
+      const word = drawWord(q.cat, q.w, li), letters = [...word].map((ch, i) => (/[\p{L}\p{N}]/u.test(ch) && !q.rev[li].includes(i) ? i : -1)).filter(i => i >= 0);
+      // Nie mehr als die Hälfte verraten
+      if (letters.length > [...word].filter(ch => /[\p{L}\p{N}]/u.test(ch)).length / 2) q.rev[li].push(letters[Math.floor(Math.random() * letters.length)]);
+    });
+  }
+  // Wort einzeln zustellen: Zeichner (Auswahl bzw. Wort), wer es erraten hat (Wort), alle anderen nichts
+  function drawSecrets(only) {
+    const q = H.q;
+    for (const p of H.players) {
+      if (only && p.pid !== only) continue;
+      const base = { t: 'drawsec', gid: H.gid || 0, r: H.round };
+      if (p.pid === q.drawer) sendTo(p.pid, q.step === 'choose' ? { ...base, choices: q.choices } : { ...base, w: [q.cat, q.w] });
+      else if (q.got[p.pid] && q.cat) sendTo(p.pid, { ...base, w: [q.cat, q.w] });
+    }
+    if (only && q.step !== 'choose') sendTo(only, { t: 'draw', k: 'all', id: q.id, strokes: q.strokes });
+  }
+  function drawTimeout() {
+    const q = H.q; if (H.phase !== 'question' || q?.type !== 'draw') return;
+    if (q.step === 'choose') return drawChoose(0);
+    endDrawRound();
+  }
+  function drawChoose(n) {
+    const q = H.q, c = q.choices[n] || q.choices[0];
+    if (!c) return endDrawRound();
+    q.cat = c[0]; q.w = c[1];
+    H.used.add(`draww-${c[0]}-${c[1]}`);
+    drawStep('draw', H.settings.time * 1000);
+    drawSecrets();
+  }
+  const drawGuessers = () => H.players.filter(p => p.online && p.pid !== H.q.drawer);
+  // Nach Verbindungsabbrüchen: Zeichner weg → Runde vorbei; alle Übrigen haben es → Runde vorbei
+  function drawCheck() {
+    const q = H.q; if (H.phase !== 'question' || q?.type !== 'draw') return;
+    if (!findP(q.drawer)?.online) return endDrawRound();
+    const g = drawGuessers();
+    if (q.step === 'draw' && g.length && g.every(p => q.got[p.pid])) { clearTimeout(H.timer); H.timer = setTimeout(endDrawRound, 900); }
+  }
+  function drawIn(pid, d) {
+    const q = H.q;
+    if (d.a === 'sync') return drawSecrets(pid);
+    if (pid === q.drawer) {
+      if (d.a === 'choose' && q.step === 'choose') return drawChoose(clamp(Math.floor(+d.n) || 0, 0, 2));
+      if (q.step !== 'draw') return;
+      if (d.a === 'pts') {
+        const p = Array.isArray(d.p) ? d.p.slice(0, 400).map(v => clamp(Math.round(+v) || 0, 0, 1000)) : [];
+        if (!p.length || p.length % 2) return;
+        let s = q.strokes[q.strokes.length - 1];
+        if (!s || s.id !== d.id) {
+          if (q.strokes.length > 1500) return;
+          s = { id: String(d.id).slice(0, 12), c: DRAW_COLORS.includes(d.c) ? d.c : '#111111', w: DRAW_SIZES.includes(+d.w) || +d.w === 60 ? +d.w : 6, p: [] };
+          q.strokes.push(s);
+        }
+        if (s.p.length > 20000) return;
+        s.p.push(...p);
+        return drawCast({ t: 'draw', k: 'pts', id: s.id, c: s.c, w: s.w, p });
+      }
+      if (d.a === 'undo') { q.strokes.pop(); return drawCast({ t: 'draw', k: 'all', id: q.id, strokes: q.strokes }); }
+      if (d.a === 'clear') { q.strokes = []; return drawCast({ t: 'draw', k: 'all', id: q.id, strokes: [] }); }
+      return;
+    }
+    if (d.a !== 'guess' || q.step !== 'draw' || q.got[pid]) return;
+    const txt = String(d.txt || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+    if (!txt || !spamGuard(spamOf(pid, 'draw'), 8, 5000, 3000).ok) return;
+    const g = qnorm(txt), forms = drawForms(q.cat, q.w);
+    const ok = forms.some(f => f === g || (f.length >= 5 && lev(f, g) <= 1));
+    if (ok) {
+      const ms = Date.now() - q.t0, total = H.settings.time * 1000, n = Object.keys(q.got).length;
+      // Je schneller, desto mehr; der Erste bekommt 100 extra
+      const pts = Math.round(300 + 700 * clamp(1 - ms / total, 0, 1)) + (n === 0 ? 100 : 0);
+      q.got[pid] = { ms, pts, n: n + 1 };
+      q.feed.push({ pid, ok: true });
+      sendTo(pid, { t: 'drawsec', gid: H.gid || 0, r: H.round, w: [q.cat, q.w], ok: true });
+      publish();
+      return drawCheck();
+    }
+    // Enthält der Tipp das Wort (oder ist ein Teil davon), wäre er öffentlich ein Hinweis
+    const close = forms.some(f => (f.length >= 4 && lev(f, g) <= 2) || (f.length >= 3 && g.includes(f)) || (g.length >= 3 && f.includes(g)));
+    // Fast richtig: nur der Ratende erfährt es, die anderen sehen den Text nicht (sonst wäre es ein Hinweis)
+    q.feed.push(close ? { pid, close: true } : { pid, txt });
+    if (q.feed.length > 40) q.feed.splice(0, q.feed.length - 40);
+    if (close) sendTo(pid, { t: 'drawClose' });
+    publish();
+  }
+  // Striche an alle außer dem Zeichner; der Host zeichnet sie auch bei sich (er bekommt seine eigenen Nachrichten nicht)
+  function drawCast(msg) {
+    for (const [pid, c] of conns) { if (pid !== H.q.drawer) { try { if (c.open) c.send(msg); } catch { /* ignore */ } } }
+    if (me.pid !== H.q.drawer) drawMsgIn(msg);
+  }
+  function endDrawRound() {
+    clearTimeout(H.timer); clearTimeout(H.q.hintT);
+    const q = H.q, before = rankOf(H.players), res = [];
+    H.drawStats = H.drawStats || {};
+    const st = pid => (H.drawStats[pid] = H.drawStats[pid] || { fans: 0, got: 0, fast: null });
+    const got = Object.entries(q.got), guessers = H.players.filter(p => p.pid !== q.drawer && (p.online || q.got[p.pid]));
+    // Zeichner: Punkte nach Anteil der Ratenden, die es geschafft haben
+    const share = guessers.length ? got.length / guessers.length : 0;
+    const dpts = q.cat && got.length ? Math.round(200 + 600 * share) : 0;
+    for (const p of H.players) {
+      if (p.pid === q.drawer) { res.push({ pid: p.pid, drawer: true, pts: dpts, n: got.length }); continue; }
+      const g = q.got[p.pid];
+      if (g) { res.push({ pid: p.pid, ms: g.ms, pts: g.pts, n: g.n }); continue; }
+      if (p.online) res.push({ pid: p.pid, ms: null, pts: 0 });
+    }
+    const first = res.filter(r => !r.drawer && r.n === 1)[0]; if (first) first.crown = true;
+    roundExtras(res.filter(r => !r.drawer), r => r.ms != null);
+    for (const r of res) {
+      const p = findP(r.pid); if (!p) continue;
+      p.score += r.pts;
+      if (r.crown) p.wins++;
+      if (r.ms != null) { p.hits++; const s = st(r.pid); s.got++; if (s.fast == null || r.ms < s.fast) s.fast = r.ms; }
+      if (r.drawer) st(r.pid).fans += r.n;
+    }
+    const after = rankOf(H.players);
+    for (const r of res) { r.total = findP(r.pid)?.score || 0; r.move = before[r.pid] - after[r.pid]; }
+    const rank = r => (r.drawer ? -1 : r.ms == null ? 1e9 : r.ms);
+    res.sort((a, b) => rank(a) - rank(b));
+    H.reveal = { drawer: q.drawer, cat: q.cat, w: q.w, res, id: q.id };
+    H.phase = 'reveal'; H.ttot = 0;
+    H.deadlineAt = Date.now() + REVEAL_MS;
+    H.timer = setTimeout(advance, REVEAL_MS);
+    publish();
+  }
+  // Öffentlich ohne Wort: nur Muster (Striche) in beiden Sprachen, wer es schon hat, und der Rate-Verlauf
+  const drawPublic = q => ({ type: 'draw', id: q.id, drawer: q.drawer, step: q.step, got: Object.keys(q.got), feed: q.feed,
+    mask: q.cat != null ? [drawMask(drawWord(q.cat, q.w, 0), q.rev[0]), drawMask(drawWord(q.cat, q.w, 1), q.rev[1])] : null });
+
+  // ---------- Client ----------
+  let drawSec = null;
+  const myDraw = () => (drawSec && S && drawSec.gid === (S.gid || 0) && drawSec.r === S.round ? drawSec : null);
+  const DR = { id: null, strokes: [], tool: { c: '#111111', w: 6 }, cur: null, buf: [], flushT: 0, n: 0 };
+  function drawSecIn(d) {
+    const was = myDraw();
+    drawSec = Object.assign(was && !d.choices ? { ...was } : {}, d);
+    if (d.ok) { Sound.win(); toast('🎉 ' + T('drawYouGot')); }
+    if (S && S.phase === 'question' && S.q?.type === 'draw') drawRender(true);
+  }
+  function drawMsgIn(m) {
+    if (!S || !S.q || (S.q.type !== 'draw' && S.phase !== 'reveal')) return;
+    if (m.k === 'all') { DR.id = m.id; DR.strokes = (m.strokes || []).map(s => ({ ...s, p: s.p.slice() })); drawRepaint(); return; }
+    if (m.k === 'pts') {
+      let s = DR.strokes[DR.strokes.length - 1];
+      if (!s || s.id !== m.id) { s = { id: m.id, c: m.c, w: m.w, p: [] }; DR.strokes.push(s); }
+      const from = s.p.length; s.p.push(...m.p);
+      drawSeg(s, Math.max(0, from - 2));
+    }
+  }
+  function mountDraw(q, keep) {
+    if (!keep) { Object.assign(G, { drawDraft: '', drawSent: 0 }); if (DR.id !== q.id) { DR.id = q.id; DR.strokes = []; } }
+    app().innerHTML = `
+      <section class="screen drawq">
+        <div class="gamebar">
+          <div class="pill">${T('round')} <b>${S.round}</b> / ${S.total}</div>
+          <div class="pill drawbrand">🎨 DRAW CLASH</div>
+          <div class="pill drawword" id="drawWord"></div>
+          ${timerHtml()}
+        </div>
+        <div class="drawgrid">
+          <div class="drawmain">
+            <div class="drawboard" id="drawBoard"><canvas id="drawCv"></canvas><div class="drawcover" id="drawCover"></div></div>
+            <div class="drawtools" id="drawTools"></div>
+          </div>
+          <div class="card drawside">
+            <div class="drawfeed" id="drawFeed"></div>
+            <form class="qinput drawguess" id="drawForm" autocomplete="off"><input id="drawIn" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${T('drawGuessPh')}" value="${esc(G.drawDraft || '')}"><button class="btn primary" id="drawSend">${T('drawSend')}</button></form>
+          </div>
+        </div>
+        ${keep ? '' : `<div class="intro" id="intro"><div><small>${T('roundOf', { r: S.round, n: S.total })}</small><b>🎨</b><em>${T('drawIntro', { name: esc(pById(q.drawer)?.name || '?') })}</em></div></div>`}
+      </section>`;
+    setTimeout(() => { const el = $('#intro'); if (el) el.remove(); }, keep ? 0 : INTRO_MS);
+    G.dsig = {};
+    drawBind();
+    drawRender(true);
+    // Striche nachladen, z. B. nach Neuverbindung oder Sprachwechsel
+    if (!isHost() || me.pid === q.drawer) { if (!DR.strokes.length && q.step === 'draw') send({ t: 'guess', a: 'sync' }); }
+    else if (H?.q?.strokes) { DR.strokes = H.q.strokes.map(s => ({ ...s, p: s.p.slice() })); }
+    requestAnimationFrame(drawRepaint);
+  }
+  const isDrawer = () => S?.q?.drawer === me.pid;
+  function drawRender(force) {
+    const q = S.q; if (!q || q.type !== 'draw' || !$('#drawFeed')) return;
+    const sec = myDraw(), drawer = isDrawer(), got = q.got.includes(me.pid), sig = G.dsig || (G.dsig = {});
+    // Wortanzeige: Zeichner und wer es hat sieht das Wort, alle anderen das Muster in ihrer Sprache
+    const w = sec?.w ? drawWord(sec.w[0], sec.w[1]) : null;
+    const wordHtml = q.step === 'choose' ? `✏️ ${drawer ? T('drawPick') : T('drawChoosing', { name: esc(pById(q.drawer)?.name || '?') })}`
+      : w ? `<b>${esc(w)}</b>${got ? ' ✓' : ''}` : `<span class="dmask">${esc(q.mask?.[LI()] || '')}</span><small>${[...(q.mask?.[LI()] || '')].filter(c => c !== ' ').length}</small>`;
+    if (force || sig.word !== wordHtml) { sig.word = wordHtml; $('#drawWord').innerHTML = wordHtml; }
+    // Auswahl für den Zeichner bzw. Warte-Hinweis über der Zeichenfläche
+    const coverSig = JSON.stringify([q.step, drawer, sec?.choices, window.I18N.lang]);
+    if (force || sig.cover !== coverSig) {
+      sig.cover = coverSig;
+      const cv = $('#drawCover');
+      if (q.step === 'choose') {
+        cv.hidden = false;
+        cv.innerHTML = drawer && sec?.choices
+          ? `<div class="dpick"><b>${T('drawPickT')}</b><div class="dpicks">${sec.choices.map(([c, i], n) => `<button class="btn dchoice" data-n="${n}"><span>${DRAWW[c]?.e || ''}</span>${esc(drawWord(c, i))}</button>`).join('')}</div></div>`
+          : `<div class="dpick wait"><span class="dots"><i></i><i></i><i></i></span><b>${T('drawChoosing', { name: esc(pById(q.drawer)?.name || '?') })}</b></div>`;
+        $$('.dchoice').forEach(b => b.onclick = () => { $$('.dchoice').forEach(x => { x.disabled = true; }); send({ t: 'guess', a: 'choose', n: +b.dataset.n }); Sound.pop(); });
+      } else { cv.hidden = true; cv.innerHTML = ''; }
+    }
+    // Werkzeuge nur für den Zeichner
+    const toolSig = JSON.stringify([drawer, q.step, DR.tool]);
+    if (force || sig.tools !== toolSig) { sig.tools = toolSig; drawToolsRender(drawer && q.step === 'draw'); }
+    $('#drawBoard').classList.toggle('mine', drawer && q.step === 'draw');
+    // Rate-Verlauf
+    const feedSig = JSON.stringify([q.feed, q.got, window.I18N.lang]);
+    if (force || sig.feed !== feedSig) {
+      sig.feed = feedSig;
+      const box = $('#drawFeed');
+      box.innerHTML = q.feed.length ? q.feed.slice(-30).map(f => {
+        const p = pById(f.pid); if (!p) return '';
+        return f.ok ? `<div class="dfe ok" style="--pc:${p.color}">✅ <b>${esc(p.name)}</b> ${T('drawGotIt')}</div>`
+          : f.close ? `<div class="dfe close" style="--pc:${p.color}">🤏 <b>${esc(p.name)}</b> ${T('drawClose')}</div>`
+          : `<div class="dfe" style="--pc:${p.color}"><b>${esc(p.name)}:</b> ${esc(f.txt)}</div>`;
+      }).join('') : `<p class="dfe hint">${drawer ? T('drawFeedDrawer') : T('drawFeedEmpty')}</p>`;
+      box.scrollTop = box.scrollHeight;
+      if (sig.feedN != null && q.got.length > sig.feedN) Sound.pop();
+      sig.feedN = q.got.length;
+    }
+    // Eingabe: nicht für den Zeichner und nicht für die, die es schon haben
+    const can = !drawer && !got && q.step === 'draw';
+    const inp = $('#drawIn'), btn = $('#drawSend');
+    inp.disabled = !can; btn.disabled = !can;
+    inp.placeholder = drawer ? T('drawYouDraw') : got ? T('drawYouHave') : q.step === 'choose' ? T('drawWaitWord') : T('drawGuessPh');
+    if (can && force && matchMedia('(pointer: fine)').matches) setTimeout(() => { if (document.activeElement?.id !== 'chatIn') inp.focus(); }, 60);
+  }
+  function drawToolsRender(on) {
+    const t = $('#drawTools'); if (!t) return;
+    if (!on) { t.innerHTML = ''; t.hidden = true; return; }
+    t.hidden = false;
+    const eraser = DR.tool.c === 'eraser';
+    t.innerHTML = `<div class="dcolors">${DRAW_COLORS.map(c => `<button class="dcol ${DR.tool.c === c ? 'on' : ''}" data-c="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('')}</div>
+      <div class="dsizes">${DRAW_SIZES.map(w => `<button class="dsz ${DR.tool.w === w && !eraser ? 'on' : ''}" data-w="${w}"><i style="--s:${Math.round(w / 2.2) + 3}px"></i></button>`).join('')}
+        <button class="dsz ${eraser ? 'on' : ''}" data-er="1" title="${T('drawEraser')}">🧽</button>
+        <button class="dsz" data-undo="1" title="${T('drawUndo')}">↶</button>
+        <button class="dsz" data-clear="1" title="${T('drawClear')}">🗑️</button></div>`;
+    $$('[data-c]', t).forEach(b => b.onclick = () => { DR.tool = { c: b.dataset.c, w: DR.tool.c === 'eraser' ? 6 : DR.tool.w }; drawRender(); });
+    $$('[data-w]', t).forEach(b => b.onclick = () => { DR.tool = { c: DR.tool.c === 'eraser' ? '#111111' : DR.tool.c, w: +b.dataset.w }; drawRender(); });
+    $('[data-er]', t).onclick = () => { DR.tool = { c: 'eraser', w: 60 }; drawRender(); };
+    $('[data-undo]', t).onclick = () => { DR.strokes.pop(); drawRepaint(); send({ t: 'guess', a: 'undo' }); };
+    $('[data-clear]', t).onclick = () => { if (!DR.strokes.length) return; DR.strokes = []; drawRepaint(); send({ t: 'guess', a: 'clear' }); Sound.pop(); };
+  }
+  // Zeichnen mit Maus, Stift oder Finger; Punkte gesammelt alle 50 ms an den Host
+  function drawBind() {
+    const cv = $('#drawCv'), form = $('#drawForm'), inp = $('#drawIn');
+    inp.oninput = () => { G.drawDraft = inp.value; };
+    form.onsubmit = e => {
+      e.preventDefault();
+      const txt = inp.value.trim(); if (!txt || inp.disabled) return;
+      send({ t: 'guess', a: 'guess', txt }); inp.value = ''; G.drawDraft = '';
+    };
+    const pt = e => { const r = cv.getBoundingClientRect(); return [clamp(Math.round((e.clientX - r.left) / r.width * 1000), 0, 1000), clamp(Math.round((e.clientY - r.top) / r.height * 1000), 0, 1000)]; };
+    cv.addEventListener('pointerdown', e => {
+      if (!isDrawer() || S.q.step !== 'draw') return;
+      e.preventDefault(); cv.setPointerCapture?.(e.pointerId);
+      const c = DR.tool.c === 'eraser' ? '#ffffff' : DR.tool.c, w = DR.tool.c === 'eraser' ? 60 : DR.tool.w;
+      DR.cur = { id: Date.now().toString(36).slice(-5) + (++DR.n), c, w, p: [] };
+      DR.strokes.push(DR.cur);
+      drawAdd(pt(e));
+    });
+    cv.addEventListener('pointermove', e => {
+      if (!DR.cur) return;
+      e.preventDefault();
+      const [x, y] = pt(e), p = DR.cur.p;
+      if (Math.abs(p[p.length - 2] - x) + Math.abs(p[p.length - 1] - y) < 3) return;
+      drawAdd([x, y]);
+    });
+    const end = () => { if (!DR.cur) return; drawFlush(); DR.cur = null; };
+    cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end); cv.addEventListener('pointerleave', end);
+  }
+  function drawAdd(xy) {
+    const s = DR.cur, from = s.p.length;
+    s.p.push(...xy); DR.buf.push(...xy);
+    drawSeg(s, Math.max(0, from - 2));
+    if (!DR.flushT) DR.flushT = setTimeout(drawFlush, 50);
+  }
+  function drawFlush() {
+    clearTimeout(DR.flushT); DR.flushT = 0;
+    if (!DR.buf.length || !DR.cur) { DR.buf = []; return; }
+    send({ t: 'guess', a: 'pts', id: DR.cur.id, c: DR.cur.c, w: DR.cur.w, p: DR.buf });
+    DR.buf = [];
+  }
+  // Zeichenfläche: weiß, Seitenverhältnis 4:3, Linienbreite relativ zur Breite
+  function drawCtx(cv = $('#drawCv')) {
+    if (!cv) return null;
+    const dpr = devicePixelRatio || 1, w = Math.round(cv.clientWidth * dpr), h = Math.round(cv.clientHeight * dpr);
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; cv._fresh = true; }
+    const ctx = cv.getContext('2d'); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    return ctx;
+  }
+  function drawSeg(s, from, cv) {
+    const ctx = drawCtx(cv); if (!ctx) return;
+    if (ctx.canvas._fresh) return drawRepaint(cv);
+    const W = ctx.canvas.width, Hh = ctx.canvas.height, p = s.p;
+    ctx.strokeStyle = s.c; ctx.fillStyle = s.c; ctx.lineWidth = s.w / 1000 * W;
+    if (p.length === 2 || from === 0 && p.length <= 2) { ctx.beginPath(); ctx.arc(p[0] / 1000 * W, p[1] / 1000 * Hh, ctx.lineWidth / 2, 0, 6.29); ctx.fill(); return; }
+    ctx.beginPath(); ctx.moveTo(p[from] / 1000 * W, p[from + 1] / 1000 * Hh);
+    for (let i = from + 2; i < p.length; i += 2) ctx.lineTo(p[i] / 1000 * W, p[i + 1] / 1000 * Hh);
+    ctx.stroke();
+  }
+  function drawRepaint(cv) {
+    cv = cv instanceof HTMLCanvasElement ? cv : $('#drawCv');
+    const ctx = drawCtx(cv); if (!ctx) return;
+    ctx.canvas._fresh = false;
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    for (const s of DR.strokes) { if (s.p.length) drawSeg(s, 0, cv); }
+  }
+  addEventListener('resize', () => { if ($('#drawCv')) drawRepaint(); if ($('#drawRevCv')) drawRepaint($('#drawRevCv')); });
+
+  function renderDrawReveal() {
+    const R = S.reveal, dp = pById(R.drawer), name = pid => esc(pById(pid)?.name || '?');
+    const wLocal = R.cat ? drawWord(R.cat, R.w) : '–', wOther = R.cat ? drawWord(R.cat, R.w, 1 - LI()) : '';
+    const rows = R.res.map((r, i) => {
+      const p = pById(r.pid); if (!p) return '';
+      const mv = r.move > 0 ? `<i class="up">▲${r.move}</i>` : r.move < 0 ? `<i class="down">▼${-r.move}</i>` : '';
+      const res = r.drawer ? `🎨 ${T('drawFans', { n: r.n })}` : r.ms == null ? T('noAnswer') : `⏱️ ${num(r.ms / 1000, 1)} s`;
+      return `<div class="rrow ${p.pid === me.pid ? 'me' : ''}" style="--pc:${p.color};animation-delay:${0.5 + i * 0.08}s">
+        <div class="rk">${r.drawer ? '🎨' : r.ms != null ? r.n : '–'}</div><div class="ra">${p.avatar}</div>
+        <div class="rn"><b>${esc(p.name)}</b><div class="tags">${r.drawer ? `<span class="tag hit">${T('drawDrawer')}</span>` : ''}${r.crown ? `<span class="tag crown">⚡ ${T('drawFirst')}</span>` : ''}</div></div>
+        <div class="rg ${r.drawer || r.ms != null ? 'ok' : 'no'}">${res}</div>
+        <div class="rp">+${r.pts}</div><div class="rt">${r.total}${mv}</div></div>`;
+    }).join('');
+    app().innerHTML = `
+      <section class="screen reveal drawrev">
+        <div class="gamebar"><div class="pill">${T('round')} <b>${S.round}</b> / ${S.total}</div><div class="pill drawbrand">🎨 DRAW CLASH</div>${timerHtml()}</div>
+        <div class="drawrevgrid">
+          <div class="card drawsol">
+            <small>${T('drawWordWas')}</small>
+            <b class="dsolw">${esc(wLocal)}</b>
+            ${wOther && qnorm(wOther) !== qnorm(wLocal) ? `<span class="dsolo">${esc(wOther)}</span>` : ''}
+            <span class="dsolby" style="--pc:${dp?.color || '#fff'}">${T('drawBy', { name: name(R.drawer) })} ${dp?.avatar || ''}</span>
+          </div>
+          <div class="drawboard rev"><canvas id="drawRevCv"></canvas></div>
+        </div>
+        <div class="card results">
+          <div class="rrow head"><div class="rk">#</div><div class="ra"></div><div class="rn">${T('thPlayer')}</div><div class="rg">${T('drawTime')}</div><div class="rp">${T('thPoints')}</div><div class="rt">${T('thTotal')}</div></div>
+          ${rows}
+        </div>
+        <div class="reveal-foot" id="revealFoot"></div>
+      </section>`;
+    requestAnimationFrame(() => drawRepaint($('#drawRevCv')));
+    if (R.res.some(r => !r.drawer && r.ms != null)) Sound.win();
+    renderRevealFooter();
+  }
+  function drawAwards(F, award, mostWins) {
+    const st = Object.entries(F.draw || {});
+    const top = f => { const e = st.filter(([, s]) => f(s) > 0).sort((a, b) => f(b[1]) - f(a[1]))[0]; return e ? { pid: e[0], n: f(e[1]) } : null; };
+    const art = top(s => s.fans), fox = top(s => s.got);
+    const fast = st.filter(([, s]) => s.fast != null).sort((a, b) => a[1].fast - b[1].fast)[0];
+    return [
+      art ? award('🎨', T('drawArtA'), art, T('drawArtX', { n: art.n })) : '',
+      fast ? award('⚡', T('drawFastA'), { pid: fast[0] }, T('drawFastX', { s: num(fast[1].fast / 1000, 1) })) : '',
+      fox ? award('🔎', T('drawFoxA'), fox, T('drawFoxX', { n: fox.n })) : '',
+      mostWins && mostWins.wins ? award('👑', T('king'), { pid: mostWins.pid }, T('kingText', { n: mostWins.wins })) : '',
+    ].join('');
+  }
+
 
   // ---------- Reaktionen ----------
   function showReaction(pid, e) {
@@ -17453,6 +18467,7 @@ window.__launchGate = (() => {
     };
     document.addEventListener('click', e => { const pop = $('#volPop'); if (!pop.hidden && !pop.contains(e.target)) pop.hidden = true; });
     $('#leaveBtn').onclick = () => leave(false);
+    $('#playersBtn').onclick = playersPanel;
     $('#roomChip').onclick = () => S && copy(inviteLink() || S.code, inviteLink() ? T('inviteCopied') : T('codeCopied'));
     $('#langBtn').onclick = () => {
       const inp = $('#nameIn'); if (inp) me.name = inp.value.replace(/\s+/g, ' ').trim().slice(0, 16);
