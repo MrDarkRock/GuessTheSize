@@ -1804,6 +1804,28 @@ body.draw-app .bg i:nth-child(3) { background: #63e6be; opacity: .22; }
   .appcard small { font-size: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .appcard em { right: 8px; font-size: 10px; padding: 2px 7px; }
 }
+/* Draw Clash: wer zeichnet, wer hat es, wer ist als Nächstes dran */
+.drawwho { position: absolute; left: 10px; top: 10px; z-index: 1; max-width: calc(100% - 20px); padding: 5px 12px; border-radius: 99px; background: rgba(12, 14, 34, .78); border: 1px solid var(--pc); color: #fff; font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+.drawplayers { display: grid; gap: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--card-b); }
+.dpl { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 10px; font-size: 14px; min-width: 0; }
+.dpl.d { background: color-mix(in srgb, var(--pc) 22%, transparent); }
+.dpl.ok { background: color-mix(in srgb, #2f9e44 20%, transparent); }
+.dpl .dav { font-size: 18px; }
+.dpl b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dpl b i { font-style: normal; color: var(--muted); font-weight: 500; }
+.dpl small { color: var(--muted); font-weight: 700; }
+.dst { font-style: normal; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.dst.draw { background: var(--grad); color: #0b0d22; }
+.dst.ok { background: #2f9e44; color: #fff; }
+.dst.next { border: 1px solid var(--acc2); color: var(--acc2); }
+.drawside { grid-template-rows: auto minmax(0, 1fr) auto; }
+@media (max-width: 900px) {
+  .drawside { grid-template-rows: auto auto auto; }
+  .drawplayers { display: flex; flex-wrap: wrap; gap: 6px; }
+  .dpl { padding: 4px 8px; background: rgba(255, 255, 255, .05); font-size: 13px; }
+  .dpl b { max-width: 110px; }
+  .drawwho { font-size: 12px; padding: 4px 10px; }
+}
 </style>
 </head>
 <body>
@@ -2024,7 +2046,7 @@ window.I18N = (() => {
       drawIntro: '{name} zeichnet', drawPick: 'Wähle dein Wort', drawPickT: 'Was willst du zeichnen?', drawChoosing: '{name} wählt ein Wort …',
       drawGuessPh: 'Dein Tipp …', drawSend: 'Raten', drawYouDraw: 'Du zeichnest gerade', drawYouHave: 'Erraten! Warte auf die anderen …', drawWaitWord: 'Gleich geht es los …',
       drawFeedEmpty: 'Noch keine Tipps. Leg los!', drawFeedDrawer: 'Hier erscheinen die Tipps der anderen.', drawGotIt: 'hat es erraten!', drawClose: 'ist ganz nah dran', drawCloseYou: 'Ganz nah dran!',
-      drawYouGot: 'Richtig erraten!', drawEraser: 'Radierer', drawUndo: 'Rückgängig', drawClear: 'Alles löschen',
+      drawYouGot: 'Richtig erraten!', drawNow: 'zeichnet', drawNext: 'als Nächstes', drawYouNow: 'Du zeichnest', drawEraser: 'Radierer', drawUndo: 'Rückgängig', drawClear: 'Alles löschen',
       drawWordWas: 'Gesucht war', drawBy: 'gezeichnet von {name}', drawTime: 'Zeit', drawFans: '{n}× erraten', drawDrawer: 'Zeichner', drawFirst: 'Erster',
       drawArtA: 'Picasso', drawArtX: 'malte Bilder, die {n}× erraten wurden.', drawFastA: 'Blitzmerker', drawFastX: 'erriet ein Bild nach {s} s.', drawFoxA: 'Ratefuchs', drawFoxX: 'lag {n}× richtig.',
       spyTagline: 'Alle kennen das geheime Wort, nur einer nicht: der Spion. Gebt reihum Hinweise, findet den Spion, bevor er das Wort errät.<br><b>Bluffen, verdächtigen, entlarven. 3 bis 10 Spieler.</b>',
@@ -2236,7 +2258,7 @@ window.I18N = (() => {
       drawIntro: '{name} çiziyor', drawPick: 'Kelimeni seç', drawPickT: 'Ne çizmek istersin?', drawChoosing: '{name} kelime seçiyor …',
       drawGuessPh: 'Tahminin …', drawSend: 'Tahmin et', drawYouDraw: 'Şu an sen çiziyorsun', drawYouHave: 'Bildin! Diğerleri bekleniyor …', drawWaitWord: 'Birazdan başlıyor …',
       drawFeedEmpty: 'Henüz tahmin yok. Hadi başla!', drawFeedDrawer: 'Diğerlerinin tahminleri burada görünür.', drawGotIt: 'bildi!', drawClose: 'çok yakın', drawCloseYou: 'Çok yakın!',
-      drawYouGot: 'Doğru bildin!', drawEraser: 'Silgi', drawUndo: 'Geri al', drawClear: 'Hepsini sil',
+      drawYouGot: 'Doğru bildin!', drawNow: 'çiziyor', drawNext: 'sıradaki', drawYouNow: 'Sen çiziyorsun', drawEraser: 'Silgi', drawUndo: 'Geri al', drawClear: 'Hepsini sil',
       drawWordWas: 'Aranan kelime', drawBy: 'çizen: {name}', drawTime: 'Süre', drawFans: '{n} kişi bildi', drawDrawer: 'Çizen', drawFirst: 'İlk bilen',
       drawArtA: 'Picasso', drawArtX: '{n} kez bilinen çizimler yaptı.', drawFastA: 'Şimşek', drawFastX: 'bir çizimi {s} sn’de bildi.', drawFoxA: 'Tahmin ustası', drawFoxX: '{n} kez doğru bildi.',
       spyTagline: 'Herkes gizli kelimeyi biliyor, biri hariç: casus. Sırayla ipucu verin, casus kelimeyi bulmadan onu yakalayın.<br><b>Blöf yap, şüphelen, ifşa et. 3 ila 10 oyuncu.</b>',
@@ -8849,6 +8871,240 @@ QZ('muzik_tr', 'music', [
   ['Koray Avcı', 'Hoş Gör Sen', 0],
   ['Melike Şahin', 'Merhem', 0],
   ['Ezhel', 'Şehrimin Tadı', 0],
+
+  // Ergänzung 3: Pop 1980–1999 (Jahr der Erstveröffentlichung, belegt)
+  ['Barış Manço', 'Alla Beni Pulla Beni', 1981],
+  ['Barış Manço', 'Halhal', 1981],
+  ['Ajda Pekkan', 'Uykusuz Her Gece', 1983],
+  ['MFÖ', 'Güllerin İçinden', 1984],
+  ['MFÖ', 'Yalnızlık Ömür Boyu', 1984],
+  ['Barış Manço', 'Gibi Gibi', 1985],
+  ['Sezen Aksu', 'Git', 1986],
+  ['Nilüfer', 'Esmer Günler', 1988],
+  ['Ajda Pekkan', 'Her Yaşın Bir Güzelliği Var', 1990],
+  ['Coşkun Sabah', 'Aşığım Sana', 1990],
+  ['Hakan Peker', 'Hey Corç', 1991],
+  ['Zerrin Özer', 'Sevildiğini Bil', 1991],
+  ['Nilüfer', 'Show Yapma', 1992],
+  ['Sertab Erener', 'Sakin Ol', 1992],
+  ['Tarkan', 'Kıl Oldum', 1992],
+  ['Ajda Pekkan', 'Sarıl Bana', 1993],
+  ['Aşkın Nur Yengi', 'Sıramı Bekliyorum', 1993],
+  ['Bendeniz', 'Ya Sen Ya Hiç', 1993],
+  ['Hakan Peker', 'Amma Velakin', 1993],
+  ['Levent Yüksel', 'Beni Bırakın', 1993],
+  ['Levent Yüksel', 'Yeter ki Onursuz Olmasın Aşk', 1993],
+  ['Sezen Aksu', 'Masum Değiliz', 1993],
+  ['Çelik', 'Ateşteyim', 1993],
+  ['Asya', 'Vurulmuşum Sana', 1994],
+  ['Demet Sağıroğlu', 'Arnavut Kaldırımı', 1994],
+  ['Leman Sam', 'Aşkımdan Vazgeçme', 1994],
+  ['Mustafa Sandal', 'Suç Bende', 1994],
+  ['Mustafa Sandal', 'Bu Kız Beni Görmeli', 1994],
+  ['Nazan Öncel', 'Geceler Kara Tren', 1994],
+  ['Nilüfer', 'Eğrisi Doğrusu', 1994],
+  ['Yonca Evcimik', '8:15 Vapuru', 1994],
+  ['Burak Kut', 'Yaşandı Bitti', 1995],
+  ['Ferda Anıl Yarkın', 'Sonuna Kadar', 1995],
+  ['Kayahan', 'Allah\'ım Neydi Günahım', 1995],
+  ['MFÖ', 'Mazeretim Var Asabiyim Ben', 1995],
+  ['Rafet El Roman', 'Sorma Neden', 1995],
+  ['Sezen Aksu', 'Onu Alma Beni Al', 1995],
+  ['Çelik', 'Hercai', 1995],
+  ['İzel', 'Tutun Ellerimden', 1995],
+  ['Asya', 'İsyankar', 1996],
+  ['Gülşen', 'Be Adam', 1996],
+  ['Gülşen', 'Gel Çarem', 1996],
+  ['Gülşen', 'Saz mı Caz mı', 1996],
+  ['Mustafa Sandal', 'Bir Anda', 1996],
+  ['Nazan Öncel', 'Erkekler de Yanar', 1996],
+  ['Nazan Öncel', 'Ben Sokak Kızıyım', 1996],
+  ['Serdar Ortaç', 'Yaz Yağmuru', 1996],
+  ['Yaşar', 'Divane', 1996],
+  ['Yıldız Tilbe', 'Aşkperest', 1996],
+  ['Candan Erçetin', 'Çapkın', 1997],
+  ['Candan Erçetin', 'Onlar Yanlış Biliyor', 1997],
+  ['Candan Erçetin', 'Her Aşk Bitermiş', 1997],
+  ['Göksel', 'Sabır', 1997],
+  ['Tarkan', 'Ölürüm Sana', 1997],
+  ['Tarkan', 'Salına Salına Sinsice', 1997],
+  ['İzel', 'Emanet', 1997],
+  ['Şebnem Paker', 'Dinle', 1997],
+  ['Atilla Taş', 'Ham Çökelek', 1998],
+  ['Ebru Gündeş', 'Sen Allah\'ın Bir Lütfusun', 1998],
+  ['Özlem Tekin', 'Yol', 1998],
+  ['Kenan Doğulu', 'Ben Güzelden Anlarım', 1999],
+  ['Kenan Doğulu', 'Ben Senin Herşeyinim', 1999],
+  ['Sertab Erener', 'Zor Kadın', 1999],
+  ['Sertab Erener', 'Yanarım', 1999],
+
+  // Ergänzung 3: Pop 2000 bis heute (Jahr der Erstveröffentlichung, belegt)
+  ['Göksel', 'Depresyondayım', 2001],
+  ['Sertab Erener', 'Kumsalda', 2001],
+  ['Tarkan', 'Hüp', 2001],
+  ['Hande Yener', 'Sen Yoluna... Ben Yoluma...', 2002],
+  ['Demet Akalın', 'Unuttum', 2003],
+  ['Yalın', 'Zalim', 2004],
+  ['Hande Yener', 'Kelepçe', 2006],
+  ['Kenan Doğulu', 'Baş Harfi Ben', 2006],
+  ['İsmail YK', 'Bombabomba.com', 2006],
+  ['Bengü', 'Korkma Kalbim', 2007],
+  ['Murat Boz', 'Maximum', 2007],
+  ['Murat Boz', 'Özledim', 2007],
+  ['Ajda Pekkan', 'Aynen Öyle', 2008],
+  ['Demet Akalın', 'Mucize', 2008],
+  ['Rafet El Roman', 'Aşk-ı Virane', 2008],
+  ['Hande Yener', 'Bodrum', 2010],
+  ['Ozan Doğulu', 'Alain Delon', 2010],
+  ['Murat Boz', 'Geri Dönüş Olsa', 2011],
+  ['Mustafa Ceceli', 'Eksik', 2011],
+  ['İrem Derici', 'Bensiz Yapamazsın', 2012],
+  ['Gülşen', 'Irgalamaz Beni', 2013],
+  ['Hadise', 'Nerdesin Aşkım', 2014],
+  ['Hadise', 'Prenses', 2014],
+  ['Sıla', 'Yabancı', 2014],
+  ['Buray', 'İstersen', 2015],
+  ['Gülben Ergen', 'Aşkla Aynı Değil', 2015],
+  ['Mabel Matiz', 'Gel', 2015],
+  ['Edis', 'Dudak', 2016],
+  ['Kalben', 'Sadece', 2016],
+  ['Murat Dalkılıç', 'Leyla', 2016],
+  ['Oğuzhan Koç', 'Bulutlara Esir Olduk', 2016],
+  ['Sıla', 'Engerek', 2016],
+  ['Hadise', 'Sıfır Tolerans', 2017],
+  ['Manuş Baba', 'Eteği Belinde', 2017],
+  ['Murat Dalkılıç', 'Aşinayız', 2017],
+  ['Simge', 'Prens & Prenses', 2017],
+  ['Tarkan', 'Yolla', 2017],
+  ['İlyas Yalçıntaş', 'Gel Be Gökyüzüm', 2017],
+  ['Buray', 'Aşk Bitsin', 2018],
+  ['Edis', 'Roman', 2018],
+  ['Gülşen', 'Bir İhtimal Biliyorum', 2018],
+  ['Mabel Matiz', 'Sarmaşık', 2018],
+  ['Merve Özbey', 'Vuracak', 2018],
+  ['Sıla', 'Muhbir', 2018],
+  ['Aleyna Tilki', 'Nasılsın Aşkta', 2019],
+  ['Emir Can İğrek', 'Defoluyorum', 2019],
+  ['Mustafa Ceceli', 'Bedel', 2019],
+  ['Bilal Sonses', 'Hasbelkader', 2020],
+  ['Madrigal', 'Seni Dert Etmeler', 2020],
+  ['Edis', 'Arıyorum', 2021],
+  ['Melike Şahin', 'Uykumun Boynunu Bükme', 2021],
+  ['Merve Özbey', 'Yerle Yeksan', 2021],
+  ['Semicenk', 'Düşer Aklıma', 2021],
+  ['Simge', 'Sevmek Yüzünden', 2021],
+  ['Güneş', 'Suçlarımdan Biri', 2022],
+  ['KÖFN', 'Bi\' Tek Ben Anlarım', 2022],
+  ['Sefo', 'Affettim', 2022],
+  ['Tarkan', 'Geççek', 2022],
+  ['Zeynep Bastık', 'Ara', 2022],
+  ['Mert Demir', 'Ölüyorum Anla', 2024],
+
+  // Ergänzung 3: Rap & Hip-Hop (Jahr der Erstveröffentlichung, belegt)
+  ['Cartel', 'Cartel', 1995],
+  ['Ceza', 'Rapstar', 2004],
+  ['Ceza', 'Yerli Plaka', 2006],
+  ['Ceza', 'Gelsin Hayat Bildiği Gibi', 2006],
+  ['Sagopa Kajmer', 'Baytar', 2013],
+  ['Ezhel', 'İmkansızım', 2017],
+  ['Norm Ender', 'Deli', 2017],
+  ['Norm Ender', 'Kaktüs', 2017],
+  ['Ben Fero', '3 2 1', 2018],
+  ['Ben Fero', 'Mahallemiz Esmer', 2018],
+  ['Gazapizm', 'Kalbim Çukurda', 2018],
+  ['Ezhel', 'Olay', 2019],
+  ['Murda & Ezhel', 'Aya', 2019],
+  ['Şanışer', 'Susamam', 2019],
+  ['Reynmen', 'Leila', 2020],
+  ['Cakal', 'Mahvettim', 2021],
+  ['Uzi', 'Paparazzi', 2021],
+  ['Blok3', 'AFFETMEM', 2023],
+  ['Motive', '10MG', 2023],
+  ['Norm Ender', 'Parla', 2023],
+  ['Lvbel C5', 'HAVHAVHAV', 2024],
+  ['Blok3', 'Napıyosun Mesela?', 2025],
+  ['Lvbel C5', 'COOOK PARDON', 2025],
+
+  // Ergänzung 3: Rock & Alternative (Jahr der Erstveröffentlichung, belegt)
+  ['Kargo', 'Sevmek Zor', 1997],
+  ['Mavi Sakal', 'İki Yol', 1997],
+  ['Kargo', 'Yalnızlık Mevsimi', 1998],
+  ['Kurban', 'Yalan', 1999],
+  ['Athena', 'Yaşamak Var Ya', 2000],
+  ['Athena', 'Öpücük', 2002],
+  ['Athena', 'Beyoğlu', 2002],
+  ['Pentagram', 'Bir', 2002],
+  ['Pentagram', 'Şeytan Bunun Neresinde', 2002],
+  ['Şebnem Ferah', 'Mayın Tarlası', 2003],
+  ['Gripin', 'Elalem', 2004],
+  ['mor ve ötesi', 'Uyan', 2004],
+  ['Hayko Cepkin', 'Son Kez', 2005],
+  ['Kurban', 'İnsanlar', 2005],
+  ['Duman', 'Aman Aman', 2006],
+  ['maNga', 'Dursun Zaman', 2006],
+  ['mor ve ötesi', 'Küçük Sevgilim', 2006],
+  ['Gripin', 'Sensiz İstanbul\'a Düşmanım', 2007],
+  ['Hayko Cepkin', 'Melekler', 2007],
+  ['Duman', 'Dibine Kadar', 2009],
+  ['Redd', 'Masal', 2009],
+  ['Redd', 'Özgürlük Sırtından Vurulmuş', 2009],
+  ['Redd', 'Sevmeden Geçer Zaman', 2012],
+  ['Duman', 'Eyvallah', 2013],
+  ['Yüksek Sadakat', 'Seninle', 2013],
+  ['Teoman', 'Rüzgar Gülü', 2019],
+  ['Dolu Kadehi Ters Tut', 'Bir Bildiğin Vardır', 2022],
+
+  // Ergänzung 3: Arabesk (Jahr der Erstveröffentlichung, belegt)
+  ['Müslüm Gürses', 'Mutlu Ol Yeter', 1981],
+  ['Müslüm Gürses', 'İtirazım Var', 1981],
+  ['Orhan Gencebay', 'Ben Topraktan Bir Canım', 1981],
+  ['Ferdi Tayfur', 'Ben de Özledim', 1982],
+  ['Ümit Besen', 'Bir Akşam Üstü', 1984],
+  ['Ümit Besen', 'Vazgeçtim Senden', 1985],
+  ['Orhan Gencebay', 'Cennet Gözlüm', 1986],
+  ['Bergen', 'Yıllar Affetmez', 1989],
+  ['Ferdi Tayfur', 'Bana da Söyle', 1991],
+  ['Cengiz Kurtoğlu', 'Sensiz Kutladım', 1993],
+  ['Ebru Gündeş', 'Tatlı Bela', 1994],
+  ['Azer Bülbül', 'Zordayım', 1998],
+  ['Azer Bülbül', 'Canım Yanıyor', 1998],
+  ['Mahsun Kırmızıgül', 'Yıkılmadım', 1998],
+  ['Mahsun Kırmızıgül', 'Belalım', 1998],
+  ['Hakan Taşıyan', 'Kıymetini Bilemedim', 1999],
+  ['Hakan Taşıyan', 'A Canım', 1999],
+  ['Cengiz Kurtoğlu', 'Hiç Aklıma Gelmemişti', 2000],
+  ['İbrahim Tatlıses', 'Tabi Tabi', 2003],
+  ['İbrahim Tatlıses', 'Tek Tek', 2003],
+  ['Hakan Altun', 'Hediye', 2004],
+  ['Hakan Altun', 'Küstüm Aşklara', 2006],
+
+  // Ergänzung 3: Türk Sanat Müziği & Fantezi (Jahr der Erstveröffentlichung, belegt)
+  ['Selami Şahin', 'Tapılacak Kadınsın', 1982],
+  ['Selami Şahin', 'Gitme Sana Muhtacım', 1982],
+  ['Ahmet Özhan', 'Ömrümüzün Baharı', 1985],
+  ['Bülent Ersoy', 'Sefam Olsun', 1993],
+  ['Muazzez Ersoy', 'Bir Bahar Akşamı', 1995],
+  ['Muazzez Ersoy', 'Aşkın Kanunu', 1996],
+  ['Muazzez Ersoy', 'Unutamam Seni', 1996],
+  ['Bülent Ersoy', 'Maazallah', 1997],
+  ['Bülent Ersoy', 'Sevmekten Kim Usanır', 2000],
+  ['Sibel Can', 'Gelse O Şuh Meclise', 2000],
+  ['Sibel Can', 'Ayrılık Ateşten Bir Ok', 2000],
+
+  // Ergänzung 3: Türk Halk Müziği & Türkü (Jahr der Erstveröffentlichung, belegt)
+  ['Arif Sağ', 'İnsan Olmaya Geldim', 1983],
+  ['Belkıs Akkale', 'Nerdesin', 1987],
+  ['Belkıs Akkale', 'Kaynana', 1992],
+  ['Volkan Konak', 'Efulim', 1993],
+  ['Musa Eroğlu', 'Yolver Dağlar', 1994],
+  ['Kıvırcık Ali', 'Gül Tükendi Ben Tükendim', 1998],
+  ['Volkan Konak', 'Pedaliza', 1998],
+  ['Zara', 'Kesik Çayır', 1998],
+  ['Zara', 'Kütahya\'nın Pınarları', 2000],
+  ['Volkan Konak', 'Cerrahpaşa', 2003],
+  ['Kazım Koyuncu', 'Hayde', 2004],
+  ['Kazım Koyuncu', 'Ben Seni Sevduğumi', 2004],
+  ['Kazım Koyuncu', 'Gelevera Deresi', 2004],
 ]);
 
 </script>
@@ -14212,7 +14468,7 @@ window.__launchGate = (() => {
   const sess = (k, v) => { try { if (v === undefined) return sessionStorage.getItem(k) || ''; sessionStorage.setItem(k, v); } catch { /* privater Modus */ } return ''; };
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = 'ee904676e6';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = 'c6da9c9a2b';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -15052,8 +15308,10 @@ window.__launchGate = (() => {
   }
   // Ersetzt Musik-Runden ohne Ausschnitt durch andere Songs derselben Kategorie; Runden ohne Song fallen weg
   async function prepareMusic() {
-    const taken = new Set(H.order.map(r => r.id)), until = Date.now() + 35000;
+    const taken = new Set(H.order.map(r => r.id));
     const rounds = H.order.filter(r => QZBYID[r.id]?.kind === 'music');
+    // Zeitbudget wächst mit der Zahl der Songs (bei 100 Runden bis 90 s)
+    const until = Date.now() + Math.min(90000, 20000 + rounds.length * 700);
     let ok = 0;
     musicNet.itFail = 0;
     await pool(rounds, 3, async r => {
@@ -15726,7 +15984,7 @@ window.__launchGate = (() => {
             </div>`;
     const hitN = c => hitPool(c === 'all' ? allKeys(HITCATS) : [c]).length;
     const hitSettings = `
-            ${seg('rounds', [[5, '5'], [10, '10'], [15, '15'], [20, '20']], T('rounds'))}
+            ${seg('rounds', [[5, '5'], [10, '10'], [15, '15'], [20, '20'], [30, '30'], [40, '40'], [50, '50'], [100, '100']], T('rounds'))}
             ${seg('time', [[15, '15 s'], [25, '25 s'], [40, '40 s']], T('time'))}
             ${teamSeg}
             <div class="setting">
@@ -15779,7 +16037,7 @@ window.__launchGate = (() => {
               <div class="slabel">${T('mode')}</div>
               <div class="cats modes">${Object.entries(MODES).map(([k, m]) => `<button class="${st.mode === k ? 'on' : ''}" ${host ? '' : 'disabled'} data-set="mode" data-val="${k}"><span>${m.e}</span>${T('modes')[k][0]}<small>${T('modes')[k][1]}</small></button>`).join('')}</div>
             </div>
-            ${seg('rounds', [[5, '5'], [10, '10'], [15, '15'], [20, '20']], T('rounds'))}
+            ${seg('rounds', [[5, '5'], [10, '10'], [15, '15'], [20, '20'], [30, '30'], [40, '40'], [50, '50'], [100, '100']], T('rounds'))}
             ${seg('time', [[15, '15 s'], [25, '25 s'], [40, '40 s'], [60, '60 s']], T('time'))}
             ${teamSeg}
             <div class="duo">
@@ -18057,7 +18315,8 @@ window.__launchGate = (() => {
     publish();
   }
   // Öffentlich ohne Wort: nur Muster (Striche) in beiden Sprachen, wer es schon hat, und der Rate-Verlauf
-  const drawPublic = q => ({ type: 'draw', id: q.id, drawer: q.drawer, step: q.step, got: Object.keys(q.got), feed: q.feed,
+  // queue: wer in den nächsten Runden zeichnet (für „als Nächstes dran“)
+  const drawPublic = q => ({ type: 'draw', id: q.id, drawer: q.drawer, step: q.step, got: Object.keys(q.got), feed: q.feed, queue: H.order.slice(H.round).map(r => r.drawer),
     mask: q.cat != null ? [drawMask(drawWord(q.cat, q.w, 0), q.rev[0]), drawMask(drawWord(q.cat, q.w, 1), q.rev[1])] : null });
 
   // ---------- Client ----------
@@ -18092,10 +18351,11 @@ window.__launchGate = (() => {
         </div>
         <div class="drawgrid">
           <div class="drawmain">
-            <div class="drawboard" id="drawBoard"><canvas id="drawCv"></canvas><div class="drawcover" id="drawCover"></div></div>
+            <div class="drawboard" id="drawBoard"><canvas id="drawCv"></canvas><div class="drawwho" id="drawWho"></div><div class="drawcover" id="drawCover"></div></div>
             <div class="drawtools" id="drawTools"></div>
           </div>
           <div class="card drawside">
+            <div class="drawplayers" id="drawPlayers"></div>
             <div class="drawfeed" id="drawFeed"></div>
             <form class="qinput drawguess" id="drawForm" autocomplete="off"><input id="drawIn" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${T('drawGuessPh')}" value="${esc(G.drawDraft || '')}"><button class="btn primary" id="drawSend">${T('drawSend')}</button></form>
           </div>
@@ -18137,6 +18397,20 @@ window.__launchGate = (() => {
     const toolSig = JSON.stringify([drawer, q.step, DR.tool]);
     if (force || sig.tools !== toolSig) { sig.tools = toolSig; drawToolsRender(drawer && q.step === 'draw'); }
     $('#drawBoard').classList.toggle('mine', drawer && q.step === 'draw');
+    // Wer zeichnet gerade (auf der Zeichenfläche), Spielerliste mit Status und Reihenfolge
+    const dp = pById(q.drawer), next = (q.queue || []).find(pid => pById(pid)?.online);
+    const who = `${dp?.avatar || '🎨'} ${drawer ? T('drawYouNow') : T('drawIntro', { name: esc(dp?.name || '?') })}`;
+    if (force || sig.who !== who) { sig.who = who; $('#drawWho').innerHTML = who; $('#drawWho').style.setProperty('--pc', dp?.color || '#fff'); }
+    const plSig = JSON.stringify([q.drawer, q.got, next, S.players.map(p => [p.pid, p.score, p.online]), window.I18N.lang]);
+    if (force || sig.pl !== plSig) {
+      sig.pl = plSig;
+      const order = S.players.filter(p => p.online || p.pid === q.drawer).sort((a, b) => (b.pid === q.drawer) - (a.pid === q.drawer) || b.score - a.score);
+      $('#drawPlayers').innerHTML = order.map(p => {
+        const isD = p.pid === q.drawer, ok = q.got.includes(p.pid), isN = p.pid === next;
+        const st = isD ? `<em class="dst draw">🎨 ${T('drawNow')}</em>` : ok ? `<em class="dst ok">✓</em>` : isN ? `<em class="dst next">${T('drawNext')}</em>` : '';
+        return `<div class="dpl ${isD ? 'd' : ''} ${ok ? 'ok' : ''}" style="--pc:${p.color}"><span class="dav">${p.avatar}</span><b>${esc(p.name)}${p.pid === me.pid ? ` <i>${T('you')}</i>` : ''}</b><small>${p.score}</small>${st}</div>`;
+      }).join('');
+    }
     // Rate-Verlauf
     const feedSig = JSON.stringify([q.feed, q.got, window.I18N.lang]);
     if (force || sig.feed !== feedSig) {
