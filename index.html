@@ -1826,6 +1826,14 @@ body.draw-app .bg i:nth-child(3) { background: #63e6be; opacity: .22; }
   .dpl b { max-width: 110px; }
   .drawwho { font-size: 12px; padding: 4px 10px; }
 }
+.hitbig { font-size: clamp(32px, 6vw, 56px); overflow-wrap: anywhere; }
+.hityr { padding: 1px 10px; border-radius: 99px; background: color-mix(in srgb, var(--acc2) 22%, transparent); color: var(--acc2); }
+.hitcard .mopts { width: min(100%, 760px); margin-top: 6px; }
+.hitq-t em { font-style: normal; font-weight: 800; color: var(--acc2); margin-left: 4px; }
+.hityear { display: grid; justify-items: center; gap: 8px; text-align: center; }
+.hityear .slabel { justify-self: start; }
+.hityear .hity { font-size: clamp(44px, 9vw, 72px); }
+.tag.miss { background: color-mix(in srgb, #e03131 26%, transparent); color: #ffb3b3; }
 </style>
 </head>
 <body>
@@ -2023,15 +2031,15 @@ window.I18N = (() => {
       sceneLoading: '🎬 Poster werden geladen …', sceneHint: 'Schau dir das Poster und die Hinweise an und tippe die richtige Antwort. Nur ein Versuch, je schneller desto mehr Punkte.',
       tmdbLabel: 'Poster ohne Schrift', tmdbOpt: '(optional, nur für dich als Host)', tmdbPh: 'TMDB-API-Schlüssel einfügen', tmdbOn: 'TMDB aktiv: Poster ohne Schrift, wo vorhanden', tmdbOff: 'TMDB-Schlüssel entfernt', tmdbHelp: 'Ohne Schlüssel zeigt das Spiel nur die Mitte des Posters, damit der Titel nicht zu sehen ist. Mit einem kostenlosen Schlüssel von themoviedb.org gibt es für viele Titel Poster ganz ohne Schrift.',
       banLate: 'Zu spät, die Bann-Zeit war schon vorbei.', banTaken: 'Den hat schon jemand gebannt. Such dir ein anderes Ziel.', banFail: 'Bann nicht möglich.',
-      hitTagline: 'Ein Song-Ausschnitt läuft: <b>Aus welchem Jahr ist er?</b> Von Elvis bis heute, Welthits und türkische Klassiker.<br><b>Wer die Musikgeschichte im Ohr hat, gewinnt.</b>',
+      hitTagline: 'Ein Song-Ausschnitt läuft: <b>Wer singt das?</b> Bonus, wenn du auch das Jahr triffst. Von Elvis bis heute, Welthits und türkische Hits.<br><b>Wer die Musikgeschichte im Ohr hat, gewinnt.</b>',
       hitRules: [
-        '🎵 Ein <b>Song-Ausschnitt</b> läuft. Schieb den Regler auf das <b>Erscheinungsjahr</b>, das du vermutest.',
-        '🎯 Genau getroffen: <b>1000 Punkte</b>. Je weiter daneben, desto weniger, ab 15 Jahren gibt es nichts.',
-        '🎤 Bonus: Tippe auf den richtigen <b>Interpreten</b> und hol dir <b>+300</b>.',
-        '👑 Wer am nächsten dran ist, bekommt den Rundensieg (+100). Einloggen mit Enter oder dem Knopf, sonst zählt dein letzter Stand.',
+        '🎵 Ein <b>Song-Ausschnitt</b> läuft. Tippe auf den richtigen <b>Interpreten</b>: bis <b>1000 Punkte</b>, je schneller desto mehr (am Ende noch 500).',
+        '📅 Bonus: Schieb den Regler auf das <b>Erscheinungsjahr</b>. Genau getroffen <b>+300</b>, je weiter daneben desto weniger, ab 15 Jahren nichts.',
+        '🎯 Du kannst auch nur eins von beiden tippen.',
+        '👑 Die meisten Punkte der Runde: Rundensieg (+100). Einloggen mit Enter oder dem Knopf, sonst zählt dein letzter Stand.',
       ],
-      hitQ: 'Aus welchem Jahr ist dieser Song?', hitIntro: 'Welches Jahr?', hitArtistQ: 'Bonus: Wer singt?', hitHint: 'Regler schieben, Interpret antippen (optional), dann einloggen.',
-      hitMoveFirst: 'Schieb zuerst den Regler auf ein Jahr.', hitWas: 'Der Song ist von', hitTip: 'Tipp', hitExact: 'Genau!', hitArtistOk: 'Interpret',
+      hitQ: 'Bonus: Aus welchem Jahr?', hitIntro: 'Wer singt?', hitArtistQ: 'Wer singt?', hitHint: 'Interpret antippen, für den Bonus das Jahr schätzen, dann einloggen.',
+      hitMoveFirst: 'Tippe zuerst auf einen Interpreten oder schätze das Jahr.', hitWas: 'Das war', hitTip: 'Tipp', hitExact: 'Genau!', hitArtistOk: 'Interpret',
       hitSongs: 'Songs aus', hitAll: 'Alle Songs', hitNSongs: '{n} Songs',
       hitTime: 'Zeitreisende/r', hitTimeX: 'lag im Schnitt {n} Jahre daneben.', hitExactA: 'Volltreffer', hitExactX: 'traf {n}× das genaue Jahr.', hitArtA: 'Musiklexikon', hitArtX: 'erkannte {n}× den Interpreten.',
       drawTagline: 'Einer zeichnet, alle anderen raten, so schnell sie können. Reihum ist jeder mal dran.<br><b>Kritzeln, raten, lachen.</b>',
@@ -2106,7 +2114,7 @@ window.I18N = (() => {
       youBanned: '{who} hat dich gebannt!', youBannedSub: 'Diese Runde setzt du aus. Rache ist süß …',
       streakT: 'Heißer Lauf', streakX: 'hatte {n} starke Runden in Folge.', victimT: 'Prügelknabe', victimX: 'wurde {n}× gebannt.',
       setBans: 'Bann (pro 5 Runden 1×)', setBonus: 'Bonusrunden & Serien', on: 'an', off: 'aus',
-      apps: { size: 'Party-Quiz: schätzen, vergleichen, erraten', geo: 'Wo auf der Welt bist du? Umsehen, laufen, tippen', reflex: 'Reaktions-Minispiele: Blind-Stopp, Ampel, Zielscheiben …', spy: 'Einer kennt das Wort nicht. Findet den Spion!', hit: 'Song hören, Jahr schätzen: Hitster-Feeling', draw: 'Einer zeichnet, alle raten: Montagsmaler' }, isNew: 'NEU',
+      apps: { size: 'Party-Quiz: schätzen, vergleichen, erraten', geo: 'Wo auf der Welt bist du? Umsehen, laufen, tippen', reflex: 'Reaktions-Minispiele: Blind-Stopp, Ampel, Zielscheiben …', spy: 'Einer kennt das Wort nicht. Findet den Spion!', hit: 'Song hören, Interpret erkennen, Jahr schätzen', draw: 'Einer zeichnet, alle raten: Montagsmaler' }, isNew: 'NEU',
       geoTagline: 'Du landest irgendwo auf der Welt. Schau dich um, lauf die Straße entlang und tipp auf der Karte, wo du bist.<br><b>Wer am nächsten dran ist, gewinnt. 2 bis 10 Spieler.</b>',
       chooseGame: 'Spiel', geoRegion: 'Region',
       geoRegions: { world: 'Ganze Welt', eu: 'Europa', am: 'Amerika', as: 'Asien', afoc: 'Afrika & Ozeanien', detr: 'Deutschland & Türkei' },
@@ -2235,15 +2243,15 @@ window.I18N = (() => {
       sceneLoading: '🎬 Kapak resimleri yükleniyor …', sceneHint: 'Kapak resmine ve ipuçlarına bak, doğru cevaba dokun. Tek hakkın var, ne kadar hızlıysan o kadar puan.',
       tmdbLabel: 'Yazısız kapak resimleri', tmdbOpt: '(isteğe bağlı, sadece oda sahibi için)', tmdbPh: 'TMDB API anahtarını yapıştır', tmdbOn: 'TMDB aktif: mümkünse yazısız kapaklar', tmdbOff: 'TMDB anahtarı kaldırıldı', tmdbHelp: 'Anahtar olmadan oyun, isim görünmesin diye kapağın sadece orta kısmını gösterir. themoviedb.org’dan ücretsiz bir anahtarla birçok yapım için hiç yazısı olmayan kapaklar gelir.',
       banLate: 'Geç kaldın, yasaklama süresi doldu.', banTaken: 'Onu zaten biri yasakladı. Başka birini seç.', banFail: 'Yasaklama mümkün değil.',
-      hitTagline: 'Bir şarkıdan bir parça çalıyor: <b>Hangi yıldan?</b> Elvis’ten bugüne, dünya hitleri ve Türk klasikleri.<br><b>Müzik tarihini kulağında taşıyan kazanır.</b>',
+      hitTagline: 'Bir şarkıdan bir parça çalıyor: <b>Kim söylüyor?</b> Yılı da bilirsen bonus. Elvis’ten bugüne, dünya hitleri ve Türk hitleri.<br><b>Müzik tarihini kulağında taşıyan kazanır.</b>',
       hitRules: [
-        '🎵 Bir <b>şarkı parçası</b> çalıyor. Sürgüyü tahmin ettiğin <b>çıkış yılına</b> getir.',
-        '🎯 Tam isabet: <b>1000 puan</b>. Ne kadar uzaksan o kadar az, 15 yıldan sonrası sıfır.',
-        '🎤 Bonus: Doğru <b>şarkıcıya</b> dokun, <b>+300</b> kap.',
-        '👑 En yakın tahmin turu kazanır (+100). Enter ya da butonla kilitle, yoksa son ayarın sayılır.',
+        '🎵 Bir <b>şarkı parçası</b> çalıyor. Doğru <b>şarkıcıya</b> dokun: <b>1000 puana</b> kadar, ne kadar hızlıysan o kadar çok (en sonda bile 500).',
+        '📅 Bonus: Sürgüyü <b>çıkış yılına</b> getir. Tam isabet <b>+300</b>, ne kadar uzaksan o kadar az, 15 yıldan sonrası sıfır.',
+        '🎯 İkisinden sadece birini de tahmin edebilirsin.',
+        '👑 Turda en çok puanı alan turu kazanır (+100). Enter ya da butonla kilitle, yoksa son ayarın sayılır.',
       ],
-      hitQ: 'Bu şarkı hangi yıldan?', hitIntro: 'Hangi yıl?', hitArtistQ: 'Bonus: Kim söylüyor?', hitHint: 'Sürgüyü kaydır, şarkıcıya dokun (isteğe bağlı), sonra kilitle.',
-      hitMoveFirst: 'Önce sürgüyü bir yıla getir.', hitWas: 'Şarkı şu yıldan', hitTip: 'Tahmin', hitExact: 'Tam isabet!', hitArtistOk: 'Şarkıcı',
+      hitQ: 'Bonus: Hangi yıldan?', hitIntro: 'Kim söylüyor?', hitArtistQ: 'Kim söylüyor?', hitHint: 'Şarkıcıya dokun, bonus için yılı tahmin et, sonra kilitle.',
+      hitMoveFirst: 'Önce bir şarkıcıya dokun ya da yılı tahmin et.', hitWas: 'Bu şarkıydı', hitTip: 'Tahmin', hitExact: 'Tam isabet!', hitArtistOk: 'Şarkıcı',
       hitSongs: 'Şarkılar', hitAll: 'Tüm şarkılar', hitNSongs: '{n} şarkı',
       hitTime: 'Zaman yolcusu', hitTimeX: 'ortalama {n} yıl şaştı.', hitExactA: 'Tam isabet', hitExactX: '{n} kez yılı tam bildi.', hitArtA: 'Müzik ansiklopedisi', hitArtX: 'şarkıcıyı {n} kez bildi.',
       drawTagline: 'Biri çiziyor, diğerleri olabildiğince hızlı tahmin ediyor. Herkes sırayla çizer.<br><b>Karala, tahmin et, gül.</b>',
@@ -2318,7 +2326,7 @@ window.I18N = (() => {
       youBanned: '{who} seni banladı!', youBannedSub: 'Bu turu pas geçiyorsun. İntikam tatlıdır …',
       streakT: 'Ateşli seri', streakX: 'üst üste {n} güçlü tur yaptı.', victimT: 'Günah keçisi', victimX: '{n} kez banlandı.',
       setBans: 'Ban (her 5 turda 1)', setBonus: 'Bonus turlar ve seriler', on: 'açık', off: 'kapalı',
-      apps: { size: 'Parti yarışması: tahmin et, karşılaştır, bil', geo: 'Dünyanın neresindesin? Etrafına bak, yürü, haritada tahmin et', reflex: 'Refleks mini oyunları: kör kronometre, trafik ışığı, hedefler …', spy: 'Biri kelimeyi bilmiyor. Casusu bul!', hit: 'Şarkıyı dinle, yılını tahmin et', draw: 'Biri çizer, herkes tahmin eder' }, isNew: 'YENİ',
+      apps: { size: 'Parti yarışması: tahmin et, karşılaştır, bil', geo: 'Dünyanın neresindesin? Etrafına bak, yürü, haritada tahmin et', reflex: 'Refleks mini oyunları: kör kronometre, trafik ışığı, hedefler …', spy: 'Biri kelimeyi bilmiyor. Casusu bul!', hit: 'Şarkıyı dinle, şarkıcıyı bil, yılı tahmin et', draw: 'Biri çizer, herkes tahmin eder' }, isNew: 'YENİ',
       geoTagline: 'Dünyanın herhangi bir yerine düşüyorsun. Etrafına bak, sokakta yürü ve haritada nerede olduğunu işaretle.<br><b>En yakın tahmin kazanır. 2 ila 10 oyuncu.</b>',
       chooseGame: 'Oyun', geoRegion: 'Bölge',
       geoRegions: { world: 'Tüm dünya', eu: 'Avrupa', am: 'Amerika', as: 'Asya', afoc: 'Afrika ve Okyanusya', detr: 'Almanya ve Türkiye' },
@@ -14468,7 +14476,7 @@ window.__launchGate = (() => {
   const sess = (k, v) => { try { if (v === undefined) return sessionStorage.getItem(k) || ''; sessionStorage.setItem(k, v); } catch { /* privater Modus */ } return ''; };
   const MAX_PLAYERS = 10;
   const INTRO_MS = 1800;
-  const BUILD = 'c6da9c9a2b';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
+  const BUILD = '2fb9b8a023';   // von build.js gesetzt; Host und Gäste müssen dieselbe Version haben
   const REVEAL_MS = 22000;
   const HIT = Math.log10(1.05);       // Volltreffer: max. 5 % daneben
   const JOKER_MIN = 700;              // Joker gewinnt ab 700 Grundpunkten (≈ Faktor 2)
@@ -17909,15 +17917,16 @@ window.__launchGate = (() => {
   }
 
   // =====================================================================
-  //  HIT CLASH: Song-Ausschnitt hören, Erscheinungsjahr schätzen, Bonus für den richtigen Interpreten
+  //  HIT CLASH: Song-Ausschnitt hören, den Interpreten erkennen (Hauptpunkte), Bonus für das Erscheinungsjahr
   //  Nur Songs mit gesichertem Jahr. Der Ausschnitt kommt wie beim Musik-Quiz über die iTunes-Suche.
   //  (wird von build.js an der Stelle /* @include hit.js */ in game.js eingefügt)
   // =====================================================================
   const HITCATS = { all: { e: '🎲' }, muzik_int: { e: '🌍' }, muzik_tr: { e: '🇹🇷' } };
-  const HIT_ARTIST = 300, HIT_RANGE = 15;   // Bonus für den Interpreten; ab 15 Jahren daneben gibt es nichts
+  const HIT_ARTIST = 1000, HIT_YEAR = 300, HIT_RANGE = 15;   // richtiger Interpret: 1000 bis 500 je nach Tempo; Jahr: bis 300 Bonus, ab 15 Jahren daneben nichts
+  const hitArtistPts = (ms, total) => Math.round(HIT_ARTIST - (HIT_ARTIST / 2) * clamp(ms / total, 0, 1));
   const hitPool = cats => QUIZ.filter(x => x.kind === 'music' && x.year > 0 && cats.includes(x.cat));
   const hitSpan = () => { const ys = QUIZ.filter(x => x.kind === 'music' && x.year > 0).map(x => x.year); return [Math.floor(Math.min(...ys) / 10) * 10, new Date().getFullYear()]; };
-  const hitPts = d => (d === 0 ? 1000 : Math.round(900 * Math.pow(Math.max(0, 1 - d / HIT_RANGE), 1.5)));
+  const hitPts = d => (d == null ? 0 : d === 0 ? HIT_YEAR : Math.round(HIT_YEAR * 0.9 * Math.pow(Math.max(0, 1 - d / HIT_RANGE), 1.5)));
 
   // ---------- Host ----------
   function buildHitRounds() {
@@ -17935,7 +17944,7 @@ window.__launchGate = (() => {
   }
   function startHitRound(spec) {
     const it = QZBYID[spec.id];
-    // Bonus-Frage: 4 Interpreten aus derselben Kategorie
+    // Hauptfrage: 4 Interpreten aus derselben Kategorie
     const others = shuffle(QUIZ.filter(x => x.kind === 'music' && x.cat === it.cat && x.artist !== it.artist));
     const opts = [it.artist];
     for (const x of others) { if (opts.length === 4) break; if (!opts.includes(x.artist)) opts.push(x.artist); }
@@ -17947,33 +17956,40 @@ window.__launchGate = (() => {
     H.range = null;
   }
   function hitGuessIn(pid, d) {
-    const q = H.q, y = Math.round(+d.y);
-    if (!(y >= q.lo && y <= q.hi)) return;
+    const q = H.q, y = d.y == null ? null : Math.round(+d.y);
+    if (y != null && !(y >= q.lo && y <= q.hi)) return;
     const pick = Number.isInteger(+d.pick) && +d.pick >= 0 && +d.pick < q.opts.length ? +d.pick : -1;
-    // Entwürfe zählen, falls die Zeit abläuft; eingeloggt ist eingeloggt
-    H.guesses[pid] = { y, pick, locked: !!d.lock, t: Date.now() };
+    if (y == null && pick < 0) return;
+    // Entwürfe zählen, falls die Zeit abläuft; eingeloggt ist eingeloggt.
+    // Für das Tempo zählt, wann der Interpret (zuletzt) gewählt wurde; wer umentscheidet, bekommt die spätere Zeit.
+    const old = H.guesses[pid], pickT = pick < 0 ? null : old && old.pick === pick ? old.pickT : Date.now();
+    H.guesses[pid] = { y, pick, pickT, locked: !!d.lock, t: Date.now() };
     if (d.lock) { publish(); checkAllLocked(); }
   }
   function endHitRound() {
-    const q = H.q, before = rankOf(H.players), res = [];
+    const q = H.q, before = rankOf(H.players), res = [], total = H.settings.time * 1000;
     H.hitStats = H.hitStats || {};
     const st = pid => (H.hitStats[pid] = H.hitStats[pid] || { exact: 0, artists: 0, off: 0, n: 0 });
     for (const p of H.players) {
       const g = H.guesses[p.pid];
-      if (!g) { if (p.online) res.push({ pid: p.pid, y: null, pts: 0 }); continue; }
-      const d = Math.abs(g.y - q.year), artistOk = g.pick === q.ans;
-      const ypts = hitPts(d);
-      res.push({ pid: p.pid, y: g.y, d, pick: g.pick, artistOk, ypts, pts: ypts + (artistOk ? HIT_ARTIST : 0) });
-      const s = st(p.pid); s.n++; s.off += d; if (d === 0) s.exact++; if (artistOk) s.artists++;
+      if (!g) { if (p.online) res.push({ pid: p.pid, y: null, d: null, artistOk: false, pts: 0 }); continue; }
+      const d = g.y == null ? null : Math.abs(g.y - q.year), artistOk = g.pick === q.ans;
+      const ms = g.pickT != null ? clamp(g.pickT - H.qStart, 0, total) : null;
+      const apts = artistOk ? hitArtistPts(ms, total) : 0, ypts = hitPts(d);
+      res.push({ pid: p.pid, y: g.y, d, pick: g.pick, artistOk, ms, apts, ypts, pts: apts + ypts });
+      const s = st(p.pid);
+      if (d != null) { s.n++; s.off += d; if (d === 0) s.exact++; }
+      if (artistOk) s.artists++;
     }
-    const guessed = res.filter(r => r.y != null);
-    if (guessed.length) { const m = Math.min(...guessed.map(r => r.d)); guessed.filter(r => r.d === m && r.d <= 5).forEach(r => { r.crown = true; r.pts += 100; }); }
-    roundExtras(res, r => r.y != null && r.d <= 2);
+    // Rundensieg: die meisten Punkte dieser Runde
+    const best = Math.max(0, ...res.map(r => r.pts));
+    if (best > 0) res.filter(r => r.pts === best).forEach(r => { r.crown = true; r.pts += 100; });
+    roundExtras(res, r => r.artistOk);
     for (const r of res) {
       const p = findP(r.pid);
       p.score += r.pts;
       if (r.crown) p.wins++;
-      if (r.y != null && r.d <= 1) p.hits++;
+      if (r.artistOk) p.hits++;
     }
     const after = rankOf(H.players);
     for (const r of res) { r.total = findP(r.pid).score; r.move = before[r.pid] - after[r.pid]; }
@@ -18001,7 +18017,11 @@ window.__launchGate = (() => {
             <div class="vinyl" id="musicViz"><i></i></div>
             <button class="btn primary" id="musicPlay" hidden>▶️ ${T('musicPlay')}</button>
           </div>
-          <div class="hitq-t">${T('hitQ')}</div>
+          <div class="hitq-t">🎤 ${T('hitArtistQ')} <em class="smuted">⏱ ${HIT_ARTIST / 2}–${HIT_ARTIST}</em></div>
+          <div class="mopts" id="hitOpts">${q.opts.map((o, i) => `<button class="mopt ${G.hitPick === i ? 'picked' : ''}" data-i="${i}"><kbd>${i + 1}</kbd><span>${esc(o)}</span></button>`).join('')}</div>
+        </div>
+        <div class="card hitbonus hityear">
+          <div class="slabel">📅 ${T('hitQ')} <em class="smuted">+${HIT_YEAR}</em></div>
           <div class="hity ${G.hitTouched ? '' : 'idle'}" id="hitY">${G.hitTouched ? G.hitY : '????'}</div>
           <div class="hitslider">
             <button class="btn hitstep" data-step="-1" aria-label="-1">−</button>
@@ -18009,10 +18029,6 @@ window.__launchGate = (() => {
             <button class="btn hitstep" data-step="1" aria-label="+1">+</button>
           </div>
           <div class="hitdec">${hitDecades(q).map(y => `<button data-dec="${y}">${y}</button>`).join('')}</div>
-        </div>
-        <div class="card hitbonus">
-          <div class="slabel">🎤 ${T('hitArtistQ')} <em class="smuted">+${HIT_ARTIST}</em></div>
-          <div class="mopts" id="hitOpts">${q.opts.map((o, i) => `<button class="mopt ${G.hitPick === i ? 'picked' : ''}" data-i="${i}"><kbd>${i + 1}</kbd><span>${esc(o)}</span></button>`).join('')}</div>
         </div>
         <div class="controls hitctl">
           <span class="hint" id="hitHint">${T('hitHint')}</span>
@@ -18047,13 +18063,14 @@ window.__launchGate = (() => {
   // Zwischenstand an den Host, damit ein Tipp auch ohne Einloggen zählt
   function hitDraft() {
     clearTimeout(G.hitT);
-    G.hitT = setTimeout(() => { if (!G.locked && G.hitTouched) send({ t: 'guess', y: G.hitY, pick: G.hitPick }); }, 250);
+    G.hitT = setTimeout(() => { if (!G.locked && (G.hitTouched || G.hitPick >= 0)) send({ t: 'guess', y: G.hitTouched ? G.hitY : null, pick: G.hitPick }); }, 250);
   }
   function hitLock() {
-    if (G.locked || !G.hitTouched) { if (!G.hitTouched) { shake($('#hitY')); toast(T('hitMoveFirst')); } return; }
+    if (G.locked) return;
+    if (!G.hitTouched && G.hitPick < 0) { shake($('#hitOpts')); toast(T('hitMoveFirst')); return; }
     clearTimeout(G.hitT);
     G.locked = true;
-    send({ t: 'guess', y: G.hitY, pick: G.hitPick, lock: true });
+    send({ t: 'guess', y: G.hitTouched ? G.hitY : null, pick: G.hitPick, lock: true });
     Sound.lock(); hitUi();
   }
   function hitUi() {
@@ -18082,10 +18099,13 @@ window.__launchGate = (() => {
     const rows = R.res.map((r, i) => {
       const p = pById(r.pid); if (!p) return '';
       const mv = r.move > 0 ? `<i class="up">▲${r.move}</i>` : r.move < 0 ? `<i class="down">▼${-r.move}</i>` : '';
-      const tip = r.y == null ? T('noAnswer') : `${r.y} ${r.d === 0 ? '🎯' : `(${r.y > R.year ? '+' : '−'}${r.d})`}`;
+      // Getippter Interpret als Schild unter dem Namen, Jahrestipp in der Spalte
+      const picked = r.pick != null && r.pick >= 0 ? R.opts[r.pick] : null;
+      const artTag = picked ? `<span class="tag ${r.artistOk ? 'hit' : 'miss'}">🎤 ${esc(picked)} ${r.artistOk ? `✓ · ${num(r.ms / 1000, 1)} s` : '✗'}</span>` : '';
+      const tip = r.y == null ? (picked ? '–' : T('noAnswer')) : `${r.y} ${r.d === 0 ? '🎯' : `(${r.y > R.year ? '+' : '−'}${r.d})`}`;
       return `<div class="rrow ${p.pid === me.pid ? 'me' : ''}" style="--pc:${p.color};animation-delay:${0.5 + i * 0.08}s">
         <div class="rk">${r.pts > 0 ? i + 1 : '–'}</div><div class="ra">${p.avatar}</div>
-        <div class="rn"><b>${esc(p.name)}</b><div class="tags">${r.crown ? `<span class="tag crown">${T('tagCrown')}</span>` : ''}${r.d === 0 ? `<span class="tag hit">🎯 ${T('hitExact')}</span>` : ''}${r.artistOk ? `<span class="tag hit">🎤 ${T('hitArtistOk')}</span>` : ''}</div></div>
+        <div class="rn"><b>${esc(p.name)}</b><div class="tags">${r.crown ? `<span class="tag crown">${T('tagCrown')}</span>` : ''}${artTag}${r.d === 0 ? `<span class="tag hit">🎯 ${T('hitExact')}</span>` : ''}</div></div>
         <div class="rg ${r.y == null ? 'no' : r.d <= 2 ? 'ok' : ''}">${tip}</div>
         <div class="rp">+${r.pts}</div><div class="rt">${r.total}${mv}</div></div>`;
     }).join('');
@@ -18095,7 +18115,7 @@ window.__launchGate = (() => {
         <div class="gamebar"><div class="pill">${T('round')} <b>${S.round}</b> / ${S.total}</div><div class="pill hitbrand">🎵 HIT CLASH</div>${timerHtml()}</div>
         <div class="card hitsong">
           ${R.art ? `<img class="hitcover" src="${esc(R.art)}" alt="" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;hitcover ph&quot;>🎵</div>'">` : '<div class="hitcover ph">🎵</div>'}
-          <div class="hitmeta"><small>${T('hitWas')}</small><b class="hitbig" id="hitBig">${R.year}</b><span class="hitname">${esc(R.artist)} – ${esc(R.title)}</span></div>
+          <div class="hitmeta"><small>${T('hitWas')}</small><b class="hitbig">${esc(R.artist)}</b><span class="hitname">${esc(R.title)} · <b class="hityr" id="hitBig">${R.year}</b></span></div>
         </div>
         <div class="card hitline">
           <div class="hitscale"><div class="hitgoal" style="left:${pos(R.year)}%"><b>${R.year}</b></div>${marks}</div>
@@ -18112,7 +18132,7 @@ window.__launchGate = (() => {
     const el = $('#hitBig'), t0 = performance.now(), from = lo;
     const step = t => { const k = Math.min(1, (t - t0) / 900), e = 1 - Math.pow(1 - k, 3); if (el) el.textContent = Math.round(from + (R.year - from) * e); if (k < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
-    if (R.res.some(r => r.pid === me.pid && r.d === 0)) { confetti(); Sound.win(); }
+    if (R.res.some(r => r.pid === me.pid && r.artistOk)) { confetti(); Sound.win(); }
     renderRevealFooter();
   }
   function hitAwards(F, award, mostWins) {
